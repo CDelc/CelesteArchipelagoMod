@@ -113,7 +113,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private bool canEnter(string sid, AreaMode areaMode)
         {
-            return (sid == "Celeste/1-ForsakenCity" && areaMode == AreaMode.Normal) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid); ;
+            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains(new KeyValuePair<string, AreaMode>(sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
         }
     }
 }

@@ -9,12 +9,48 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
     internal class ArchipelagoMapper
     {
 
+        public static long getLocationOffset(string SID, AreaMode mode, string room)
+        {
+            return getLevelID(SID, mode) * 0x1000 + getRoomID(SID, mode, room);
+        }
+        
+        public static long getLevelID(string SID, AreaMode mode)
+        {
+            foreach (KeyValuePair<long, KeyValuePair<string, AreaMode>> entry in levelIDToSID)
+            {
+                if(entry.Value.Key == SID && entry.Value.Value == mode)
+                {
+                    return entry.Key;
+                }
+            }
+            throw new IndexOutOfRangeException($"A level ID was requested that does not exist: SID {SID} | {mode.ToString()}");
+        }
+
+        public static long getRoomID(string SID, AreaMode mode, string room)
+        {
+            foreach (KeyValuePair<string, KeyValuePair<AreaMode, Dictionary<long, string>>> entry in roomIdsToname)
+            {
+                if(entry.Value.Key == mode)
+                {
+                    foreach (KeyValuePair<long, string> entry2 in entry.Value.Value)
+                    {
+                        if(room == entry2.Value)
+                        {
+                            return entry2.Key;
+                        }
+                    }
+                    throw new IndexOutOfRangeException($"A room ID was requested that does not exist in {SID} {mode.ToString()}: Room {room}");
+                }
+            }
+            throw new IndexOutOfRangeException($"A room ID was requested in a level that does not exist {SID} {mode.ToString()}");
+        }
+
         public static KeyValuePair<string, AreaMode> ArchipelagoIDToSID(long id)
         {
             long levelId = id - 0x04000000;
             if (levelIDToSID.ContainsKey(levelId))
             {
-                return new KeyValuePair<string, AreaMode>(levelIDToSID[levelId], levelIdToMode.ContainsKey(levelId) ? levelIdToMode[levelId] : AreaMode.Normal);
+                return levelIDToSID[levelId];
             }
 
             else throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {id} | {levelId}");
@@ -76,67 +112,89 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             }
         }
 
-        private static Dictionary<long, string> levelIDToSID { get; } = new Dictionary<long, string>
+        public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID)
         {
-            {1, "Celeste/1-ForsakenCity"}
+            if (strawberryLocationIDOverride.ContainsKey(strawberryID.Key))
+            {
+                return strawberryLocationIDOverride[strawberryID.Key];
+            }
+            else
+            {
+                return 0x02000000 + getLocationOffset(SID, mode, strawberryID.Level);
+            }
+        }
+
+        public static string getStrawberryEntityKeyFromLocationID(long locationID)
+        {
+            strawberryLocationIDOverride.Reverse()
+        }
+
+
+        private static Dictionary<string, long> strawberryLocationIDOverride = new Dictionary<string, long>
+        {
+
         };
 
-        private static Dictionary<long, AreaMode> levelIdToMode { get; } = new Dictionary<long, AreaMode>
+        private static Dictionary<long, KeyValuePair<string, AreaMode>> levelIDToSID { get; } = new Dictionary<long, KeyValuePair<string, AreaMode>>
         {
-
+            {1, new KeyValuePair<string, AreaMode>("Celeste/1-ForsakenCity", AreaMode.Normal)}
         };
         
         private static Dictionary<string, LevelCategory> levelSIDToCategory { get; } = new Dictionary<string, LevelCategory>
         {
-               
+            {"Celeste/1-ForsakenCity", LevelCategory.A_SIDE}
         };
 
 
-        public static Dictionary<string, Dictionary<long, string>> roomIdsToname { get; private set; } = new Dictionary<string, Dictionary<long, string>>
+        public static Dictionary<string, KeyValuePair<AreaMode, Dictionary<long, string>>> roomIdsToname { get; private set; } = new Dictionary<string, KeyValuePair<AreaMode, Dictionary<long, string>>>
         {
-            { 
+            {
                 "Celeste/1-ForsakenCity",
-                new Dictionary<long, string>
-                {
-                    {0, "5"},
-                    {1, "1"},
-                    {2, "2"},
-                    {3, "3"},
-                    {4, "4"},
-                    {5, "5"},
-                    {6, "6"},
-                    {7, "7"},
-                    {8, "8"},
-                    {9, "9"},
-                    {10, "10"},
-                    {11, "11"},
-                    {12, "12"},
-                    {13, "5z"},
-                    {14, "5a"},
-                    {15, "6z"},
-                    {16, "6zb"},
-                    {17, "7zb"},
-                    {18, "6a"},
-                    {19, "6b"},
-                    {20, "s0"},
-                    {21, "s1"},
-                    {22, "6c"},
-                    {23, "7z"},
-                    {24, "8z"},
-                    {25, "8zb"},
-                    {26, "9z"},
-                    {27, "7a"},
-                    {28, "8b"},
-                    {30, "9b"},
-                    {31, "10z"},
-                    {32, "10zb"},
-                    {34, "11z"},
-                    {35, "9c"},
-                    {36, "10a"},
-                    {37, "12z"},
-                    {38, "12a"},
-                    {39, "end"}
-                }
+                new KeyValuePair<AreaMode, Dictionary<long, string>>
+                (
+                    AreaMode.Normal,
+                    new Dictionary<long, string>
+                    {
+                        {0, "5"},
+                        {1, "1"},
+                        {2, "2"},
+                        {3, "3"},
+                        {4, "4"},
+                        {5, "5"},
+                        {6, "6"},
+                        {7, "7"},
+                        {8, "8"},
+                        {9, "9"},
+                        {10, "10"},
+                        {11, "11"},
+                        {12, "12"},
+                        {13, "5z"},
+                        {14, "5a"},
+                        {15, "6z"},
+                        {16, "6zb"},
+                        {17, "7zb"},
+                        {18, "6a"},
+                        {19, "6b"},
+                        {20, "s0"},
+                        {21, "s1"},
+                        {22, "6c"},
+                        {23, "7z"},
+                        {24, "8z"},
+                        {25, "8zb"},
+                        {26, "9z"},
+                        {27, "7a"},
+                        {28, "8b"},
+                        {30, "9b"},
+                        {31, "10z"},
+                        {32, "10zb"},
+                        {34, "11z"},
+                        {35, "9c"},
+                        {36, "10a"},
+                        {37, "12z"},
+                        {38, "12a"},
+                        {39, "end"}
+                    }
+                )
             }
         };
 

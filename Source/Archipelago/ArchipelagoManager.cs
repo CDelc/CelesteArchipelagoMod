@@ -437,7 +437,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                     //Level
                     case long id when id >= 0x04000000 && id < 0x05000000:
                         {
-                            CelesteArchipelagoModule.SaveData.LevelUnlocks.Add(ArchipelagoMapper.ArchipelagoIDToSID(id).Key);
+                            CelesteArchipelagoModule.SaveData.LevelUnlocks.Add(ArchipelagoMapper.ArchipelagoIDToSID(id));
                             break;
                         }
                     //Key

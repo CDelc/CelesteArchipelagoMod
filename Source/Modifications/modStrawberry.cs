@@ -49,10 +49,14 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private static void modStrawberry_OnCollect(On.Celeste.Strawberry.orig_OnCollect orig, Strawberry self)
         {
             orig(self);
-            string strawberryString = $"{SaveData.Instance.CurrentSession_Safe.Area.ID}_{(int)SaveData.Instance.CurrentSession_Safe.Area.Mode}_{self.ID}";
+            string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
+            AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
 
-            Celeste_MultiworldModule.SaveData.StrawberryLocations.Add(strawberryString);
-            Logger.Verbose("AP", strawberryString);
+            long locationID = ArchipelagoMapper.getStrawberryLocationID(SID, mode, self.ID);
+
+            CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
+
+            CelesteArchipelagoModule.Log($"Strawberry {self.ID.Key} checked, mapping to location id {locationID.ToString("X")}");
         }
 
         private static void modSaveData_AddStrawberry_AreaKey_EntityID_bool(On.Celeste.SaveData.orig_AddStrawberry_AreaKey_EntityID_bool orig, SaveData self, AreaKey area, EntityID strawberry, bool golden)
