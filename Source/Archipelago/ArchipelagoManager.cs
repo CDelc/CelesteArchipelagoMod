@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Converters;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Exceptions;
@@ -458,6 +458,27 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                     case long id when id >= 700000000000 && id < 800000000000:
                         {
                             CelesteArchipelagoModule.SaveData.CrystalHeartsCollab.Add(id);
+
+                            // All collab crystal heart items are lobby mini hearts.
+                            // Categorize by lobby based on the encoded level.
+                            try
+                            {
+                                long levelID = ArchipelagoMapper.extractLevelID(id);
+                                (string SID, AreaMode mode) = ArchipelagoMapper.getSID(levelID);
+                                LevelCategory category = ArchipelagoMapper.getLevelCategory(SID, mode);
+
+                                if (ArchipelagoMapper.isLobbyCategory(category))
+                                {
+                                    int key = (int)category;
+                                    if (!CelesteArchipelagoModule.SaveData.CrystalHeartsByLobby.ContainsKey(key))
+                                    {
+                                        CelesteArchipelagoModule.SaveData.CrystalHeartsByLobby[key] = new HashSet<long>();
+                                    }
+                                    CelesteArchipelagoModule.SaveData.CrystalHeartsByLobby[key].Add(id);
+                                }
+                            }
+                            catch (Exception) { /* Unmapped level */ }
+
                             break;
                         }
                     //Strawberry
@@ -554,15 +575,36 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 {
 
                 }
-                //level clear mini heart
+                //level clear mini heart - set HeartGem = true for visual display
                 else if (newLoc >= 500000000000 && newLoc < 600000000000)
                 {
-
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    try
+                    {
+                        (string SID, AreaMode mode) = ArchipelagoMapper.getSID(levelID);
+                        AreaData areaData = AreaData.Get(SID);
+                        if (areaData != null)
+                        {
+                            SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode].HeartGem = true;
+                        }
+                    }
+                    catch (Exception) { /* Level not mapped yet */ }
                 }
-                //crystal heart
+                //crystal heart - set HeartGem = true for visual display
+                //  (heart gates use our overridden TotalHeartGems which only counts AP items)
                 else if (newLoc >= 600000000000 && newLoc < 700000000000)
                 {
-
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    try
+                    {
+                        (string SID, AreaMode mode) = ArchipelagoMapper.getSID(levelID);
+                        AreaData areaData = AreaData.Get(SID);
+                        if (areaData != null)
+                        {
+                            SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode].HeartGem = true;
+                        }
+                    }
+                    catch (Exception) { /* Level not mapped yet */ }
                 }
                 //checkpoint
                 else if (newLoc >= 700000000000 && newLoc < 800000000000)
