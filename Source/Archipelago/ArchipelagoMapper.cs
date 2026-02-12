@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -170,6 +170,12 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID)
         {
             return 200000000000 + getLocationOffset(SID, mode, strawberryID.Level) + strawberryID.ID;
+        }
+
+        public static long getCrystalHeartLocationID(string SID, AreaMode mode)
+        {
+            long levelID = getLevelID(SID, mode);
+            return 600000000000 + levelID * 100000000;
         }
 
         public static EntityID getStrawberryEntityID(long locationID)

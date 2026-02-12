@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Converters;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Exceptions;
@@ -559,10 +559,21 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 {
 
                 }
-                //crystal heart
+                //crystal heart - set HeartGem = true for visual display
+                //  (heart gates use our overridden TotalHeartGems which only counts AP items)
                 else if (newLoc >= 600000000000 && newLoc < 700000000000)
                 {
-
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    try
+                    {
+                        (string SID, AreaMode mode) = ArchipelagoMapper.getSID(levelID);
+                        AreaData areaData = AreaData.Get(SID);
+                        if (areaData != null)
+                        {
+                            SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode].HeartGem = true;
+                        }
+                    }
+                    catch (Exception) { /* Level not mapped yet */ }
                 }
                 //checkpoint
                 else if (newLoc >= 700000000000 && newLoc < 800000000000)
