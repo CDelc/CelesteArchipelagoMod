@@ -9,6 +9,35 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
     internal class ArchipelagoMapper
     {
 
+        public static long extractLevelID(long locationID)
+        {
+            long removeCategory = locationID % 100000000000;
+            return removeCategory / 100000000;
+        }
+
+        public static long extractRoomID(long locationID)
+        {
+            long removeCategory = locationID % 100000000000;
+            return (removeCategory % 100000000) / 100000;
+        }
+
+        public static int extractMetadata(long locationID)
+        {
+            long removeCategory = locationID % 100000000000;
+            return (int)(removeCategory % 100000);
+        }
+            
+        public static AreaModeStats getAreaModeStats(long levelID)
+        {
+            (string SID, AreaMode mode) = getSID(levelID);
+            AreaData areaData = AreaData.Get(SID);
+            if (areaData == null)
+            {
+                throw new ApplicationException($"Areadata not found for SID {SID}");
+            }
+            return SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode];
+        }
+        
         public static long getLocationOffset(string SID, AreaMode mode, string room)
         {
             return getLevelID(SID, mode) * 100000000 + getRoomID(SID, mode, room) * 100000;
@@ -16,7 +45,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public static (string SID, AreaMode mode) getSID(long levelID)
         {
-            if(!levelIDToSID.TryGetValue(levelID, out (string SID, AreaMode mode) rValue){
+            if(!levelIDToSID.TryGetValue(levelID, out (string SID, AreaMode mode) rValue)){
                 throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {levelID}");
             }
             return rValue;
@@ -55,7 +84,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         public static long getRoomID(string SID, AreaMode mode, string room)
         {
 
-            if(!roomNameToID.TryGetValue((SID, mode), out Dictionary<string, long> roomDict){
+            if(!roomNameToID.TryGetValue((SID, mode), out Dictionary<string, long> roomDict)){
                 throw new IndexOutOfRangeException($"A room ID was requested in a level that does not exist {SID} {mode.ToString()}");
             }
 
@@ -150,12 +179,11 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 throw new IndexOutOfRangeException($"Strawberry was requested at locationID {locationID} but the ID is out of strawberry range");
             }
 
-            locationID = locationID - 200000000000;
-            long levelID = locationID / 100000000;
-            long roomID = (locationID % 100000000) / 100000;
+            long levelID = extractLevelID(locationID);
+            long roomID = extractRoomID(locationID);
 
             string roomName = getRoomName(levelID, roomID);
-            int entityID = (int)locationID % 100000;
+            int entityID = extractMetadata(locationID);
 
             return new EntityID { Level = roomName, ID = entityID };
         }
@@ -174,7 +202,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         };
 
 
-        private static Dictionary<(string SID, AreaMode mode), Dictionary<long, string>> roomIdsToname { get; private set; } = new Dictionary<(string SID, AreaMode mode), Dictionary<long, string>>
+        private static Dictionary<(string SID, AreaMode mode), Dictionary<long, string>> roomIdsToname { get; } = new Dictionary<(string SID, AreaMode mode), Dictionary<long, string>>
         {
             {
                 ("Celeste/1-ForsakenCity", AreaMode.Normal),

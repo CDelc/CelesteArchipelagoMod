@@ -84,6 +84,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         public bool protect_victory_level_checkpoints = false;
         public int strawberries_required_percentage = 80;
         public int total_strawberries = 100;
+        public int required_strawberries = 0;
         public bool require_moon_berry = false;
         public bool lock_win_condition_behind_strawberries = false;
         #endregion
@@ -223,6 +224,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             protect_victory_level_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("protect_victory_level_checkpoints", out value) ? value : false);
             strawberries_required_percentage = Convert.ToInt32(loginData.SlotData.TryGetValue("strawberries_required_percentage", out value) ? value : 0);
             total_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("total_strawberries", out value) ? value : 0);
+            required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
             lock_win_condition_behind_strawberries = Convert.ToBoolean(loginData.SlotData.TryGetValue("lock_win_condition_behind_strawberries", out value) ? value : false);
 
@@ -522,6 +524,100 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             foreach (long newLoc in CollectedLocations)
             {
                 CelesteArchipelagoModule.SaveData.LocationsChecked.Add(newLoc);
+                //strawberry
+                if(newLoc >= 200000000000 && newLoc < 300000000000)
+                {
+                    EntityID strawberry = ArchipelagoMapper.getStrawberryEntityID(newLoc);
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    AreaModeStats areaModeStats = ArchipelagoMapper.getAreaModeStats(levelID);
+
+                    if (areaModeStats.Strawberries.Add(strawberry))
+                    {
+                        areaModeStats.TotalStrawberries++;
+                    }
+                }
+                //cassette
+                else if (newLoc >= 300000000000 && newLoc < 400000000000)
+                {
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    (string SID, AreaMode mode) = ArchipelagoMapper.getSID(levelID);
+                    AreaData areaData = AreaData.Get(SID);
+                    AreaKey areaKey = areaData.ToKey(mode);
+                    if (areaData == null)
+                    {
+                        throw new ApplicationException($"Areadata not found for SID {SID}");
+                    }
+                    SaveData.Instance.RegisterCassette(areaKey);
+                }
+                //level_clear
+                else if (newLoc >= 400000000000 && newLoc < 500000000000)
+                {
+
+                }
+                //level clear mini heart
+                else if (newLoc >= 500000000000 && newLoc < 600000000000)
+                {
+
+                }
+                //crystal heart
+                else if (newLoc >= 600000000000 && newLoc < 700000000000)
+                {
+
+                }
+                //checkpoint
+                else if (newLoc >= 700000000000 && newLoc < 800000000000)
+                {
+
+                }
+                //key
+                else if (newLoc >= 800000000000 && newLoc < 900000000000)
+                {
+
+                }
+                //golden berry
+                else if (newLoc >= 900000000000 && newLoc < 1000000000000)
+                {
+                    EntityID strawberry = ArchipelagoMapper.getStrawberryEntityID(newLoc);
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    AreaModeStats areaModeStats = ArchipelagoMapper.getAreaModeStats(levelID);
+
+                    if (areaModeStats.Strawberries.Add(strawberry))
+                    {
+                        areaModeStats.TotalStrawberries++;
+                    }
+                }
+                //silver_berry
+                else if (newLoc >= 1100000000000 && newLoc < 1200000000000)
+                {
+
+                }
+                //rainbow_berry
+                else if (newLoc >= 1200000000000 && newLoc < 1300000000000)
+                {
+
+                }
+                //winged_golden
+                else if (newLoc >= 1300000000000 && newLoc < 1400000000000)
+                {
+                    EntityID strawberry = ArchipelagoMapper.getStrawberryEntityID(newLoc);
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    AreaModeStats areaModeStats = ArchipelagoMapper.getAreaModeStats(levelID);
+
+                    if (areaModeStats.Strawberries.Add(strawberry))
+                    {
+                        areaModeStats.TotalStrawberries++;
+                    }
+                }
+                //room
+                else if (newLoc >= 1400000000000 && newLoc < 1500000000000)
+                {
+
+                }
+                //gem
+                else if (newLoc >= 1500000000000 && newLoc < 1600000000000)
+                {
+
+                }
             }
 
             CollectedLocations.Clear();

@@ -10,7 +10,7 @@ public class CelesteArchipelagoModuleSaveData : EverestModuleSaveData
 
     public Dictionary<long, bool> Mechanics { get; set; } = new Dictionary<long, bool>();
 
-    public HashSet<KeyValuePair<string, AreaMode>> LevelUnlocks { get; set; } = new HashSet<KeyValuePair<string, AreaMode>> ();
+    public HashSet<(string SID, AreaMode mode)> LevelUnlocks { get; set; } = new HashSet<(string SID, AreaMode mode)>();
 
     public HashSet<long> UnlockedCheckpoints { get; set; } = new HashSet<long>();
 
