@@ -178,6 +178,65 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             return 600000000000 + levelID * 100000000;
         }
 
+        public static long getMiniHeartLocationID(string SID, AreaMode mode)
+        {
+            long levelID = getLevelID(SID, mode);
+            return 500000000000 + levelID * 100000000;
+        }
+
+        /// <summary>
+        /// Returns the appropriate heart location ID based on the level's category.
+        /// Lobby levels (BEGINNER, INTERMEDIATE, etc.) use the mini heart range (500B).
+        /// Vanilla/heartside levels use the crystal heart range (600B).
+        /// </summary>
+        public static long getHeartLocationID(string SID, AreaMode mode)
+        {
+            LevelCategory category = getLevelCategory(SID, mode);
+            if (isLobbyCategory(category))
+            {
+                return getMiniHeartLocationID(SID, mode);
+            }
+            return getCrystalHeartLocationID(SID, mode);
+        }
+
+        /// <summary>
+        /// Returns true for lobby map categories (BEGINNER, INTERMEDIATE, etc.)
+        /// whose mini hearts advance their lobby's heart gate.
+        /// </summary>
+        public static bool isLobbyCategory(LevelCategory category)
+        {
+            return category == LevelCategory.BEGINNER
+                || category == LevelCategory.INTERMEDIATE
+                || category == LevelCategory.ADVANCED
+                || category == LevelCategory.EXPERT
+                || category == LevelCategory.GRANDMASTER
+                || category == LevelCategory.CRACKED_GRANDMASTER;
+        }
+
+        /// <summary>
+        /// Returns true for heartside categories whose large crystal hearts
+        /// count toward vanilla heart gates.
+        /// </summary>
+        public static bool isHeartsideCategory(LevelCategory category)
+        {
+            return category == LevelCategory.BEGINNER_HEARTSIDE
+                || category == LevelCategory.INTERMEDIATE_HEARTSIDE
+                || category == LevelCategory.ADVANCED_HEARTSIDE
+                || category == LevelCategory.EXPERT_HEARTSIDE
+                || category == LevelCategory.GRANDMASTER_HEARTSIDE;
+        }
+
+        /// <summary>
+        /// Returns true for vanilla level categories (A_SIDE, B_SIDE, C_SIDE, FAREWELL).
+        /// </summary>
+        public static bool isVanillaCategory(LevelCategory category)
+        {
+            return category == LevelCategory.A_SIDE
+                || category == LevelCategory.B_SIDE
+                || category == LevelCategory.C_SIDE
+                || category == LevelCategory.FAREWELL;
+        }
+
         public static EntityID getStrawberryEntityID(long locationID)
         {
             if(!(locationID >= 200000000000 && locationID < 300000000000))

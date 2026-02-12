@@ -1,6 +1,7 @@
 using Celeste.Mod.CelesteArchipelago.Archipelago;
 using MonoMod.RuntimeDetour;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
@@ -10,12 +11,18 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private static Hook _totalHeartGemsHook;
         private static Hook _levelSetTotalHeartGemsHook;
 
+        /// <summary>
+        /// Cache mapping level set names to their lobby LevelCategory.
+        /// Cleared on Unload to avoid stale data across sessions.
+        /// </summary>
+        private static Dictionary<string, LevelCategory?> _levelSetCategoryCache = new();
+
         public override void Load()
         {
             On.Celeste.SaveData.RegisterHeartGem += modSaveData_RegisterHeartGem;
 
-            // Hook SaveData.TotalHeartGems property getter so heart gates
-            // only count received AP crystal heart items, not location checks.
+            // Hook SaveData.TotalHeartGems property getter so vanilla heart gates
+            // only count vanilla + heartside crystal heart AP items.
             var saveDataTotalHeartGems = typeof(SaveData)
                 .GetProperty("TotalHeartGems")?.GetGetMethod();
             if (saveDataTotalHeartGems != null)
@@ -28,8 +35,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 );
             }
 
-            // Hook LevelSetStats.TotalHeartGems for collab lobby heart gates
-            // which check per-level-set heart counts.
+            // Hook LevelSetStats.TotalHeartGems for collab lobby heart gates.
+            // Each lobby's gate should only count mini heart items for that lobby.
             var levelSetTotalHeartGems = typeof(LevelSetStats)
                 .GetProperty("TotalHeartGems")?.GetGetMethod();
             if (levelSetTotalHeartGems != null)
@@ -52,14 +59,18 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             _levelSetTotalHeartGemsHook?.Dispose();
             _levelSetTotalHeartGemsHook = null;
+
+            _levelSetCategoryCache.Clear();
         }
 
         /// <summary>
         /// Hook for SaveData.RegisterHeartGem.
-        /// Called when a crystal heart is collected in-game (both vanilla HeartGem
+        /// Called when any crystal heart is collected in-game (both vanilla HeartGem
         /// and CollabUtils2 MiniHeart entities call this).
         /// We let the original run (sets HeartGem = true for visual display)
-        /// and also send the location check to Archipelago.
+        /// and also send the appropriate location check to Archipelago.
+        /// Lobby levels send a mini heart location (500B range).
+        /// Vanilla/heartside levels send a crystal heart location (600B range).
         /// </summary>
         private static void modSaveData_RegisterHeartGem(
             On.Celeste.SaveData.orig_RegisterHeartGem orig,
@@ -75,24 +86,26 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             {
                 try
                 {
-                    long locationID = ArchipelagoMapper.getCrystalHeartLocationID(area.SID, area.Mode);
+                    // getHeartLocationID uses the level's category to decide between
+                    // mini heart (500B) and crystal heart (600B) location ranges.
+                    long locationID = ArchipelagoMapper.getHeartLocationID(area.SID, area.Mode);
                     CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
                     CelesteArchipelagoModule.Log(
-                        $"Crystal Heart location checked in {area.SID} ({area.Mode}), location id {locationID:X}");
+                        $"Heart location checked in {area.SID} ({area.Mode}), location id {locationID:X}");
                 }
                 catch (Exception ex)
                 {
                     CelesteArchipelagoModule.Log(
-                        $"Failed to map crystal heart location for {area.SID} ({area.Mode}): {ex.Message}");
+                        $"Failed to map heart location for {area.SID} ({area.Mode}): {ex.Message}");
                 }
             }
         }
 
         /// <summary>
-        /// Override SaveData.TotalHeartGems to return only the count of received
-        /// crystal heart AP items. Heart gates read this property, so they will
-        /// only open based on items received, not locations checked.
-        /// The per-level visual display (AreaModeStats.HeartGem) is unaffected.
+        /// Override SaveData.TotalHeartGems to return only vanilla + heartside
+        /// crystal heart AP items. Vanilla heart gates (HeartGemDoor) read this
+        /// property, so they will only open based on those items.
+        /// Per-level visual display (AreaModeStats.HeartGem) is unaffected.
         /// </summary>
         private delegate int orig_SaveDataTotalHeartGems(SaveData self);
         private static int GetTotalHeartGems(orig_SaveDataTotalHeartGems orig, SaveData self)
@@ -101,15 +114,18 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 && CelesteArchipelagoModule.SaveData != null)
             {
                 return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count
-                     + CelesteArchipelagoModule.SaveData.CrystalHeartsCollab.Count;
+                     + CelesteArchipelagoModule.SaveData.CrystalHeartsHeartsides.Count;
             }
             return orig(self);
         }
 
         /// <summary>
-        /// Override LevelSetStats.TotalHeartGems for collab heart gates.
-        /// Collab lobby heart gates check the per-level-set heart count.
-        /// We return the appropriate AP item count for each level set.
+        /// Override LevelSetStats.TotalHeartGems for collab lobby heart gates.
+        /// Each lobby's heart gate checks TotalHeartGems on its level set.
+        /// We determine which lobby the level set belongs to by checking the
+        /// LevelCategory of its areas, then return the matching lobby item count.
+        /// For the "Celeste" level set, returns vanilla + heartside count.
+        /// For unrecognized level sets, falls through to original behavior.
         /// </summary>
         private delegate int orig_LevelSetTotalHeartGems(LevelSetStats self);
         private static int GetLevelSetTotalHeartGems(orig_LevelSetTotalHeartGems orig, LevelSetStats self)
@@ -119,14 +135,59 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             {
                 if (self.Name == "Celeste")
                 {
-                    return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count;
+                    return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count
+                         + CelesteArchipelagoModule.SaveData.CrystalHeartsHeartsides.Count;
                 }
-                else
+
+                // Determine which lobby this level set belongs to
+                LevelCategory? lobbyCategory = GetLevelSetLobbyCategory(self);
+                if (lobbyCategory.HasValue)
                 {
-                    return CelesteArchipelagoModule.SaveData.CrystalHeartsCollab.Count;
+                    int key = (int)lobbyCategory.Value;
+                    if (CelesteArchipelagoModule.SaveData.CrystalHeartsByLobby.TryGetValue(key, out var set))
+                    {
+                        return set.Count;
+                    }
+                    // Known lobby level set but no items received yet
+                    return 0;
                 }
             }
             return orig(self);
+        }
+
+        /// <summary>
+        /// Determines the lobby LevelCategory for a given level set by checking
+        /// the LevelCategory of its first non-interlude area.
+        /// Results are cached for performance since this is called frequently.
+        /// </summary>
+        private static LevelCategory? GetLevelSetLobbyCategory(LevelSetStats stats)
+        {
+            if (_levelSetCategoryCache.TryGetValue(stats.Name, out var cached))
+            {
+                return cached;
+            }
+
+            LevelCategory? result = null;
+            foreach (var area in stats.Areas)
+            {
+                try
+                {
+                    var areaData = AreaData.Get(area.ID_Safe);
+                    if (areaData != null && !areaData.Interlude_Safe)
+                    {
+                        var category = ArchipelagoMapper.getLevelCategory(areaData.SID);
+                        if (ArchipelagoMapper.isLobbyCategory(category))
+                        {
+                            result = category;
+                            break;
+                        }
+                    }
+                }
+                catch { /* Level not in mapper */ }
+            }
+
+            _levelSetCategoryCache[stats.Name] = result;
+            return result;
         }
     }
 }
