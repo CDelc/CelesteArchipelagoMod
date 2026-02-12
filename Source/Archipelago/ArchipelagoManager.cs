@@ -459,21 +459,16 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                         {
                             CelesteArchipelagoModule.SaveData.CrystalHeartsCollab.Add(id);
 
-                            // Categorize by lobby or heartside based on the encoded level
+                            // All collab crystal heart items are lobby mini hearts.
+                            // Categorize by lobby based on the encoded level.
                             try
                             {
                                 long levelID = ArchipelagoMapper.extractLevelID(id);
                                 (string SID, AreaMode mode) = ArchipelagoMapper.getSID(levelID);
                                 LevelCategory category = ArchipelagoMapper.getLevelCategory(SID, mode);
 
-                                if (ArchipelagoMapper.isHeartsideCategory(category))
+                                if (ArchipelagoMapper.isLobbyCategory(category))
                                 {
-                                    // Heartside hearts count toward vanilla heart gates
-                                    CelesteArchipelagoModule.SaveData.CrystalHeartsHeartsides.Add(id);
-                                }
-                                else if (ArchipelagoMapper.isLobbyCategory(category))
-                                {
-                                    // Lobby hearts count toward their specific lobby's heart gate
                                     int key = (int)category;
                                     if (!CelesteArchipelagoModule.SaveData.CrystalHeartsByLobby.ContainsKey(key))
                                     {

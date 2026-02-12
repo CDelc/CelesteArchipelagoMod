@@ -214,8 +214,9 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         }
 
         /// <summary>
-        /// Returns true for heartside categories whose large crystal hearts
-        /// count toward vanilla heart gates.
+        /// Returns true for heartside categories.
+        /// Heartside crystal hearts are locations only (not in the item pool),
+        /// so they show as collected visually but do not fill any heart gate.
         /// </summary>
         public static bool isHeartsideCategory(LevelCategory category)
         {
@@ -224,17 +225,6 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 || category == LevelCategory.ADVANCED_HEARTSIDE
                 || category == LevelCategory.EXPERT_HEARTSIDE
                 || category == LevelCategory.GRANDMASTER_HEARTSIDE;
-        }
-
-        /// <summary>
-        /// Returns true for vanilla level categories (A_SIDE, B_SIDE, C_SIDE, FAREWELL).
-        /// </summary>
-        public static bool isVanillaCategory(LevelCategory category)
-        {
-            return category == LevelCategory.A_SIDE
-                || category == LevelCategory.B_SIDE
-                || category == LevelCategory.C_SIDE
-                || category == LevelCategory.FAREWELL;
         }
 
         public static EntityID getStrawberryEntityID(long locationID)

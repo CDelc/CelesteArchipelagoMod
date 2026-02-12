@@ -29,12 +29,6 @@ public class CelesteArchipelagoModuleSaveData : EverestModuleSaveData
     public HashSet<long> CrystalHeartsCollab { get; set; } = new HashSet<long>();
 
     /// <summary>
-    /// Heartside crystal heart items from the collab range that count
-    /// toward vanilla heart gates (alongside CrystalHeartsVanilla).
-    /// </summary>
-    public HashSet<long> CrystalHeartsHeartsides { get; set; } = new HashSet<long>();
-
-    /// <summary>
     /// Collab mini heart items grouped by lobby category (LevelCategory int value as key).
     /// Each lobby's heart gate only counts items in its own bucket.
     /// </summary>

@@ -102,9 +102,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         }
 
         /// <summary>
-        /// Override SaveData.TotalHeartGems to return only vanilla + heartside
-        /// crystal heart AP items. Vanilla heart gates (HeartGemDoor) read this
-        /// property, so they will only open based on those items.
+        /// Override SaveData.TotalHeartGems to return only vanilla crystal heart
+        /// AP items. Vanilla heart gates (HeartGemDoor) read this property, so
+        /// they will only open based on received vanilla crystal heart items.
         /// Per-level visual display (AreaModeStats.HeartGem) is unaffected.
         /// </summary>
         private delegate int orig_SaveDataTotalHeartGems(SaveData self);
@@ -113,8 +113,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             if (ArchipelagoManager.Instance != null && ArchipelagoManager.Instance.Ready
                 && CelesteArchipelagoModule.SaveData != null)
             {
-                return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count
-                     + CelesteArchipelagoModule.SaveData.CrystalHeartsHeartsides.Count;
+                return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count;
             }
             return orig(self);
         }
@@ -135,8 +134,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             {
                 if (self.Name == "Celeste")
                 {
-                    return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count
-                         + CelesteArchipelagoModule.SaveData.CrystalHeartsHeartsides.Count;
+                    return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count;
                 }
 
                 // Determine which lobby this level set belongs to
