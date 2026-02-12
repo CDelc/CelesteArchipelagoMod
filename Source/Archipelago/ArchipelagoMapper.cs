@@ -11,41 +11,63 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public static long getLocationOffset(string SID, AreaMode mode, string room)
         {
-            return getLevelID(SID, mode) * 0x1000 + getRoomID(SID, mode, room);
+            return getLevelID(SID, mode) * 100000000 + getRoomID(SID, mode, room) * 100000;
         }
-        
+
+        public static (string SID, AreaMode mode) getSID(long levelID)
+        {
+            if(!levelIDToSID.TryGetValue(levelID, out (string SID, AreaMode mode) rValue){
+                throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {levelID}");
+            }
+            return rValue;
+        }
+
+        public static string getRoomName(string SID, AreaMode mode, long roomID)
+        {
+            if(!roomIdsToname.TryGetValue((SID, mode), out Dictionary<long, string> roomDict))
+            {
+                throw new IndexOutOfRangeException($"A room name was requested in a level that does not exist {SID} {mode.ToString()}");
+            }
+
+            if(!roomDict.TryGetValue(roomID, out string rValue))
+            {
+                throw new IndexOutOfRangeException($"A room name was requested that does not exist in {SID} {mode.ToString()}: Room ID {roomID}");
+            }
+
+            return rValue;
+        }
+
+        public static string getRoomName(long levelID, long roomID)
+        {
+            (string SID, AreaMode mode) level = getSID(levelID);
+            return getRoomName(level.SID, level.mode, roomID);
+        }
+
         public static long getLevelID(string SID, AreaMode mode)
         {
-            foreach (KeyValuePair<long, KeyValuePair<string, AreaMode>> entry in levelIDToSID)
+            if(!levelSIDToID.TryGetValue((SID, mode), out long rValue))
             {
-                if(entry.Value.Key == SID && entry.Value.Value == mode)
-                {
-                    return entry.Key;
-                }
+                throw new IndexOutOfRangeException($"A level ID was requested that does not exist: ID {SID} | {mode.ToString()}");
             }
-            throw new IndexOutOfRangeException($"A level ID was requested that does not exist: SID {SID} | {mode.ToString()}");
+            return rValue;
         }
 
         public static long getRoomID(string SID, AreaMode mode, string room)
         {
-            foreach (KeyValuePair<string, KeyValuePair<AreaMode, Dictionary<long, string>>> entry in roomIdsToname)
-            {
-                if(entry.Value.Key == mode)
-                {
-                    foreach (KeyValuePair<long, string> entry2 in entry.Value.Value)
-                    {
-                        if(room == entry2.Value)
-                        {
-                            return entry2.Key;
-                        }
-                    }
-                    throw new IndexOutOfRangeException($"A room ID was requested that does not exist in {SID} {mode.ToString()}: Room {room}");
-                }
+
+            if(!roomNameToID.TryGetValue((SID, mode), out Dictionary<string, long> roomDict){
+                throw new IndexOutOfRangeException($"A room ID was requested in a level that does not exist {SID} {mode.ToString()}");
             }
-            throw new IndexOutOfRangeException($"A room ID was requested in a level that does not exist {SID} {mode.ToString()}");
+
+            if (!roomDict.TryGetValue(room, out long rValue))
+            {
+                throw new IndexOutOfRangeException($"A room ID was requested that does not exist in {SID} {mode.ToString()}: Room {room}");
+            }
+
+            return rValue;
         }
 
-        public static KeyValuePair<string, AreaMode> ArchipelagoIDToSID(long id)
+        public static (string SID, AreaMode mode) ArchipelagoIDToSID(long id)
         {
             long levelId = id - 0x04000000;
             if (levelIDToSID.ContainsKey(levelId))
@@ -58,16 +80,20 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public static LevelCategory getLevelCategory(string SID)
         {
-            return levelSIDToCategory[SID];
+            if(!levelSIDToCategory.TryGetValue(SID, out LevelCategory rValue))
+            {
+                throw new IndexOutOfRangeException($"A level category was requested for a level that is not mapped: {SID}");
+            }
+            return rValue;
         }
 
         public static LevelCategory getLevelCategory(string SID, AreaMode mode)
         {
-            if(mode == AreaMode.BSide)
+            if (mode == AreaMode.BSide)
             {
                 return LevelCategory.B_SIDE;
             }
-            if(mode == AreaMode.CSide)
+            if (mode == AreaMode.CSide)
             {
                 return LevelCategory.C_SIDE;
             }
@@ -114,89 +140,90 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID)
         {
-            if (strawberryLocationIDOverride.ContainsKey(strawberryID.Key))
-            {
-                return strawberryLocationIDOverride[strawberryID.Key];
-            }
-            else
-            {
-                return 0x02000000 + getLocationOffset(SID, mode, strawberryID.Level);
-            }
+            return 200000000000 + getLocationOffset(SID, mode, strawberryID.Level) + strawberryID.ID;
         }
 
-        public static string getStrawberryEntityKeyFromLocationID(long locationID)
+        public static EntityID getStrawberryEntityID(long locationID)
         {
-            strawberryLocationIDOverride.Reverse()
+            if(!(locationID >= 200000000000 && locationID < 300000000000))
+            {
+                throw new IndexOutOfRangeException($"Strawberry was requested at locationID {locationID} but the ID is out of strawberry range");
+            }
+
+            locationID = locationID - 200000000000;
+            long levelID = locationID / 100000000;
+            long roomID = (locationID % 100000000) / 100000;
+
+            string roomName = getRoomName(levelID, roomID);
+            int entityID = (int)locationID % 100000;
+
+            return new EntityID { Level = roomName, ID = entityID };
         }
 
-
-        private static Dictionary<string, long> strawberryLocationIDOverride = new Dictionary<string, long>
+        private static Dictionary<long, (string SID, AreaMode mode)> levelIDToSID { get; } = new Dictionary<long, (string SID, AreaMode mode)>
         {
-
+            {1, ("Celeste/1-ForsakenCity", AreaMode.Normal)}
         };
 
-        private static Dictionary<long, KeyValuePair<string, AreaMode>> levelIDToSID { get; } = new Dictionary<long, KeyValuePair<string, AreaMode>>
-        {
-            {1, new KeyValuePair<string, AreaMode>("Celeste/1-ForsakenCity", AreaMode.Normal)}
-        };
-        
+        private static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
+
+
         private static Dictionary<string, LevelCategory> levelSIDToCategory { get; } = new Dictionary<string, LevelCategory>
         {
             {"Celeste/1-ForsakenCity", LevelCategory.A_SIDE}
         };
 
 
-        public static Dictionary<string, KeyValuePair<AreaMode, Dictionary<long, string>>> roomIdsToname { get; private set; } = new Dictionary<string, KeyValuePair<AreaMode, Dictionary<long, string>>>
+        private static Dictionary<(string SID, AreaMode mode), Dictionary<long, string>> roomIdsToname { get; private set; } = new Dictionary<(string SID, AreaMode mode), Dictionary<long, string>>
         {
             {
-                "Celeste/1-ForsakenCity",
-                new KeyValuePair<AreaMode, Dictionary<long, string>>
-                (
-                    AreaMode.Normal,
-                    new Dictionary<long, string>
-                    {
-                        {0, "5"},
-                        {1, "1"},
-                        {2, "2"},
-                        {3, "3"},
-                        {4, "4"},
-                        {5, "5"},
-                        {6, "6"},
-                        {7, "7"},
-                        {8, "8"},
-                        {9, "9"},
-                        {10, "10"},
-                        {11, "11"},
-                        {12, "12"},
-                        {13, "5z"},
-                        {14, "5a"},
-                        {15, "6z"},
-                        {16, "6zb"},
-                        {17, "7zb"},
-                        {18, "6a"},
-                        {19, "6b"},
-                        {20, "s0"},
-                        {21, "s1"},
-                        {22, "6c"},
-                        {23, "7z"},
-                        {24, "8z"},
-                        {25, "8zb"},
-                        {26, "9z"},
-                        {27, "7a"},
-                        {28, "8b"},
-                        {30, "9b"},
-                        {31, "10z"},
-                        {32, "10zb"},
-                        {34, "11z"},
-                        {35, "9c"},
-                        {36, "10a"},
-                        {37, "12z"},
-                        {38, "12a"},
-                        {39, "end"}
-                    }
-                )
+                ("Celeste/1-ForsakenCity", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "5"},
+                    {1, "1"},
+                    {2, "2"},
+                    {3, "3"},
+                    {4, "4"},
+                    {5, "5"},
+                    {6, "6"},
+                    {7, "7"},
+                    {8, "8"},
+                    {9, "9"},
+                    {10, "10"},
+                    {11, "11"},
+                    {12, "12"},
+                    {13, "5z"},
+                    {14, "5a"},
+                    {15, "6z"},
+                    {16, "6zb"},
+                    {17, "7zb"},
+                    {18, "6a"},
+                    {19, "6b"},
+                    {20, "s0"},
+                    {21, "s1"},
+                    {22, "6c"},
+                    {23, "7z"},
+                    {24, "8z"},
+                    {25, "8zb"},
+                    {26, "9z"},
+                    {27, "7a"},
+                    {28, "8b"},
+                    {30, "9b"},
+                    {31, "10z"},
+                    {32, "10zb"},
+                    {34, "11z"},
+                    {35, "9c"},
+                    {36, "10a"},
+                    {37, "12z"},
+                    {38, "12a"},
+                    {39, "end"}
+                }
             }
         };
+
+        private static Dictionary<(string SID, AreaMode mode), Dictionary<string, long>> roomNameToID =
+            roomIdsToname.ToDictionary(x => x.Key, x => x.Value.ToDictionary(y => y.Value, y => y.Key));
 
     }
 }

@@ -423,61 +423,61 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 switch (item.ItemId)
                 {
                     //Mechanic
-                    case long id when id >= 0x02000000 && id < 0x03000000:
+                    case long id when id >= 200000000000 && id < 300000000000:
                         {
                             CelesteArchipelagoModule.SaveData.Mechanics[id] = true;
                             break;
                         }
                     //Checkpoint
-                    case long id when id >= 0x03000000 && id < 0x04000000:
+                    case long id when id >= 300000000000 && id < 400000000000:
                         {
                             CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Add(id);
                             break;
                         }
                     //Level
-                    case long id when id >= 0x04000000 && id < 0x05000000:
+                    case long id when id >= 400000000000 && id < 500000000000:
                         {
                             CelesteArchipelagoModule.SaveData.LevelUnlocks.Add(ArchipelagoMapper.ArchipelagoIDToSID(id));
                             break;
                         }
                     //Key
-                    case long id when id >= 0x05000000 && id < 0x06000000:
+                    case long id when id >= 500000000000 && id < 600000000000:
                         {
                             CelesteArchipelagoModule.SaveData.UnlockedKeys.Add(id);
                             break;
                         }
                     //Vanilla Crystal Heart
-                    case long id when id >= 0x06000000 && id < 0x07000000:
+                    case long id when id >= 600000000000 && id < 700000000000:
                         {
                             CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Add(id);
                             break;
                         }
                     //Collab Crystal Heart
-                    case long id when id >= 0x07000000 && id < 0x08000000:
+                    case long id when id >= 700000000000 && id < 800000000000:
                         {
                             CelesteArchipelagoModule.SaveData.CrystalHeartsCollab.Add(id);
                             break;
                         }
                     //Strawberry
-                    case 0x08000000:
+                    case 800000000000:
                         {
                             CelesteArchipelagoModule.SaveData.Strawberries++;
                             break;
                         }
                     //Moon Berry
-                    case 0x09000000:
+                    case 900000000000:
                         {
                             CelesteArchipelagoModule.SaveData.Strawberries++;
                             break;
                         }
                     //Silver berries
-                    case long id when id >= 0x0a000000 && id < 0x0b000000:
+                    case long id when id >= 1000000000000 && id < 1100000000000:
                         {
                             CelesteArchipelagoModule.SaveData.SilverBerriesUnlocked.Add(id);
                             break;
                         }
                     //Filler Items
-                    case long id when id >= 0x0b000000 && id < 0x0c000000:
+                    case long id when id >= 1100000000000 && id < 1200000000000:
                         {
                             break;
                         }
