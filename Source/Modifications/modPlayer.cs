@@ -1,6 +1,7 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.UI;
 using Microsoft.Xna.Framework;
+using System;
 using static Celeste.Mod.CelesteArchipelago.ArchipelagoData.ArchipelagoManager;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
@@ -82,11 +83,24 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
                     if (ShouldShowMessage(message))
                     {
-                        self.Scene.Add(new ArchipelagoTextBox(message.Text));
+                        float duration = CalculateDisplayDuration(ArchipelagoManager.Instance.MessageQueue.Count);
+                        self.Scene.Add(new ArchipelagoTextBox(message.Text, duration));
                         Logger.Verbose(Constants.LOG_PREFIX, message.Text);
                     }
                 }
             }
+        }
+
+        private static float CalculateDisplayDuration(int remainingMessages)
+        {
+            float baseDuration = CelesteArchipelagoModule.Settings.TextBoxDisplayDuration;
+
+            if (!CelesteArchipelagoModule.Settings.TextBoxQueueSpeedup || remainingMessages <= 0)
+            {
+                return baseDuration;
+            }
+
+            return Math.Max(1.0f, baseDuration - 0.25f * remainingMessages);
         }
 
         private static bool ShouldShowMessage(ArchipelagoMessage message)
