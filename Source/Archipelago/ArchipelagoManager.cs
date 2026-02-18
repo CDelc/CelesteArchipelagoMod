@@ -108,8 +108,6 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         private bool ItemRcvCallbackSet = false;
 
 
-
-
         public static readonly HashSet<string> PermanentUnlockLevels = new HashSet<string>
         {
             "StrawberryJam2021/0-Lobbies/1-Beginner",
@@ -242,6 +240,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             this.ServerItemsRcv = -1;
             this.ItemQueue.Clear();
             this.MessageLog.Clear();
+            this.GoalSent = false;
 
             if (!attemptReconnect)
             {
@@ -557,12 +556,24 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 //level clear mini heart
                 else if (newLoc >= 500000000000 && newLoc < 600000000000)
                 {
-
+                    (string SID, AreaMode mode) = ArchipelagoMapper.getSID(ArchipelagoMapper.extractLevelID(newLoc));
+                    AreaData areaData = AreaData.Get(SID);
+                    if (areaData == null)
+                    {
+                        throw new ApplicationException($"Areadata not found for SID {SID}");
+                    }
+                    SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode].HeartGem = true;
                 }
                 //crystal heart
                 else if (newLoc >= 600000000000 && newLoc < 700000000000)
                 {
-
+                    (string SID, AreaMode mode) = ArchipelagoMapper.getSID(ArchipelagoMapper.extractLevelID(newLoc));
+                    AreaData areaData = AreaData.Get(SID);
+                    if (areaData == null)
+                    {
+                        throw new ApplicationException($"Areadata not found for SID {SID}");
+                    }
+                    SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode].HeartGem = true;
                 }
                 //checkpoint
                 else if (newLoc >= 700000000000 && newLoc < 800000000000)

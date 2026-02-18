@@ -98,7 +98,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public static (string SID, AreaMode mode) ArchipelagoIDToSID(long id)
         {
-            long levelId = id - 0x04000000;
+            long levelId = id - 400000000000;
             if (levelIDToSID.ContainsKey(levelId))
             {
                 return levelIDToSID[levelId];
@@ -186,6 +186,68 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             int entityID = extractMetadata(locationID);
 
             return new EntityID { Level = roomName, ID = entityID };
+        }
+
+        public static long getCrystalHeartLocationID(string SID, AreaMode mode)
+        {
+            long levelID = getLevelID(SID, mode);
+            return 600000000000 + levelID * 100000000;
+        }
+
+        public static long getMiniHeartLocationID(string SID, AreaMode mode)
+        {
+            long levelID = getLevelID(SID, mode);
+            return 500000000000 + levelID * 100000000;
+        }
+
+        public static long getHeartLocationID(string SID, AreaMode mode)
+        {
+            LevelCategory category = getLevelCategory(SID, mode);
+            if (isLobbyCategory(category))
+            {
+                return getMiniHeartLocationID(SID, mode);
+            }
+            return getCrystalHeartLocationID(SID, mode);
+        }
+
+        public static int getLobbyNumHeartsCollected(LevelCategory category)
+        {
+            if (!isLobbyCategory(category))
+            {
+                return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count;
+            }
+            else
+            {
+                int count = 0;
+                foreach(long heartID in CelesteArchipelagoModule.SaveData.CrystalHeartsCollab)
+                {
+                    string SID = getSID(extractLevelID(heartID)).SID;
+                    if (getLevelCategory(SID) == category)
+                    {
+                        count++;
+                    }
+                }
+                return count;
+            }
+        }
+
+        public static bool isLobbyCategory(LevelCategory category)
+        {
+            return category == LevelCategory.BEGINNER
+                || category == LevelCategory.INTERMEDIATE
+                || category == LevelCategory.ADVANCED
+                || category == LevelCategory.EXPERT
+                || category == LevelCategory.GRANDMASTER
+                || category == LevelCategory.CRACKED_GRANDMASTER;
+        }
+
+        public static bool isHeartsideCategory(LevelCategory category)
+        {
+            return category == LevelCategory.BEGINNER_HEARTSIDE
+                || category == LevelCategory.INTERMEDIATE_HEARTSIDE
+                || category == LevelCategory.ADVANCED_HEARTSIDE
+                || category == LevelCategory.EXPERT_HEARTSIDE
+                || category == LevelCategory.GRANDMASTER_HEARTSIDE;
         }
 
         private static Dictionary<long, (string SID, AreaMode mode)> levelIDToSID { get; } = new Dictionary<long, (string SID, AreaMode mode)>

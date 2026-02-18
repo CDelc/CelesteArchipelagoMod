@@ -15,7 +15,8 @@ namespace Celeste.Mod.CelesteArchipelago.Constants
         {
             new modMainMenu(),
             new modOuiChapterSelect(),
-            new modStrawberry()
+            new modStrawberry(),
+            new modCrystalHeart()
         };
 
         public static int SAVE_ID = 144;
