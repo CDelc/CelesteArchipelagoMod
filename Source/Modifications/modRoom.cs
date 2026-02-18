@@ -21,12 +21,14 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self, next, direction);
             CheckRoom(self, next.Name);
+            CheckCheckpoint(self, next.Name);
         }
 
         private void modLevel_LoadLevel(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool isFromLoader)
         {
             orig(self, playerIntro, isFromLoader);
             CheckRoom(self, self.Session.Level);
+            CheckCheckpoint(self, self.Session.Level);
         }
 
         private static void CheckRoom(Level level, string room)
@@ -43,6 +45,32 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
             CelesteArchipelagoModule.Log($"Room {room} checked in {SID} {mode}, mapping to location id {locationID:X}");
 
+        }
+
+        private static void CheckCheckpoint(Level level, string room)
+        {
+            if (!ArchipelagoManager.Instance.Ready || !ArchipelagoManager.Instance.randomize_checkpoints)
+            {
+                return;
+            }
+
+            string SID = level.Session.Area.SID;
+            AreaMode mode = level.Session.Area.Mode;
+
+            AreaData areaData = AreaData.Get(SID);
+            if (areaData?.Mode[(int)mode]?.Checkpoints == null) return;
+
+            var checkpoints = areaData.Mode[(int)mode].Checkpoints;
+            for (int i = 0; i < checkpoints.Length; i++)
+            {
+                if (checkpoints[i].Level == room)
+                {
+                    long locationID = ArchipelagoMapper.getCheckpointLocationID(SID, mode, room);
+                    CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
+                    CelesteArchipelagoModule.Log($"Checkpoint {room} reached in {SID} {mode}, mapping to location id {locationID:X}");
+                    break;
+                }
+            }
         }
     }
 }
