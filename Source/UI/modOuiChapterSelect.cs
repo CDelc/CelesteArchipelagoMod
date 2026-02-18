@@ -23,7 +23,6 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         {
             On.Celeste.OuiChapterPanel.Reset += modReset;
             On.Celeste.OuiChapterPanel.Start += modStartLevelGuard;
-            On.Celeste.SaveData.SetCheckpoint += modSetCheckpoint;
         }
 
         
@@ -31,14 +30,6 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         {
             On.Celeste.OuiChapterPanel.Reset -= modReset;
             On.Celeste.OuiChapterPanel.Start -= modStartLevelGuard;
-            On.Celeste.SaveData.SetCheckpoint -= modSetCheckpoint;
-        }
-
-        private bool modSetCheckpoint(On.Celeste.SaveData.orig_SetCheckpoint orig, SaveData self, AreaKey area, string level)
-        {
-            CelesteArchipelagoModule.Log($"SET_CHECKPOINT--------{area.SID}----{level}------");
-
-            return true;
         }
 
         bool levelGuardRunning = false;
@@ -113,7 +104,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private bool canEnter(string sid, AreaMode areaMode)
         {
-            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains(new KeyValuePair<string, AreaMode>(sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
+            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
         }
     }
 }

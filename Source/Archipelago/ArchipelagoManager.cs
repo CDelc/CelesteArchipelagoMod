@@ -16,7 +16,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Celeste.Mod.CelesteArchipelago.Constants.Constants;
+using static Celeste.Mod.CelesteArchipelago.Constants;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace Celeste.Mod.CelesteArchipelago.Archipelago
@@ -134,8 +134,6 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                     CheckReceivedItemQueue();
                     HandleCollectedLocations();
                     CheckLocationsToSend();
-                    
-                    Level level = (Monocle.Engine.Scene as Level);
                 }
                 catch (ArchipelagoSocketClosedException)
                 {
@@ -193,7 +191,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             object value;
 
             start_level_set = Convert.ToInt32(loginData.SlotData.TryGetValue("start_level_set", out value) ? value : 0);
-            include_beginner = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_beginnner", out value) ? value : false);
+            include_beginner = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_beginner", out value) ? value : false);
             include_intermediate = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_intermediate", out value) ? value : false);
             include_advanced = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_advanced", out value) ? value : false);
             include_expert = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_expert", out value) ? value : false);
@@ -249,16 +247,13 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
             if (_session != null)
             {
-                if (_session != null)
-                {
-                    _session.Socket.ErrorReceived -= OnError;
-                    _session.Socket.SocketClosed -= OnSocketClosed;
-                    _session.Items.ItemReceived -= OnItemReceived;
-                    _session.Locations.CheckedLocationsUpdated -= OnLocationReceived;
-                    _session.MessageLog.OnMessageReceived -= OnMessageReceived;
-                    _session.Socket.DisconnectAsync();
-                    _session = null;
-                }
+                _session.Socket.ErrorReceived -= OnError;
+                _session.Socket.SocketClosed -= OnSocketClosed;
+                _session.Items.ItemReceived -= OnItemReceived;
+                _session.Locations.CheckedLocationsUpdated -= OnLocationReceived;
+                _session.MessageLog.OnMessageReceived -= OnMessageReceived;
+                _session.Socket.DisconnectAsync();
+                _session = null;
             }
 
             if (this.WasConnected && attemptReconnect)
@@ -396,7 +391,6 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
             SaveData.Instance.TotalStrawberries_Safe = CelesteArchipelagoModule.SaveData.Strawberries;
 
-            int audioGuard = 0;
             for (int index = CelesteArchipelagoModule.SaveData.ItemRcv; index < ItemQueue.Count; index++)
             {
                 var item = ItemQueue[index].Item2;
@@ -541,11 +535,12 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                     long levelID = ArchipelagoMapper.extractLevelID(newLoc);
                     (string SID, AreaMode mode) = ArchipelagoMapper.getSID(levelID);
                     AreaData areaData = AreaData.Get(SID);
-                    AreaKey areaKey = areaData.ToKey(mode);
                     if (areaData == null)
                     {
                         throw new ApplicationException($"Areadata not found for SID {SID}");
                     }
+                    
+                    AreaKey areaKey = areaData.ToKey(mode);
                     SaveData.Instance.RegisterCassette(areaKey);
                 }
                 //level_clear

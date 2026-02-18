@@ -67,7 +67,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
 
         private delegate int orig_SaveDataTotalHeartGems(SaveData self);
-        private int GetTotalHeartGems(orig_SaveDataTotalHeartGems orig, SaveData self)
+        private static int GetTotalHeartGems(orig_SaveDataTotalHeartGems orig, SaveData self)
         {
             if (!ArchipelagoManager.Instance.Ready)
             {
@@ -78,7 +78,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
 
         private delegate int orig_LevelSetTotalHeartGems(LevelSetStats self);
-        private int GetLevelSetTotalHeartGems(orig_LevelSetTotalHeartGems orig, LevelSetStats self)
+        private static int GetLevelSetTotalHeartGems(orig_LevelSetTotalHeartGems orig, LevelSetStats self)
         {
             if (!ArchipelagoManager.Instance.Ready)
             {

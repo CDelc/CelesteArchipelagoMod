@@ -176,7 +176,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 Name = CelesteArchipelagoModule.Settings.PlayerName,
                 AssistMode = false,
                 VariantMode = false
-            }, 144);
+            }, Constants.SAVE_ID);
 
 
             if (SaveData.Instance != null)
