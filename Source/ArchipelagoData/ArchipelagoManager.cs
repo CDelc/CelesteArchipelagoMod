@@ -1,5 +1,4 @@
 ﻿using Archipelago.MultiClient.Net;
-using Archipelago.MultiClient.Net.Converters;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Exceptions;
 using Archipelago.MultiClient.Net.Helpers;
@@ -12,14 +11,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static Celeste.Mod.CelesteArchipelago.Constants;
 using Color = Microsoft.Xna.Framework.Color;
 
-namespace Celeste.Mod.CelesteArchipelago.Archipelago
+namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 {
     public class ArchipelagoManager : DrawableGameComponent
     {
@@ -29,12 +25,10 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             public enum MessageType
             {
                 General,
-                Chat,
                 Server,
                 ItemReceive,
                 ItemSend,
-                ItemHint,
-                Literature
+                ItemHint
             }
 
             public string Text { get; init; } = "";
@@ -102,7 +96,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         public List<Tuple<int, ItemInfo>> ItemQueue { get; private set; } = new();
         public List<long> CollectedLocations { get; private set; } = new();
         public HashSet<long> SentLocations { get; set; } = [];
-        public List<ArchipelagoMessage> MessageLog { get; set; } = new();
+        public Queue<ArchipelagoMessage> MessageQueue { get; set; } = new();
 
         public int ServerItemsRcv = -1;
         private bool ItemRcvCallbackSet = false;
@@ -237,7 +231,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         {
             this.ServerItemsRcv = -1;
             this.ItemQueue.Clear();
-            this.MessageLog.Clear();
+            this.MessageQueue.Clear();
             this.GoalSent = false;
 
             if (!attemptReconnect)
@@ -284,7 +278,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                             string recvPlayerColor = (hintItemSendMessage.Receiver == this.Slot) ? "#EE00EE" : "#FAFAD2";
                             string prettyMessage = $"{{{recvPlayerColor}}}{hintItemSendMessage.Receiver.Name}{{#}}'s {{{itemColor}}}{item.ItemName}{{#}} is at {{#00FF7F}}{hintItemSendMessage.Item.LocationName}{{#}} in {{{sendPlayerColor}}}{hintItemSendMessage.Sender.Name}{{#}}'s World.";
 
-                            MessageLog.Add(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemHint));
+                            MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemHint));
                         }
                         Logger.Log("AP", message.ToString());
                         Monocle.Engine.Commands.Log(message.ToString(), Color.Orange);
@@ -298,7 +292,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                         string itemColor = GetColorString(itemSendMessage.Item.Flags);
                         string prettyMessage = $"Sent {{{itemColor}}}{itemSendMessage.Item.ItemName}{{#}} to {{#FAFAD2}}{itemSendMessage.Receiver.Name}{{#}}.";
 
-                        MessageLog.Add(new ArchipelagoMessage(prettyMessage.ToString(), ArchipelagoMessage.MessageType.ItemSend, itemSendMessage.Item.Flags));
+                        MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage.ToString(), ArchipelagoMessage.MessageType.ItemSend, itemSendMessage.Item.Flags));
                         Logger.Log(LOG_PREFIX, message.ToString());
                         Monocle.Engine.Commands.Log(message.ToString(), Color.Lime);
                     }
@@ -307,15 +301,11 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 case ServerChatLogMessage:
                 case CountdownLogMessage:
                     Monocle.Engine.Commands.Log(message.ToString());
-                    MessageLog.Add(new ArchipelagoMessage(message.ToString(), ArchipelagoMessage.MessageType.Server));
-                    break;
-                case ChatLogMessage:
-                    Monocle.Engine.Commands.Log(message.ToString());
-                    MessageLog.Add(new ArchipelagoMessage(message.ToString(), ArchipelagoMessage.MessageType.Chat));
+                    MessageQueue.Enqueue(new ArchipelagoMessage(message.ToString(), ArchipelagoMessage.MessageType.Server));
                     break;
                 case GoalLogMessage:
                     Monocle.Engine.Commands.Log(message.ToString(), Color.Gold);
-                    MessageLog.Add(new ArchipelagoMessage(message.ToString()));
+                    MessageQueue.Enqueue(new ArchipelagoMessage(message.ToString()));
                     break;
             }
         }
@@ -411,7 +401,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 if ((item.ItemId < 0xCA10020 || item.ItemId >= 0xCA10050) && index >= this.ServerItemsRcv)
                 {
                     Logger.Info("AP", receivedMessage);
-                    MessageLog.Add(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemReceive, item.Flags));
+                    MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemReceive, item.Flags));
                     Monocle.Engine.Commands.Log(receivedMessage, Color.DeepPink);
                 }
 

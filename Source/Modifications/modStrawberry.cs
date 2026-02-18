@@ -1,9 +1,4 @@
 ﻿using Celeste.Mod.CelesteArchipelago.Archipelago;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
@@ -52,7 +47,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
             AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
 
-            long locationID = ArchipelagoMapper.getStrawberryLocationID(SID, mode, self.ID);
+            long locationID = ArchipelagoMapper.getStrawberryLocationID(SID, mode, self.ID, self.Golden, self.Winged);
 
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
 

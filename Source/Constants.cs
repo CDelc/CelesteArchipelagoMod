@@ -1,10 +1,6 @@
 ﻿using Celeste.Mod.CelesteArchipelago.Modifications;
 using Celeste.Mod.CelesteArchipelago.UI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Celeste.Mod.CelesteArchipelago
 {
@@ -16,7 +12,9 @@ namespace Celeste.Mod.CelesteArchipelago
             new modMainMenu(),
             new modOuiChapterSelect(),
             new modStrawberry(),
-            new modCrystalHeart()
+            new modCrystalHeart(),
+            new modRoom(),
+            new modPlayer()
         };
 
         public static int SAVE_ID = 144;

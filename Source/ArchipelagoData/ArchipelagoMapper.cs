@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Celeste.Mod.CelesteArchipelago.Archipelago
+namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 {
     internal class ArchipelagoMapper
     {
@@ -167,9 +165,9 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             }
         }
 
-        public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID)
+        public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID, bool golden, bool winged)
         {
-            return 200000000000 + getLocationOffset(SID, mode, strawberryID.Level) + strawberryID.ID;
+            return (golden ? winged ? 1300000000000 : 900000000000 : 200000000000) + getLocationOffset(SID, mode, strawberryID.Level) + strawberryID.ID;
         }
 
         public static EntityID getStrawberryEntityID(long locationID)
@@ -192,6 +190,11 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         {
             long levelID = getLevelID(SID, mode);
             return 600000000000 + levelID * 100000000;
+        }
+
+        public static long getRoomLocationID(string SID, AreaMode mode, string room)
+        {
+            return 1400000000000 + getLocationOffset(SID, mode, room);
         }
 
         public static long getMiniHeartLocationID(string SID, AreaMode mode)

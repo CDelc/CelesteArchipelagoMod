@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Celeste.Mod.CelesteArchipelago.Archipelago
+namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 {
     internal enum LevelCategory
     {

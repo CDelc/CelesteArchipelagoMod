@@ -1,14 +1,6 @@
 ﻿using Celeste.Mod.CelesteArchipelago.Archipelago;
-using Celeste.Mod.CelesteArchipelago.UI;
-using Celeste.Mod.CollabUtils2.Entities;
-using Microsoft.Xna.Framework;
-using Monocle;
-using MonoMod.RuntimeDetour;
-using MonoMod.Utils;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
+
 
 namespace Celeste.Mod.CelesteArchipelago;
 

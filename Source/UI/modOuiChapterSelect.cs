@@ -1,16 +1,7 @@
 ﻿using Celeste;
 using Celeste.Mod.CelesteArchipelago.Archipelago;
 using Celeste.Mod.CelesteArchipelago.Modifications;
-using MonoMod.Core.Utils;
-using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using static Celeste.OuiChapterPanel;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
