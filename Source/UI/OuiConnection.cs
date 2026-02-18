@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Celeste.Mod.CelesteArchipelago.Archipelago;
 using Microsoft.Xna.Framework;
 using System;
@@ -169,8 +169,8 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         public void BeginGame()
         {
-            SaveData.TryDelete(144);
-            SaveData.TryDeleteModSaveData(144);
+            SaveData.TryDelete(Constants.SAVE_ID);
+            SaveData.TryDeleteModSaveData(Constants.SAVE_ID);
             SaveData.Start(new SaveData
             {
                 Name = CelesteArchipelagoModule.Settings.PlayerName,

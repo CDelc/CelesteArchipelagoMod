@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Converters;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Exceptions;
@@ -95,7 +95,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         
         public bool Ready { get; private set; }
         public bool WasConnected { get; private set; }
-        public int Slot => _session.ConnectionInfo.Slot;
+        public int Slot => _session?.ConnectionInfo.Slot ?? -1;
 
         public bool GoalSent = false;
 
@@ -238,6 +238,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             this.ServerItemsRcv = -1;
             this.ItemQueue.Clear();
             this.MessageLog.Clear();
+            this.SentLocations.Clear();
             this.GoalSent = false;
 
             if (!attemptReconnect)
@@ -252,7 +253,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 _session.Items.ItemReceived -= OnItemReceived;
                 _session.Locations.CheckedLocationsUpdated -= OnLocationReceived;
                 _session.MessageLog.OnMessageReceived -= OnMessageReceived;
-                _session.Socket.DisconnectAsync();
+                await _session.Socket.DisconnectAsync();
                 _session = null;
             }
 
@@ -631,6 +632,8 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public void CheckLocations(long[] locations)
         {
+            if (locations.Length == 0) return;
+
             foreach (var locationID in locations)
             {
                 SentLocations.Add(locationID);
@@ -638,10 +641,24 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
             try
             {
-                _session.Locations.CompleteLocationChecksAsync(locations);
+                _session.Locations.CompleteLocationChecksAsync(locations).ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        foreach (var locationID in locations)
+                        {
+                            SentLocations.Remove(locationID);
+                        }
+                        Logger.Error(LOG_PREFIX, $"Failed to send locations: {t.Exception?.Message}");
+                    }
+                });
             }
             catch (ArchipelagoSocketClosedException)
             {
+                foreach (var locationID in locations)
+                {
+                    SentLocations.Remove(locationID);
+                }
                 Disconnect();
             }
         }

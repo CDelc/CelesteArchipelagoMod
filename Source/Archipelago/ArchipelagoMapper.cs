@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -99,12 +99,12 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
         public static (string SID, AreaMode mode) ArchipelagoIDToSID(long id)
         {
             long levelId = id - 400000000000;
-            if (levelIDToSID.ContainsKey(levelId))
+            if (levelIDToSID.TryGetValue(levelId, out (string SID, AreaMode mode) rValue))
             {
-                return levelIDToSID[levelId];
+                return rValue;
             }
 
-            else throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {id} | {levelId}");
+            throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {id} | {levelId}");
         }
 
         public static LevelCategory getLevelCategory(string SID)

@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.Archipelago;
+using Celeste.Mod.CelesteArchipelago.Archipelago;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,9 +37,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                     AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
                     LevelCategory levelCategory = ArchipelagoMapper.getLevelCategory(SID, mode);
 
-                    self.Active = false;
-                    self.Visible = false;
-                    self.Collidable = false;
+                    if (!ArchipelagoMapper.goldensEnabledOnCategory(levelCategory))
+                    {
+                        self.Active = false;
+                        self.Visible = false;
+                        self.Collidable = false;
+                    }
                 }
             }
         }
