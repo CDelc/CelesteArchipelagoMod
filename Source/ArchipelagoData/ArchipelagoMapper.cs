@@ -253,6 +253,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 || category == LevelCategory.GRANDMASTER_HEARTSIDE;
         }
 
+        public static long getCheckpointLocationID(string SID, AreaMode mode, int checkpointIndex)
+        {
+            long levelID = getLevelID(SID, mode);
+            return 700000000000 + levelID * 100000000 + checkpointIndex;
+        }
+
         public static long getCheckpointItemID(string SID, AreaMode mode, int checkpointIndex)
         {
             long levelID = getLevelID(SID, mode);
