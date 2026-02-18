@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.UI;
 using Microsoft.Xna.Framework;
 using System;
@@ -70,6 +70,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         private bool modPlayer_ClimbCheck(On.Celeste.Player.orig_ClimbCheck orig, Player self, int dir, int yAdd)
         {
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                return orig(self, dir, yAdd);
+            }
+
             if (ArchipelagoManager.Instance.randomize_climb && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CLIMB)){
                 return false;
             }
@@ -80,6 +85,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private void modPlayer_Update(On.Celeste.Player.orig_Update orig, Player self)
         {
             orig(self);
+
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                return;
+            }
 
             HandleMessageQueue(self);
         }

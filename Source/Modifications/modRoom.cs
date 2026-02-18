@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Microsoft.Xna.Framework;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
@@ -20,6 +20,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private void modLevel_TransitionTo(On.Celeste.Level.orig_TransitionTo orig, Level self, LevelData next, Vector2 direction)
         {
             orig(self, next, direction);
+
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                return;
+            }
+
             CheckRoom(self, next.Name);
             CheckCheckpoint(self, next.Name);
         }
@@ -27,6 +33,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private void modLevel_LoadLevel(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool isFromLoader)
         {
             orig(self, playerIntro, isFromLoader);
+
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                return;
+            }
+
             CheckRoom(self, self.Session.Level);
             CheckCheckpoint(self, self.Session.Level);
         }

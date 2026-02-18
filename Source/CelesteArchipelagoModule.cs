@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using System;
 
 
@@ -15,6 +15,9 @@ public class CelesteArchipelagoModule : EverestModule {
 
     public override Type SaveDataType => typeof(CelesteArchipelagoModuleSaveData);
     public static CelesteArchipelagoModuleSaveData SaveData => (CelesteArchipelagoModuleSaveData) Instance._SaveData;
+
+    public static bool IsInArchipelagoSave =>
+        Celeste.SaveData.Instance != null && Celeste.SaveData.Instance.FileSlot == Constants.SAVE_ID;
 
     public CelesteArchipelagoModule() {
         Instance = this;

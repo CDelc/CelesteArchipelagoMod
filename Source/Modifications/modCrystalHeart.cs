@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 
@@ -56,6 +56,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self, area);
 
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                return;
+            }
+
             long locationID = ArchipelagoMapper.getHeartLocationID(area.SID, area.Mode);
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
         }
@@ -64,7 +69,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private delegate int orig_SaveDataTotalHeartGems(SaveData self);
         private static int GetTotalHeartGems(orig_SaveDataTotalHeartGems orig, SaveData self)
         {
-            if (!ArchipelagoManager.Instance.Ready)
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave || !ArchipelagoManager.Instance.Ready)
             {
                 return orig(self);
             }
@@ -75,7 +80,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private delegate int orig_LevelSetTotalHeartGems(LevelSetStats self);
         private static int GetLevelSetTotalHeartGems(orig_LevelSetTotalHeartGems orig, LevelSetStats self)
         {
-            if (!ArchipelagoManager.Instance.Ready)
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave || !ArchipelagoManager.Instance.Ready)
             {
                 return orig(self);
             }

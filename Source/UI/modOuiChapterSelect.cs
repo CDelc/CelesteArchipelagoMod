@@ -1,4 +1,4 @@
-﻿using Celeste;
+using Celeste;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.Modifications;
 using MonoMod.Utils;
@@ -26,7 +26,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         bool levelGuardRunning = false;
         private void modStartLevelGuard(On.Celeste.OuiChapterPanel.orig_Start orig, OuiChapterPanel self, string checkpoint)
         {
-            if (levelGuardRunning)
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave || levelGuardRunning)
             {
                 orig(self, checkpoint);
                 return;
@@ -49,6 +49,12 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private void modReset(On.Celeste.OuiChapterPanel.orig_Reset orig, OuiChapterPanel self)
         {
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                orig(self);
+                return;
+            }
+
             DynamicData dynamicOuiChapterSelect = new MonoMod.Utils.DynamicData(self);
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
