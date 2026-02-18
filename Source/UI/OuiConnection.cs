@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Celeste.Mod.CelesteArchipelago.Archipelago;
 using Microsoft.Xna.Framework;
 using System;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Celeste.Mod.CelesteArchipelago.Constants.Constants;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
 {
@@ -169,14 +170,14 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         public void BeginGame()
         {
-            SaveData.TryDelete(144);
-            SaveData.TryDeleteModSaveData(144);
+            SaveData.TryDelete(SAVE_ID);
+            SaveData.TryDeleteModSaveData(SAVE_ID);
             SaveData.Start(new SaveData
             {
                 Name = CelesteArchipelagoModule.Settings.PlayerName,
                 AssistMode = false,
                 VariantMode = false
-            }, 144);
+            }, SAVE_ID);
 
 
             if (SaveData.Instance != null)

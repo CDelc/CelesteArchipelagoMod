@@ -1,4 +1,4 @@
-﻿using Celeste;
+using Celeste;
 using Celeste.Mod.CelesteArchipelago.Archipelago;
 using Celeste.Mod.CelesteArchipelago.Modifications;
 using MonoMod.Core.Utils;
@@ -38,7 +38,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         {
             CelesteArchipelagoModule.Log($"SET_CHECKPOINT--------{area.SID}----{level}------");
 
-            return true;
+            return orig(self, area, level);
         }
 
         bool levelGuardRunning = false;
@@ -113,7 +113,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private bool canEnter(string sid, AreaMode areaMode)
         {
-            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains(new KeyValuePair<string, AreaMode>(sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
+            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
         }
     }
 }

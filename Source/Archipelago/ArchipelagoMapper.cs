@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -174,11 +174,6 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public static EntityID getStrawberryEntityID(long locationID)
         {
-            if(!(locationID >= 200000000000 && locationID < 300000000000))
-            {
-                throw new IndexOutOfRangeException($"Strawberry was requested at locationID {locationID} but the ID is out of strawberry range");
-            }
-
             long levelID = extractLevelID(locationID);
             long roomID = extractRoomID(locationID);
 
@@ -270,7 +265,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 ("Celeste/1-ForsakenCity", AreaMode.Normal),
                 new Dictionary<long, string>
                 {
-                    {0, "5"},
+                    {0, "0"},
                     {1, "1"},
                     {2, "2"},
                     {3, "3"},
