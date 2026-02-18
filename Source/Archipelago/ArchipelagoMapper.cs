@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -186,6 +186,11 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
             int entityID = extractMetadata(locationID);
 
             return new EntityID { Level = roomName, ID = entityID };
+        }
+
+        public static long getRoomLocationID(string SID, AreaMode mode, string room)
+        {
+            return 1400000000000 + getLocationOffset(SID, mode, room);
         }
 
         public static long getCrystalHeartLocationID(string SID, AreaMode mode)

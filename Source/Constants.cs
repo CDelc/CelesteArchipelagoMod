@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.Modifications;
+using Celeste.Mod.CelesteArchipelago.Modifications;
 using Celeste.Mod.CelesteArchipelago.UI;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,8 @@ namespace Celeste.Mod.CelesteArchipelago
             new modMainMenu(),
             new modOuiChapterSelect(),
             new modStrawberry(),
-            new modCrystalHeart()
+            new modCrystalHeart(),
+            new modRoom()
         };
 
         public static int SAVE_ID = 144;
