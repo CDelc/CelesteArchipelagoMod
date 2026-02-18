@@ -20,15 +20,23 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private void modLevel_TransitionTo(On.Celeste.Level.orig_TransitionTo orig, Level self, LevelData next, Vector2 direction)
         {
             orig(self, next, direction);
-            CheckRoom(self, next.Name);
-            CheckCheckpoint(self, next.Name);
+
+            if (CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                CheckRoom(self, next.Name);
+                CheckCheckpoint(self, next.Name);
+            }
         }
 
         private void modLevel_LoadLevel(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool isFromLoader)
         {
             orig(self, playerIntro, isFromLoader);
-            CheckRoom(self, self.Session.Level);
-            CheckCheckpoint(self, self.Session.Level);
+
+            if (CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                CheckRoom(self, self.Session.Level);
+                CheckCheckpoint(self, self.Session.Level);
+            }
         }
 
         private static void CheckRoom(Level level, string room)

@@ -55,7 +55,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private void modSaveData_RegisterHeartGem(On.Celeste.SaveData.orig_RegisterHeartGem orig, SaveData self, AreaKey area)
         {
             orig(self, area);
-
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
             long locationID = ArchipelagoMapper.getHeartLocationID(area.SID, area.Mode);
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
         }
@@ -64,7 +64,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private delegate int orig_SaveDataTotalHeartGems(SaveData self);
         private static int GetTotalHeartGems(orig_SaveDataTotalHeartGems orig, SaveData self)
         {
-            if (!ArchipelagoManager.Instance.Ready)
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 return orig(self);
             }
@@ -75,7 +75,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private delegate int orig_LevelSetTotalHeartGems(LevelSetStats self);
         private static int GetLevelSetTotalHeartGems(orig_LevelSetTotalHeartGems orig, LevelSetStats self)
         {
-            if (!ArchipelagoManager.Instance.Ready)
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 return orig(self);
             }

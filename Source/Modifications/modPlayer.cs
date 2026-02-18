@@ -21,7 +21,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         public override void Render()
         {
-            if (SaveData.Instance == null || SaveData.Instance.CurrentSession_Safe == null || !CelesteArchipelagoModule.Settings.RoomPopups)
+            if (SaveData.Instance == null ||
+                SaveData.Instance.CurrentSession_Safe == null ||
+                !CelesteArchipelagoModule.Settings.RoomPopups ||
+                !CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 return;
             }
@@ -70,7 +73,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         private bool modPlayer_ClimbCheck(On.Celeste.Player.orig_ClimbCheck orig, Player self, int dir, int yAdd)
         {
-            if (ArchipelagoManager.Instance.randomize_climb && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CLIMB)){
+            if (CelesteArchipelagoModule.IsInArchipelagoSave && ArchipelagoManager.Instance.randomize_climb && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CLIMB)){
                 return false;
             }
 
@@ -81,7 +84,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self);
 
-            HandleMessageQueue(self);
+            if (CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                HandleMessageQueue(self);
+            }
+            
         }
 
         private static void HandleMessageQueue(Player self)

@@ -27,6 +27,7 @@ public class CelesteArchipelagoModule : EverestModule {
 #endif
     }
 
+    public static bool IsInArchipelagoSave => global::Celeste.SaveData.Instance != null && global::Celeste.SaveData.Instance.FileSlot == Constants.SAVE_ID;
 
     public override void Load() {
 

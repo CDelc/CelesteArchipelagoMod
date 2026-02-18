@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self, data, offset, gid);
 
-            if (SaveData.Instance != null)
+            if (SaveData.Instance != null && CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 if (self.Golden)
                 {
@@ -44,6 +44,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         private static void modStrawberry_OnCollect(On.Celeste.Strawberry.orig_OnCollect orig, Strawberry self)
         {
             orig(self);
+
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
+
             string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
             AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
 
@@ -56,20 +59,30 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         private static void modSaveData_AddStrawberry_AreaKey_EntityID_bool(On.Celeste.SaveData.orig_AddStrawberry_AreaKey_EntityID_bool orig, SaveData self, AreaKey area, EntityID strawberry, bool golden)
         {
-            AreaModeStats areaModeStats = self.Areas_Safe[area.ID].Modes[(int)area.Mode];
-            if (!areaModeStats.Strawberries.Contains(strawberry))
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
             {
-                areaModeStats.Strawberries.Add(strawberry);
-                areaModeStats.TotalStrawberries += 1;
+                orig(self, area, strawberry, golden);
             }
-            Stats.Increment(golden ? Stat.GOLDBERRIES : Stat.BERRIES, 1);
+            else
+            {
+                AreaModeStats areaModeStats = self.Areas_Safe[area.ID].Modes[(int)area.Mode];
+                if (!areaModeStats.Strawberries.Contains(strawberry))
+                {
+                    areaModeStats.Strawberries.Add(strawberry);
+                    areaModeStats.TotalStrawberries += 1;
+                }
+                Stats.Increment(golden ? Stat.GOLDBERRIES : Stat.BERRIES, 1);
+            }
         }
 
 
         private static void modTotalStrawberriesDisplay_Update(On.Celeste.TotalStrawberriesDisplay.orig_Update orig, TotalStrawberriesDisplay self)
         {
-            self.strawberries.showOutOf = true;
-            self.strawberries.OutOf = ArchipelagoManager.Instance.required_strawberries;
+            if (CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                self.strawberries.showOutOf = true;
+                self.strawberries.OutOf = ArchipelagoManager.Instance.required_strawberries;
+            }
             orig(self);
         }
     }
