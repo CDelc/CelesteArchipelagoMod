@@ -18,7 +18,6 @@ namespace Celeste.Mod.CelesteArchipelago.UI
     public class modOuiChapterSelect : IGameModification
     {
 
-        
         public override void Load()
         {
             On.Celeste.OuiChapterPanel.Reset += modReset;

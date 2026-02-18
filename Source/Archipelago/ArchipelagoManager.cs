@@ -252,7 +252,7 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
                 _session.Items.ItemReceived -= OnItemReceived;
                 _session.Locations.CheckedLocationsUpdated -= OnLocationReceived;
                 _session.MessageLog.OnMessageReceived -= OnMessageReceived;
-                _session.Socket.DisconnectAsync();
+                await _session.Socket.DisconnectAsync();
                 _session = null;
             }
 
@@ -631,6 +631,8 @@ namespace Celeste.Mod.CelesteArchipelago.Archipelago
 
         public void CheckLocations(long[] locations)
         {
+            if(locations.Length == 0) return;
+            
             foreach (var locationID in locations)
             {
                 SentLocations.Add(locationID);

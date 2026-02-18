@@ -40,7 +40,7 @@ public class CelesteArchipelagoModule : EverestModule {
 
         new ArchipelagoManager(Celeste.Instance);
 
-        foreach (var item in Celeste.Mod.CelesteArchipelago.Constants.modifications)
+        foreach (var item in Constants.modifications)
         {
             item.Load();
             Log("CelesteArchipelago Mod Loaded");
@@ -49,7 +49,7 @@ public class CelesteArchipelagoModule : EverestModule {
 
 
     public override void Unload() {
-        foreach (var item in Celeste.Mod.CelesteArchipelago.Constants.modifications)
+        foreach (var item in Constants.modifications)
         {
             item.Unload();
         }
