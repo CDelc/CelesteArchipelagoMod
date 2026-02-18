@@ -17,7 +17,7 @@ public class CelesteArchipelagoModule : EverestModule {
     public static CelesteArchipelagoModuleSaveData SaveData => (CelesteArchipelagoModuleSaveData) Instance._SaveData;
 
     public static bool IsInArchipelagoSave =>
-        Celeste.SaveData.Instance != null && Celeste.SaveData.Instance.FileSlot == Constants.SAVE_ID;
+        global::Celeste.SaveData.Instance != null && global::Celeste.SaveData.Instance.FileSlot == Constants.SAVE_ID;
 
     public CelesteArchipelagoModule() {
         Instance = this;
