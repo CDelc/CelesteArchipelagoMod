@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.UI;
 using Microsoft.Xna.Framework;
 using static Celeste.Mod.CelesteArchipelago.ArchipelagoData.ArchipelagoManager;
@@ -58,11 +58,15 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Load()
         {
             On.Celeste.Player.Update += modPlayer_Update;
+            On.Celeste.Player.ClimbCheck += modPlayer_ClimbCheck;
+            On.Celeste.Player.Pickup += modPlayer_Pickup;
         }
 
         public override void Unload()
         {
             On.Celeste.Player.Update -= modPlayer_Update;
+            On.Celeste.Player.ClimbCheck -= modPlayer_ClimbCheck;
+            On.Celeste.Player.Pickup -= modPlayer_Pickup;
         }
 
         private void modPlayer_Update(On.Celeste.Player.orig_Update orig, Player self)
@@ -70,6 +74,32 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             orig(self);
 
             HandleMessageQueue(self);
+        }
+
+        private bool modPlayer_ClimbCheck(On.Celeste.Player.orig_ClimbCheck orig, Player self, int dir, int yAdd)
+        {
+            if (!IsGrabEnabled())
+                return false;
+            return orig(self, dir, yAdd);
+        }
+
+        private bool modPlayer_Pickup(On.Celeste.Player.orig_Pickup orig, Player self, Holdable pickup)
+        {
+            if (!IsGrabEnabled())
+                return false;
+            return orig(self, pickup);
+        }
+
+        private static bool IsGrabEnabled()
+        {
+            if (!ArchipelagoManager.Instance.Ready || !ArchipelagoManager.Instance.randomize_climb)
+                return true;
+
+            var saveData = CelesteArchipelagoModule.SaveData;
+            if (saveData == null)
+                return true;
+
+            return saveData.Mechanics.TryGetValue(Constants.MECHANIC_CLIMB, out bool unlocked) && unlocked;
         }
 
         private static void HandleMessageQueue(Player self)

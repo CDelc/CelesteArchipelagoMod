@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.Modifications;
+using Celeste.Mod.CelesteArchipelago.Modifications;
 using Celeste.Mod.CelesteArchipelago.UI;
 using System.Collections.Generic;
 
@@ -20,6 +20,8 @@ namespace Celeste.Mod.CelesteArchipelago
         public static int SAVE_ID = 144;
 
         public static string LOG_PREFIX = "CelesteArchipelago";
+
+        public static readonly long MECHANIC_CLIMB = 200000000001;
 
     }
 }
