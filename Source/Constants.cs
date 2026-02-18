@@ -20,6 +20,5 @@ namespace Celeste.Mod.CelesteArchipelago
         public static int SAVE_ID = 144;
 
         public static string LOG_PREFIX = "CelesteArchipelago";
-
     }
 }

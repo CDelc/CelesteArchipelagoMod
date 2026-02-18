@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.Archipelago;
+﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {

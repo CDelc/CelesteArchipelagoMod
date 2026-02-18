@@ -1,5 +1,5 @@
 ﻿using Archipelago.MultiClient.Net;
-using Celeste.Mod.CelesteArchipelago.Archipelago;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections;

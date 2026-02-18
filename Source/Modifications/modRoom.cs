@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.Archipelago;
+﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Microsoft.Xna.Framework;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications

@@ -318,5 +318,25 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         private static Dictionary<(string SID, AreaMode mode), Dictionary<string, long>> roomNameToID =
             roomIdsToname.ToDictionary(x => x.Key, x => x.Value.ToDictionary(y => y.Value, y => y.Key));
 
+
+
+        public static bool mechanicEnabled(Mechanic mechanic)
+        {
+            return CelesteArchipelagoModule.SaveData.Mechanics[getMechanicID(mechanic)];
+        }
+        private static long getMechanicID(Mechanic mechanic)
+        {
+            return 200000000000 + (int)mechanic;
+        }
+
+        public enum Mechanic
+        {
+            CLIMB,
+            DASH_CRYSTALS,
+            TRAFFIC_BLOCKS,
+            SPRINGS,
+            ItemBLUE_CASSETTE,
+            PINK_CASSETTE
+        }
     }
 }

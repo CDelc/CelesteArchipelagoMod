@@ -1,5 +1,5 @@
 ﻿using Celeste;
-using Celeste.Mod.CelesteArchipelago.Archipelago;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.Modifications;
 using MonoMod.Utils;
 using static Celeste.OuiChapterPanel;

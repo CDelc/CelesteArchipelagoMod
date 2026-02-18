@@ -1,6 +1,7 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.UI;
 using Microsoft.Xna.Framework;
+using System;
 using static Celeste.Mod.CelesteArchipelago.ArchipelagoData.ArchipelagoManager;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
@@ -58,11 +59,22 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Load()
         {
             On.Celeste.Player.Update += modPlayer_Update;
+            On.Celeste.Player.ClimbCheck += modPlayer_ClimbCheck;
         }
 
         public override void Unload()
         {
             On.Celeste.Player.Update -= modPlayer_Update;
+            On.Celeste.Player.ClimbCheck -= modPlayer_ClimbCheck;
+        }
+
+        private bool modPlayer_ClimbCheck(On.Celeste.Player.orig_ClimbCheck orig, Player self, int dir, int yAdd)
+        {
+            if (ArchipelagoManager.Instance.randomize_climb && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CLIMB)){
+                return false;
+            }
+
+            else return orig(self, dir, yAdd);
         }
 
         private void modPlayer_Update(On.Celeste.Player.orig_Update orig, Player self)
@@ -74,7 +86,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         private static void HandleMessageQueue(Player self)
         {
-            if (ArchipelagoManager.Instance.MessageQueue.Count > 0)
+            int queueSize = ArchipelagoManager.Instance.MessageQueue.Count;
+            if (queueSize > 0)
             {
                 if (self.Scene.Tracker.GetEntity<ArchipelagoTextBox>() == null)
                 {
@@ -82,7 +95,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
                     if (ShouldShowMessage(message))
                     {
-                        self.Scene.Add(new ArchipelagoTextBox(message.Text));
+                        self.Scene.Add(new ArchipelagoTextBox(message.Text, queueSize > 8 ? 1f : queueSize > 4 ? 2f : 3f));
                         Logger.Verbose(Constants.LOG_PREFIX, message.Text);
                     }
                 }
