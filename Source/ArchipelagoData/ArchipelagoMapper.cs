@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -251,6 +251,25 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 || category == LevelCategory.ADVANCED_HEARTSIDE
                 || category == LevelCategory.EXPERT_HEARTSIDE
                 || category == LevelCategory.GRANDMASTER_HEARTSIDE;
+        }
+
+        public static long getCheckpointItemID(string SID, AreaMode mode, int checkpointIndex)
+        {
+            long levelID = getLevelID(SID, mode);
+            return 300000000000 + levelID * 100000000 + checkpointIndex;
+        }
+
+        public static bool isCheckpointUnlocked(string SID, AreaMode mode, int checkpointIndex)
+        {
+            try
+            {
+                long itemID = getCheckpointItemID(SID, mode, checkpointIndex);
+                return CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(itemID);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static Dictionary<long, (string SID, AreaMode mode)> levelIDToSID { get; } = new Dictionary<long, (string SID, AreaMode mode)>
