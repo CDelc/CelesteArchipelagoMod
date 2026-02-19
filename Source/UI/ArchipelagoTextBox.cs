@@ -1,4 +1,4 @@
-﻿using Monocle;
+using Monocle;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,11 +9,11 @@ using System.Xml;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
 {
+    [Tracked]
     internal class ArchipelagoTextBox : MiniTextbox
     {
         private float displayDuration;
 
-        [Tracked]
         public ArchipelagoTextBox(string input, float displayDuration = 3f) : base("placeholder")
         {
             this.displayDuration = displayDuration;

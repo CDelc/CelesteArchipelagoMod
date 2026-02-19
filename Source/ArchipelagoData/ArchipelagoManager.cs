@@ -1,4 +1,4 @@
-﻿using Archipelago.MultiClient.Net;
+using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Exceptions;
 using Archipelago.MultiClient.Net.Helpers;
@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -96,7 +97,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public List<Tuple<int, ItemInfo>> ItemQueue { get; private set; } = new();
         public List<long> CollectedLocations { get; private set; } = new();
         public HashSet<long> SentLocations { get; set; } = [];
-        public Queue<ArchipelagoMessage> MessageQueue { get; set; } = new();
+        public ConcurrentQueue<ArchipelagoMessage> MessageQueue { get; } = new();
 
         public int ServerItemsRcv = -1;
         private bool ItemRcvCallbackSet = false;
