@@ -41,7 +41,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 setColor = true;
             }
 
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRAFFIC_BLOCKS))
+            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRAFFIC_BLOCKS))
             {
                 self.streetlight.Color = Color.DarkRed;
             }

@@ -41,7 +41,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         private static void CheckRoom(Level level, string room)
         {
-            if (!ArchipelagoManager.Instance.Ready || !ArchipelagoManager.Instance.room_checks)
+            if (!ArchipelagoManager.Instance.room_checks)
             {
                 return;
             }

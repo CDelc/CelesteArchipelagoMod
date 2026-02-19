@@ -206,7 +206,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static long getRoomLocationID(string SID, AreaMode mode, string room)
         {
-            return 1400000000000 + getLocationOffset(SID, mode, room);
+            return 1300000000000 + getLocationOffset(SID, mode, room);
         }
 
         public static long getMiniHeartLocationID(string SID, AreaMode mode)

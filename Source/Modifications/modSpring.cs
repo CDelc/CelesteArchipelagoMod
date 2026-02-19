@@ -44,7 +44,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                     setColor = true;
                 }
 
-                if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS))
+                if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS))
                 {
                     self.sprite.Color = Microsoft.Xna.Framework.Color.DarkRed;
                 }

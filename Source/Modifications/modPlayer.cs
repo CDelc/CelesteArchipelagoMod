@@ -62,22 +62,22 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Load()
         {
             On.Celeste.Player.Update += modPlayer_Update;
-            On.Celeste.Player.ClimbCheck += modPlayer_ClimbCheck;
+            On.Celeste.Player.ClimbUpdate += modPlayer_ClimbUpdate;
         }
 
         public override void Unload()
         {
             On.Celeste.Player.Update -= modPlayer_Update;
-            On.Celeste.Player.ClimbCheck -= modPlayer_ClimbCheck;
+            On.Celeste.Player.ClimbUpdate -= modPlayer_ClimbUpdate;
         }
 
-        private static bool modPlayer_ClimbCheck(On.Celeste.Player.orig_ClimbCheck orig, Player self, int dir, int yAdd)
+        private static int modPlayer_ClimbUpdate(On.Celeste.Player.orig_ClimbUpdate orig, Player self)
         {
             if (CelesteArchipelagoModule.IsInArchipelagoSave && ArchipelagoManager.Instance.randomize_climb && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CLIMB)){
-                return false;
+                return Player.StNormal;
             }
 
-            else return orig(self, dir, yAdd);
+            else return orig(self);
         }
 
         private static void modPlayer_Update(On.Celeste.Player.orig_Update orig, Player self)
