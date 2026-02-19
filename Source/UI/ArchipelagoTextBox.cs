@@ -1,64 +1,70 @@
+using Microsoft.Xna.Framework;
 using Monocle;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
 {
     [Tracked]
-    internal class ArchipelagoTextBox : MiniTextbox
+    internal class ArchipelagoTextBox : Entity
     {
+        private string message;
         private float displayDuration;
+        private float alpha;
 
-        public ArchipelagoTextBox(string input, float displayDuration = 3f) : base("placeholder")
+        private static readonly float TextScale = 0.6f;
+        private static readonly Vector2 Position = new Vector2(32f, 48f);
+        private static readonly Color TextColor = Color.White;
+        private static readonly Color ShadowColor = Color.Black;
+
+        public ArchipelagoTextBox(string input, float displayDuration = 3f) : base()
         {
+            this.message = input;
             this.displayDuration = displayDuration;
+            this.alpha = 0f;
+
             base.Tag = Tags.HUD | Tags.TransitionUpdate | Tags.Persistent;
-            this.portraitSize = 0f;
-            this.box = GFX.Portraits["textbox/default"];
-            this.text = FancyText.Parse(input, (int)(1688f - 32f), 2, 1f, null, null);
+            base.Depth = -100;
 
-            base.Add(this.routine = new Coroutine(this.Routine(), true));
-            if (this.routine != null)
-            {
-                base.Remove(this.routine);
-            }
-
-            base.Add(this.routine = new Coroutine(this.DisplayRoutine(), true));
-
-            TransitionListener listener = base.Get<TransitionListener>();
-            if (listener != null)
-            {
-                base.Remove(listener);
-            }
+            base.Add(new Coroutine(DisplayRoutine()));
         }
 
         private IEnumerator DisplayRoutine()
         {
-            while (this.ease < 1f)
+            while (alpha < 1f)
             {
-                this.ease = Calc.Approach(this.ease, 1f, Engine.RawDeltaTime * 4f);
+                alpha = Calc.Approach(alpha, 1f, Engine.RawDeltaTime * 4f);
                 yield return null;
             }
 
-            float timer = this.displayDuration;
+            float timer = displayDuration;
             while (timer > 0f)
             {
                 timer -= Engine.RawDeltaTime;
                 yield return null;
             }
 
-            while (this.ease > 0f)
+            while (alpha > 0f)
             {
-                this.ease = Calc.Approach(this.ease, 0f, Engine.RawDeltaTime * 4f);
+                alpha = Calc.Approach(alpha, 0f, Engine.RawDeltaTime * 4f);
                 yield return null;
             }
 
             RemoveSelf();
+        }
+
+        public override void Render()
+        {
+            ActiveFont.Draw(
+                message,
+                Position,
+                Vector2.Zero,
+                Vector2.One * TextScale,
+                TextColor * alpha,
+                1f,
+                ShadowColor * (alpha * 0.8f),
+                0f,
+                Color.Transparent
+            );
         }
     }
 }
