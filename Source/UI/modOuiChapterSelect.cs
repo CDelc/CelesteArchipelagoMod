@@ -23,8 +23,8 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             On.Celeste.OuiChapterPanel.Start -= modStartLevelGuard;
         }
 
-        bool levelGuardRunning = false;
-        private void modStartLevelGuard(On.Celeste.OuiChapterPanel.orig_Start orig, OuiChapterPanel self, string checkpoint)
+        static bool levelGuardRunning = false;
+        private static void modStartLevelGuard(On.Celeste.OuiChapterPanel.orig_Start orig, OuiChapterPanel self, string checkpoint)
         {
             if (levelGuardRunning || !CelesteArchipelagoModule.IsInArchipelagoSave)
             {
@@ -46,7 +46,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             levelGuardRunning = false;
         }
 
-        private void modReset(On.Celeste.OuiChapterPanel.orig_Reset orig, OuiChapterPanel self)
+        private static void modReset(On.Celeste.OuiChapterPanel.orig_Reset orig, OuiChapterPanel self)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave)
             {
@@ -115,12 +115,12 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             }
         }
 
-        private bool canEnter(string sid, AreaMode areaMode)
+        private static bool canEnter(string sid, AreaMode areaMode)
         {
             return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
         }
 
-        private Dictionary<int, HashSet<string>> ApplyCheckpointOverrides(string sid, int areaID)
+        private static Dictionary<int, HashSet<string>> ApplyCheckpointOverrides(string sid, int areaID)
         {
             AreaData areaData = AreaData.Get(sid);
             if (areaData == null) return null;
@@ -154,7 +154,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         }
 
 
-        private void RestoreCheckpoints(int areaID, Dictionary<int, HashSet<string>> savedCheckpoints)
+        private static void RestoreCheckpoints(int areaID, Dictionary<int, HashSet<string>> savedCheckpoints)
         {
             foreach (var kvp in savedCheckpoints)
             {
@@ -162,7 +162,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             }
         }
 
-        private bool canUseCheckpoint(string sid, AreaMode mode, string checkpoint)
+        private static bool canUseCheckpoint(string sid, AreaMode mode, string checkpoint)
         {
             if (checkpoint == null)
                 return true;

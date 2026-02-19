@@ -26,7 +26,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             On.Celeste.ZipMover.Update -= modZipMover_Update;
         }
 
-        private void modZipMover_Render(On.Celeste.ZipMover.orig_Render orig, ZipMover self)
+        private static void modZipMover_Render(On.Celeste.ZipMover.orig_Render orig, ZipMover self)
         {
             orig(self);
 
@@ -51,7 +51,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
         }
 
-        private void modZipMover_Update(On.Celeste.ZipMover.orig_Update orig, ZipMover self)
+        private static void modZipMover_Update(On.Celeste.ZipMover.orig_Update orig, ZipMover self)
         {
             if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRAFFIC_BLOCKS) || !CelesteArchipelagoModule.IsInArchipelagoSave)
             {

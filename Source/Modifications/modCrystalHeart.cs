@@ -52,7 +52,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         }
 
 
-        private void modSaveData_RegisterHeartGem(On.Celeste.SaveData.orig_RegisterHeartGem orig, SaveData self, AreaKey area)
+        private static void modSaveData_RegisterHeartGem(On.Celeste.SaveData.orig_RegisterHeartGem orig, SaveData self, AreaKey area)
         {
             orig(self, area);
             if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;

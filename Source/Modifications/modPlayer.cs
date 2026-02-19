@@ -71,7 +71,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             On.Celeste.Player.ClimbCheck -= modPlayer_ClimbCheck;
         }
 
-        private bool modPlayer_ClimbCheck(On.Celeste.Player.orig_ClimbCheck orig, Player self, int dir, int yAdd)
+        private static bool modPlayer_ClimbCheck(On.Celeste.Player.orig_ClimbCheck orig, Player self, int dir, int yAdd)
         {
             if (CelesteArchipelagoModule.IsInArchipelagoSave && ArchipelagoManager.Instance.randomize_climb && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CLIMB)){
                 return false;
@@ -80,7 +80,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             else return orig(self, dir, yAdd);
         }
 
-        private void modPlayer_Update(On.Celeste.Player.orig_Update orig, Player self)
+        private static void modPlayer_Update(On.Celeste.Player.orig_Update orig, Player self)
         {
             orig(self);
 

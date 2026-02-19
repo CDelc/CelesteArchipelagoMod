@@ -21,7 +21,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             On.Celeste.Refill.OnPlayer -= modRefill_OnPlayer;
         }
 
-        private void modRefill_Render(On.Celeste.Refill.orig_Render orig, Refill self)
+        private static void modRefill_Render(On.Celeste.Refill.orig_Render orig, Refill self)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave)
             {
@@ -42,7 +42,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             orig(self);
         }
 
-        private void modRefill_OnPlayer(On.Celeste.Refill.orig_OnPlayer orig, Refill self, Player player)
+        private static void modRefill_OnPlayer(On.Celeste.Refill.orig_OnPlayer orig, Refill self, Player player)
         {
 
             if (!CelesteArchipelagoModule.IsInArchipelagoSave)

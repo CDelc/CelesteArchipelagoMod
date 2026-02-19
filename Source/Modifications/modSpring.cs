@@ -31,7 +31,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             On.Celeste.Spring.OnSeeker -= modSpring_OnSeeker;
         }
 
-        private void modSpring_Render(On.Celeste.Spring.orig_Render orig, Spring self)
+        private static void modSpring_Render(On.Celeste.Spring.orig_Render orig, Spring self)
         {
 
             orig(self);
@@ -55,7 +55,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
         }
 
-        private void modSpring_OnCollide(On.Celeste.Spring.orig_OnCollide orig, Spring self, Player player)
+        private static void modSpring_OnCollide(On.Celeste.Spring.orig_OnCollide orig, Spring self, Player player)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS))
             {
@@ -63,7 +63,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
         }
 
-        private void modSpring_OnHoldable(On.Celeste.Spring.orig_OnHoldable orig, Spring self, Holdable h)
+        private static void modSpring_OnHoldable(On.Celeste.Spring.orig_OnHoldable orig, Spring self, Holdable h)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS))
             {
@@ -71,7 +71,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
         }
 
-        private void modSpring_OnPuffer(On.Celeste.Spring.orig_OnPuffer orig, Spring self, Puffer p)
+        private static void modSpring_OnPuffer(On.Celeste.Spring.orig_OnPuffer orig, Spring self, Puffer p)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS))
             {
@@ -79,7 +79,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
         }
 
-        private void modSpring_OnSeeker(On.Celeste.Spring.orig_OnSeeker orig, Spring self, Seeker seeker)
+        private static void modSpring_OnSeeker(On.Celeste.Spring.orig_OnSeeker orig, Spring self, Seeker seeker)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS))
             {

@@ -17,7 +17,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             On.Celeste.Level.TransitionTo -= modLevel_TransitionTo;
         }
 
-        private void modLevel_TransitionTo(On.Celeste.Level.orig_TransitionTo orig, Level self, LevelData next, Vector2 direction)
+        private static void modLevel_TransitionTo(On.Celeste.Level.orig_TransitionTo orig, Level self, LevelData next, Vector2 direction)
         {
             orig(self, next, direction);
 
@@ -28,7 +28,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
         }
 
-        private void modLevel_LoadLevel(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool isFromLoader)
+        private static void modLevel_LoadLevel(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool isFromLoader)
         {
             orig(self, playerIntro, isFromLoader);
 

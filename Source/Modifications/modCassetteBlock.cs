@@ -20,7 +20,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             On.Celeste.CassetteBlock.Update -= modCassetteBlock_Update;
         }
 
-        private void modCassetteBlock_Update(On.Celeste.CassetteBlock.orig_Update orig, CassetteBlock self)
+        private static void modCassetteBlock_Update(On.Celeste.CassetteBlock.orig_Update orig, CassetteBlock self)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave)
             {
@@ -40,7 +40,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
         }
 
-        private void Disable(CassetteBlock self)
+        private static void Disable(CassetteBlock self)
         {
             if (self.Activated)
             {
