@@ -106,7 +106,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 {
                     if (ShouldShowMessage(message))
                     {
-                        self.Scene.Add(new ArchipelagoTextBox(message.Text, queueSize > 8 ? 1f : queueSize > 4 ? 2f : 3f));
+                        float duration = queueSize > 8 ? 1f : queueSize > 4 ? 2f : 3f;
+                        Color color = GetMessageColor(message);
+                        self.Scene.Add(new ArchipelagoTextBox(message.Text, duration, color));
                         Logger.Verbose(Constants.LOG_PREFIX, message.Text);
                     }
                 }
@@ -120,6 +122,22 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 return CelesteArchipelagoModule.Settings.ServerMessages;
             }
             return true;
+        }
+
+        private static Color GetMessageColor(ArchipelagoMessage message)
+        {
+            switch (message.Type)
+            {
+                case ArchipelagoMessage.MessageType.ItemReceive:
+                case ArchipelagoMessage.MessageType.ItemSend:
+                    return ArchipelagoManager.GetItemColor(message.Flags);
+                case ArchipelagoMessage.MessageType.ItemHint:
+                    return Color.Orange;
+                case ArchipelagoMessage.MessageType.Server:
+                    return Color.LightGray;
+                default:
+                    return Color.White;
+            }
         }
     }
 }

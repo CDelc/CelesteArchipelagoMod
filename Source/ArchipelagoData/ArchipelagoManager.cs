@@ -274,10 +274,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                         {
                             var item = hintItemSendMessage.Item;
 
-                            string itemColor = GetColorString(item.Flags);
-                            string sendPlayerColor = (hintItemSendMessage.Sender == this.Slot) ? "#EE00EE" : "#FAFAD2";
-                            string recvPlayerColor = (hintItemSendMessage.Receiver == this.Slot) ? "#EE00EE" : "#FAFAD2";
-                            string prettyMessage = $"{{{recvPlayerColor}}}{hintItemSendMessage.Receiver.Name}{{#}}'s {{{itemColor}}}{item.ItemName}{{#}} is at {{#00FF7F}}{hintItemSendMessage.Item.LocationName}{{#}} in {{{sendPlayerColor}}}{hintItemSendMessage.Sender.Name}{{#}}'s World.";
+                            string prettyMessage = $"{hintItemSendMessage.Receiver.Name}'s {item.ItemName} is at {hintItemSendMessage.Item.LocationName} in {hintItemSendMessage.Sender.Name}'s World.";
 
                             MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemHint));
                         }
@@ -290,10 +287,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
                     if (itemSendMessage.IsRelatedToActivePlayer && !itemSendMessage.IsReceiverTheActivePlayer)
                     {
-                        string itemColor = GetColorString(itemSendMessage.Item.Flags);
-                        string prettyMessage = $"Sent {{{itemColor}}}{itemSendMessage.Item.ItemName}{{#}} to {{#FAFAD2}}{itemSendMessage.Receiver.Name}{{#}}.";
+                        string prettyMessage = $"Sent {itemSendMessage.Item.ItemName} to {itemSendMessage.Receiver.Name}.";
 
-                        MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage.ToString(), ArchipelagoMessage.MessageType.ItemSend, itemSendMessage.Item.Flags));
+                        MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemSend, itemSendMessage.Item.Flags));
                         Logger.Log(LOG_PREFIX, message.ToString());
                         Monocle.Engine.Commands.Log(message.ToString(), Color.Lime);
                     }
@@ -344,27 +340,15 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             ArchipelagoManager.Instance.Disconnect();
         }
 
-        private static string GetColorString(ItemFlags flags)
+        internal static Color GetItemColor(ItemFlags flags)
         {
-            string itemColor = "";
             if ((flags & ItemFlags.Advancement) != 0)
-            {
-                itemColor = "#AF99EF";
-            }
-            else if ((flags & ItemFlags.NeverExclude) != 0)
-            {
-                itemColor = "#6D8BE8";
-            }
-            else if ((flags & ItemFlags.Trap) != 0)
-            {
-                itemColor = "#FA8072";
-            }
-            else
-            {
-                itemColor = "#00EEEE";
-            }
-
-            return itemColor;
+                return new Color(0xAF, 0x99, 0xEF);
+            if ((flags & ItemFlags.NeverExclude) != 0)
+                return new Color(0x6D, 0x8B, 0xE8);
+            if ((flags & ItemFlags.Trap) != 0)
+                return new Color(0xFA, 0x80, 0x72);
+            return new Color(0x00, 0xEE, 0xEE);
         }
 
         public void CheckReceivedItemQueue()
@@ -387,16 +371,15 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 var item = ItemQueue[index].Item2;
 
                 string receivedMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
-                string itemColor = GetColorString(item.Flags);
                 string prettyMessage = "";
 
                 if (item.Player == this.Slot)
                 {
-                    prettyMessage = $"You found your {{{itemColor}}}{item.ItemDisplayName}{{#}}.";
+                    prettyMessage = $"You found your {item.ItemDisplayName}.";
                 }
                 else
                 {
-                    prettyMessage = $"Received {{{itemColor}}}{item.ItemDisplayName}{{#}} from {{#FAFAD2}}{GetPlayerName(item.Player)}{{#}}.";
+                    prettyMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
                 }
 
                 if ((item.ItemId < 0xCA10020 || item.ItemId >= 0xCA10050) && index >= this.ServerItemsRcv)
