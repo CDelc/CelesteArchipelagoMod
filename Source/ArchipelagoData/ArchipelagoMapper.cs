@@ -334,7 +334,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static bool mechanicEnabled(Mechanic mechanic)
         {
-            return CelesteArchipelagoModule.SaveData.Mechanics[getMechanicID(mechanic)];
+            return CelesteArchipelagoModule.SaveData.Mechanics.Contains(getMechanicID(mechanic));
         }
         private static long getMechanicID(Mechanic mechanic)
         {

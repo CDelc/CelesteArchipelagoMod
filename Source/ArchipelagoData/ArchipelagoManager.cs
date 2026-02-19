@@ -411,7 +411,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     //Mechanic
                     case long id when id >= 200000000000 && id < 300000000000:
                         {
-                            CelesteArchipelagoModule.SaveData.Mechanics[id] = true;
+                            CelesteArchipelagoModule.SaveData.Mechanics.Add(id);
                             break;
                         }
                     //Checkpoint

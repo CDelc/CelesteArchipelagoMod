@@ -8,7 +8,7 @@ public class CelesteArchipelagoModuleSaveData : EverestModuleSaveData
     public int Strawberries { get; set; } = 0;
 
 
-    public Dictionary<long, bool> Mechanics { get; set; } = new Dictionary<long, bool>();
+    public HashSet<long> Mechanics { get; set; } = new HashSet<long>();
 
     public HashSet<(string SID, AreaMode mode)> LevelUnlocks { get; set; } = new HashSet<(string SID, AreaMode mode)>();
 

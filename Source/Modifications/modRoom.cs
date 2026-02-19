@@ -51,7 +51,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             long locationID = ArchipelagoMapper.getRoomLocationID(SID, mode, room);
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
-            CelesteArchipelagoModule.Log($"Room {room} checked in {SID} {mode}, mapping to location id {locationID:X}");
+            CelesteArchipelagoModule.Log($"Room {room} checked in {SID} {mode}, mapping to location id {locationID}");
 
         }
 
