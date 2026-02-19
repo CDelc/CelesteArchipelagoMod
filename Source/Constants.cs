@@ -14,7 +14,11 @@ namespace Celeste.Mod.CelesteArchipelago
             new modStrawberry(),
             new modCrystalHeart(),
             new modRoom(),
-            new modPlayer()
+            new modPlayer(),
+            new modSpring(),
+            new modTrafficBlocks(),
+            new modCassetteBlock(),
+            new modDashCrystal()
         };
 
         public static int SAVE_ID = 144;

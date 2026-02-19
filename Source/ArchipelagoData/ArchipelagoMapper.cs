@@ -96,7 +96,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static (string SID, AreaMode mode) ArchipelagoIDToSID(long id)
         {
-            long levelId = id - 400000000000;
+            long levelId = extractLevelID(id);
             if (levelIDToSID.TryGetValue(levelId, out (string SID, AreaMode mode) rValue))
             {
                 return rValue;
@@ -347,7 +347,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             DASH_CRYSTALS,
             TRAFFIC_BLOCKS,
             SPRINGS,
-            ItemBLUE_CASSETTE,
+            BLUE_CASSETTE,
             PINK_CASSETTE
         }
     }

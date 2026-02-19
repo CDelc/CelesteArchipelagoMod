@@ -48,13 +48,13 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private void modReset(On.Celeste.OuiChapterPanel.orig_Reset orig, OuiChapterPanel self)
         {
-            if (CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 orig(self);
                 return;
             }
             
-            DynamicData dynamicOuiChapterSelect = new MonoMod.Utils.DynamicData(self);
+            DynamicData dynamicOuiChapterSelect = new DynamicData(self);
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
             bool shouldRandomizeCheckpoints = ArchipelagoManager.Instance?.Ready == true
