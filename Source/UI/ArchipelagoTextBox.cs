@@ -10,17 +10,18 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         private string message;
         private float displayDuration;
         private float alpha;
+        private Color color;
 
         private static readonly float TextScale = 0.6f;
-        private static readonly Vector2 Position = new Vector2(32f, 48f);
-        private static readonly Color TextColor = Color.White;
-        private static readonly Color ShadowColor = Color.Black;
+        private static readonly float YPosition = 48f;
+        private static readonly Color OutlineColor = Color.Black;
 
-        public ArchipelagoTextBox(string input, float displayDuration = 3f) : base()
+        public ArchipelagoTextBox(string input, float displayDuration = 3f, Color? color = null) : base()
         {
             this.message = input;
             this.displayDuration = displayDuration;
             this.alpha = 0f;
+            this.color = color ?? Color.White;
 
             base.Tag = Tags.HUD | Tags.TransitionUpdate | Tags.Persistent;
             base.Depth = -100;
@@ -54,14 +55,17 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         public override void Render()
         {
+            float textWidth = ActiveFont.Measure(message).X * TextScale;
+            float x = (1920f - textWidth) / 2f;
+
             ActiveFont.Draw(
                 message,
-                Position,
+                new Vector2(x, YPosition),
                 Vector2.Zero,
                 Vector2.One * TextScale,
-                TextColor * alpha,
+                color * alpha,
                 1f,
-                ShadowColor * (alpha * 0.8f),
+                OutlineColor * (alpha * 0.8f),
                 0f,
                 Color.Transparent
             );
