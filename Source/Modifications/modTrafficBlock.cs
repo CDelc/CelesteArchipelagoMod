@@ -6,20 +6,23 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
     internal class modTrafficBlock : IGameModification
     {
-        private static readonly FieldInfo fillField =
-            typeof(CrushBlock).GetField("fill", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly FieldInfo ropeColorField =
+            typeof(ZipMover).GetField("ropeColor", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        private static readonly FieldInfo ropeLightColorField =
+            typeof(ZipMover).GetField("ropeLightColor", BindingFlags.NonPublic | BindingFlags.Instance);
 
         public override void Load()
         {
-            On.Celeste.CrushBlock.Awake += CrushBlock_Awake;
+            On.Celeste.ZipMover.Awake += ZipMover_Awake;
         }
 
         public override void Unload()
         {
-            On.Celeste.CrushBlock.Awake -= CrushBlock_Awake;
+            On.Celeste.ZipMover.Awake -= ZipMover_Awake;
         }
 
-        private void CrushBlock_Awake(On.Celeste.CrushBlock.orig_Awake orig, CrushBlock self, Scene scene)
+        private void ZipMover_Awake(On.Celeste.ZipMover.orig_Awake orig, ZipMover self, Scene scene)
         {
             orig(self, scene);
 
@@ -28,15 +31,21 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             ApplyRedTint(self);
         }
 
-        private static void ApplyRedTint(CrushBlock block)
+        private static void ApplyRedTint(ZipMover zipMover)
         {
-            if (fillField != null)
+            if (ropeColorField != null)
             {
-                Color currentFill = (Color)fillField.GetValue(block);
-                fillField.SetValue(block, ShiftToRed(currentFill));
+                Color current = (Color)ropeColorField.GetValue(zipMover);
+                ropeColorField.SetValue(zipMover, ShiftToRed(current));
             }
 
-            foreach (Component component in block.Components)
+            if (ropeLightColorField != null)
+            {
+                Color current = (Color)ropeLightColorField.GetValue(zipMover);
+                ropeLightColorField.SetValue(zipMover, ShiftToRed(current));
+            }
+
+            foreach (Component component in zipMover.Components)
             {
                 if (component is Image image)
                 {
