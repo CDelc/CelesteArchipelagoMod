@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.UI;
 using Microsoft.Xna.Framework;
 using System;
@@ -88,18 +88,22 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             {
                 HandleMessageQueue(self);
             }
-            
         }
 
         private static void HandleMessageQueue(Player self)
         {
-            int queueSize = ArchipelagoManager.Instance.MessageQueue.Count;
-            if (queueSize > 0)
+            if (ArchipelagoManager.Instance == null || self.Scene == null)
             {
-                if (self.Scene.Tracker.GetEntity<ArchipelagoTextBox>() == null)
-                {
-                    ArchipelagoMessage message = ArchipelagoManager.Instance.MessageQueue.Dequeue();
+                return;
+            }
 
+            var messageQueue = ArchipelagoManager.Instance.MessageQueue;
+            int queueSize = messageQueue.Count;
+
+            if (queueSize > 0 && self.Scene.Tracker.GetEntity<ArchipelagoTextBox>() == null)
+            {
+                if (messageQueue.TryDequeue(out ArchipelagoMessage message))
+                {
                     if (ShouldShowMessage(message))
                     {
                         self.Scene.Add(new ArchipelagoTextBox(message.Text, queueSize > 8 ? 1f : queueSize > 4 ? 2f : 3f));
