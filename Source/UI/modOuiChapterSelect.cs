@@ -1,11 +1,9 @@
-﻿using Celeste;
+using Celeste;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.Modifications;
 using FMOD;
-using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using static Celeste.OuiChapterPanel;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
@@ -57,7 +55,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 return;
             }
             
-            DynamicData dynamicOuiChapterSelect = new DynamicData(self);
+            string sid = self.Area.SID;
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
             bool shouldRandomizeCheckpoints = ArchipelagoManager.Instance?.Ready == true
@@ -70,42 +68,31 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 savedCheckpoints = ApplyCheckpointOverrides(self.Area.SID, self.Area.ID);
             }
 
+            bool ensureBCModes = sid.StartsWith("Celeste/") && !self.Data.Interlude_Safe && self.Area.ID < 10;
+            bool savedCassette = false;
+            bool savedBSideHeart = false;
+
+            if (ensureBCModes)
+            {
+                var areaStats = SaveData.Instance.Areas_Safe[self.Area.ID];
+                savedCassette = areaStats.Cassette;
+                areaStats.Cassette = true;
+                savedBSideHeart = areaStats.Modes[(int)AreaMode.BSide].HeartGem;
+                areaStats.Modes[(int)AreaMode.BSide].HeartGem = true;
+            }
+
             orig(self);
+
+            if (ensureBCModes)
+            {
+                var areaStats = SaveData.Instance.Areas_Safe[self.Area.ID];
+                areaStats.Cassette = savedCassette;
+                areaStats.Modes[(int)AreaMode.BSide].HeartGem = savedBSideHeart;
+            }
 
             if (savedCheckpoints != null)
             {
                 RestoreCheckpoints(self.Area.ID, savedCheckpoints);
-            }
-
-            string sid = self.Area.SID;
-
-            if (sid.StartsWith("Celeste/"))
-            {
-                self.modes.Clear();
-                self.modes.Add(new Option
-                {
-                    Bg = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModAreaselectTexture", "areaselect/tab")],
-                    Label = Dialog.Clean(self.Data.Interlude_Safe ? "FILE_BEGIN" : "overworld_normal").ToUpper(),
-                    Icon = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/play")],
-                    ID = "A"
-                });
-                if (!self.Data.Interlude_Safe && self.Area.ID < 10)
-                {
-                    self.modes.Add(new Option
-                    {
-                        Label = Dialog.Clean("overworld_remix"),
-                        Icon = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/remix")],
-                        ID = "B",
-                        Bg = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModAreaselectTexture", "areaselect/tab")]
-                    });
-                    self.modes.Add(new Option
-                    {
-                        Label = Dialog.Clean("overworld_remix2"),
-                        Icon = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/rmx2")],
-                        ID = "C",
-                        Bg = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModAreaselectTexture", "areaselect/tab")]
-                    });
-                }
             }
 
             foreach (Option mode in self.modes)
