@@ -192,15 +192,26 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return 600000000000 + levelID * 100000000;
         }
 
-        public static long getCheckpointItemID(string SID, AreaMode mode, string roomName)
+        public static long getCassetteLocationID(string SID, AreaMode mode)
         {
             long levelID = getLevelID(SID, mode);
-            return 300000000000 + getLocationOffset(SID, mode, roomName);
+            return 700000000000 + levelID * 100000000;
+        }
+
+        public static long getCheckpointItemID(string SID, AreaMode mode, string roomName)
+        {
+            try
+            {
+                return 300000000000 + getLocationOffset(SID, mode, roomName);
+            }catch(Exception e)
+            {
+                Logger.Error(Constants.LOG_PREFIX, e.Message);
+                return -1;
+            }
         }
 
         public static long getCheckpointLocationID(string SID, AreaMode mode, string roomName)
         {
-            long levelID = getLevelID(SID, mode);
             return 700000000000 + getLocationOffset(SID, mode, roomName);
         }
 
@@ -267,7 +278,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         private static Dictionary<long, (string SID, AreaMode mode)> levelIDToSID { get; } = new Dictionary<long, (string SID, AreaMode mode)>
         {
-            {1, ("Celeste/1-ForsakenCity", AreaMode.Normal)}
+            {1, ("Celeste/1-ForsakenCity", AreaMode.Normal)},
+            {2, ("Celeste/1-ForsakenCity", AreaMode.BSide)},
+            {3, ("Celeste/1-ForsakenCity", AreaMode.CSide)}
         };
 
         private static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
@@ -343,7 +356,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public enum Mechanic
         {
-            CLIMB,
             DASH_CRYSTALS,
             TRAFFIC_BLOCKS,
             SPRINGS,

@@ -12,11 +12,11 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         private float alpha;
         private Color color;
 
-        private static readonly float TextScale = 0.6f;
+        private static readonly float TextScale = 1f;
         private static readonly float YPosition = 48f;
         private static readonly Color OutlineColor = Color.Black;
 
-        public ArchipelagoTextBox(string input, float displayDuration = 3f, Color? color = null) : base()
+        public ArchipelagoTextBox(string input, float displayDuration = 2f, Color? color = null) : base()
         {
             this.message = input;
             this.displayDuration = displayDuration;

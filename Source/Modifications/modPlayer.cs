@@ -62,22 +62,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Load()
         {
             On.Celeste.Player.Update += modPlayer_Update;
-            On.Celeste.Player.ClimbUpdate += modPlayer_ClimbUpdate;
         }
 
         public override void Unload()
         {
             On.Celeste.Player.Update -= modPlayer_Update;
-            On.Celeste.Player.ClimbUpdate -= modPlayer_ClimbUpdate;
-        }
-
-        private static int modPlayer_ClimbUpdate(On.Celeste.Player.orig_ClimbUpdate orig, Player self)
-        {
-            if (CelesteArchipelagoModule.IsInArchipelagoSave && ArchipelagoManager.Instance.randomize_climb && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CLIMB)){
-                return Player.StNormal;
-            }
-
-            else return orig(self);
         }
 
         private static void modPlayer_Update(On.Celeste.Player.orig_Update orig, Player self)
@@ -129,6 +118,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             switch (message.Type)
             {
                 case ArchipelagoMessage.MessageType.ItemReceive:
+                    return Color.Red;
                 case ArchipelagoMessage.MessageType.ItemSend:
                     return ArchipelagoManager.GetItemColor(message.Flags);
                 case ArchipelagoMessage.MessageType.ItemHint:

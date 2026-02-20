@@ -18,7 +18,8 @@ namespace Celeste.Mod.CelesteArchipelago
             new modSpring(),
             new modTrafficBlocks(),
             new modCassetteBlock(),
-            new modDashCrystal()
+            new modDashCrystal(),
+            new modCassette()
         };
 
         public static int SAVE_ID = 144;

@@ -61,7 +61,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool include_c_sides = false;
         public bool include_farewell = false;
 
-        public bool randomize_climb = false;
         public bool randomize_checkpoints = false;
         public bool room_checks = false;
         public bool include_heart_side_golden = false;
@@ -196,7 +195,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             include_c_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_c_sides", out value) ? value : false);
             include_farewell = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_farewell", out value) ? value : false);
 
-            randomize_climb = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_climb", out value) ? value : false);
             randomize_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_checkpoints", out value) ? value : false);
             room_checks = Convert.ToBoolean(loginData.SlotData.TryGetValue("room_checks", out value) ? value : false);
 
@@ -567,17 +565,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     }
                 }
                 //silver_berry
-                else if (newLoc >= 1100000000000 && newLoc < 1200000000000)
+                else if (newLoc >= 1000000000000 && newLoc < 1100000000000)
                 {
 
                 }
                 //rainbow_berry
-                else if (newLoc >= 1200000000000 && newLoc < 1300000000000)
+                else if (newLoc >= 1100000000000 && newLoc < 1200000000000)
                 {
 
                 }
                 //winged_golden
-                else if (newLoc >= 1300000000000 && newLoc < 1400000000000)
+                else if (newLoc >= 1200000000000 && newLoc < 1300000000000)
                 {
                     EntityID strawberry = ArchipelagoMapper.getStrawberryEntityID(newLoc);
                     long levelID = ArchipelagoMapper.extractLevelID(newLoc);
@@ -589,12 +587,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     }
                 }
                 //room
-                else if (newLoc >= 1400000000000 && newLoc < 1500000000000)
+                else if (newLoc >= 1300000000000 && newLoc < 1400000000000)
                 {
 
                 }
                 //gem
-                else if (newLoc >= 1500000000000 && newLoc < 1600000000000)
+                else if (newLoc >= 1400000000000 && newLoc < 1500000000000)
                 {
 
                 }
@@ -706,20 +704,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 Disconnect();
             }
         }
-
-        private void Set(string key, string value)
-        {
-            try
-            {
-                var token = JToken.FromObject(value);
-                _session.DataStorage[key] = token;
-            }
-            catch (ArchipelagoSocketClosedException)
-            {
-                Disconnect();
-            }
-        }
-
 
         public void AddItemsRcvCallback(string key, Action<int> callback)
         {
