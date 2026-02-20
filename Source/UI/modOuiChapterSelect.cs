@@ -1,4 +1,4 @@
-﻿using Celeste;
+using Celeste;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.Modifications;
 using MonoMod.Utils;
@@ -142,7 +142,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                     for (int i = 0; i < modeData.Checkpoints.Length; i++)
                     {
                         string room = modeData.Checkpoints[i].Level;
-                        if (CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(ArchipelagoMapper.getCheckpointItemID(sid, mode, room)));
+                        if (CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(ArchipelagoMapper.getCheckpointItemID(sid, mode, room)))
                         {
                             stats.Checkpoints.Add(room);
                         }
