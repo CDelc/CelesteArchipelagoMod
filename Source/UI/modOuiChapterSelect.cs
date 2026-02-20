@@ -55,8 +55,6 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 return;
             }
             
-            string sid = self.Area.SID;
-
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
             bool shouldRandomizeCheckpoints = ArchipelagoManager.Instance?.Ready == true
                 && ArchipelagoManager.Instance.randomize_checkpoints
@@ -68,7 +66,10 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 savedCheckpoints = ApplyCheckpointOverrides(self.Area.SID, self.Area.ID);
             }
 
-            bool ensureBCModes = sid.StartsWith("Celeste/") && !self.Data.Interlude_Safe && self.Area.ID < 10;
+            bool ensureBCModes = SaveData.Instance != null
+                && self.Area.SID?.StartsWith("Celeste/") == true
+                && self.Data?.Interlude_Safe == false
+                && self.Area.ID < 10;
             bool savedCassette = false;
             bool savedBSideHeart = false;
 
@@ -94,6 +95,8 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             {
                 RestoreCheckpoints(self.Area.ID, savedCheckpoints);
             }
+
+            string sid = self.Area.SID;
 
             foreach (Option mode in self.modes)
             {
