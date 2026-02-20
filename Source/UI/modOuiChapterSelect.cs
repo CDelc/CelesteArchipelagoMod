@@ -1,19 +1,35 @@
-﻿using Celeste;
+using Celeste;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.Modifications;
+using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using System.Collections.Generic;
+using System.Reflection;
 using static Celeste.OuiChapterPanel;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
 {
     public class modOuiChapterSelect : IGameModification
     {
+        private static Hook _getCheckpointsHook;
 
         public override void Load()
         {
             On.Celeste.OuiChapterPanel.Reset += modReset;
             On.Celeste.OuiChapterPanel.Start += modStartLevelGuard;
+
+            var getCheckpoints = typeof(SaveData).GetMethod(
+                "_GetCheckpoints",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            if (getCheckpoints != null)
+            {
+                _getCheckpointsHook = new Hook(
+                    getCheckpoints,
+                    typeof(modOuiChapterSelect).GetMethod(
+                        nameof(GetCheckpoints),
+                        BindingFlags.NonPublic | BindingFlags.Static)
+                );
+            }
         }
 
 
@@ -21,6 +37,44 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         {
             On.Celeste.OuiChapterPanel.Reset -= modReset;
             On.Celeste.OuiChapterPanel.Start -= modStartLevelGuard;
+
+            _getCheckpointsHook?.Dispose();
+            _getCheckpointsHook = null;
+        }
+
+        private delegate HashSet<string> orig_GetCheckpoints(SaveData save, AreaKey area);
+        private static HashSet<string> GetCheckpoints(orig_GetCheckpoints orig, SaveData save, AreaKey area)
+        {
+            HashSet<string> result = orig(save, area);
+
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave
+                || ArchipelagoManager.Instance?.Ready != true
+                || !ArchipelagoManager.Instance.randomize_checkpoints
+                || CelesteArchipelagoModule.SaveData == null)
+            {
+                return result;
+            }
+
+            string sid = area.SID;
+            AreaMode mode = area.Mode;
+            AreaData areaData = AreaData.Get(sid);
+            if (areaData?.Mode[(int)mode]?.Checkpoints == null)
+            {
+                return result;
+            }
+
+            var filtered = new HashSet<string>();
+            foreach (string entry in result)
+            {
+                string roomName = entry.Contains("|") ? entry.Substring(entry.IndexOf('|') + 1) : entry;
+                if (CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(
+                        ArchipelagoMapper.getCheckpointItemID(sid, mode, roomName)))
+                {
+                    filtered.Add(entry);
+                }
+            }
+
+            return filtered;
         }
 
         static bool levelGuardRunning = false;
@@ -56,23 +110,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             
             DynamicData dynamicOuiChapterSelect = new DynamicData(self);
 
-            Dictionary<int, HashSet<string>> savedCheckpoints = null;
-            bool shouldRandomizeCheckpoints = ArchipelagoManager.Instance?.Ready == true
-                && ArchipelagoManager.Instance.randomize_checkpoints
-                && SaveData.Instance != null
-                && CelesteArchipelagoModule.SaveData != null;
-
-            if (shouldRandomizeCheckpoints)
-            {
-                savedCheckpoints = ApplyCheckpointOverrides(self.Area.SID, self.Area.ID);
-            }
-
             orig(self);
-
-            if (savedCheckpoints != null)
-            {
-                RestoreCheckpoints(self.Area.ID, savedCheckpoints);
-            }
 
             string sid = self.Area.SID;
 
@@ -118,48 +156,6 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         private static bool canEnter(string sid, AreaMode areaMode)
         {
             return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
-        }
-
-        private static Dictionary<int, HashSet<string>> ApplyCheckpointOverrides(string sid, int areaID)
-        {
-            AreaData areaData = AreaData.Get(sid);
-            if (areaData == null) return null;
-
-            var saved = new Dictionary<int, HashSet<string>>();
-
-            for (int m = 0; m < areaData.Mode.Length; m++)
-            {
-                var modeData = areaData.Mode[m];
-                if (modeData == null) continue;
-
-                AreaModeStats stats = SaveData.Instance.Areas_Safe[areaData.ID].Modes[m];
-                saved[m] = stats.Checkpoints;
-                stats.Checkpoints = new HashSet<string>();
-
-                if (modeData.Checkpoints != null)
-                {
-                    AreaMode mode = (AreaMode)m;
-                    for (int i = 0; i < modeData.Checkpoints.Length; i++)
-                    {
-                        string room = modeData.Checkpoints[i].Level;
-                        if (CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(ArchipelagoMapper.getCheckpointItemID(sid, mode, room)));
-                        {
-                            stats.Checkpoints.Add(room);
-                        }
-                    }
-                }
-            }
-
-            return saved;
-        }
-
-
-        private static void RestoreCheckpoints(int areaID, Dictionary<int, HashSet<string>> savedCheckpoints)
-        {
-            foreach (var kvp in savedCheckpoints)
-            {
-                SaveData.Instance.Areas_Safe[areaID].Modes[kvp.Key].Checkpoints = kvp.Value;
-            }
         }
 
         private static bool canUseCheckpoint(string sid, AreaMode mode, string checkpoint)
