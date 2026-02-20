@@ -79,44 +79,27 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
             string sid = self.Area.SID;
 
-            if (sid.StartsWith("Celeste/"))
+            if (sid.StartsWith("Celeste/") && !self.Data.Interlude_Safe && self.Area.ID < 10)
             {
-                var existingModes = new Dictionary<string, Option>();
-                foreach (var mode in self.modes)
+                if (!self.modes.Any(m => m.ID == "B"))
                 {
-                    existingModes[mode.ID] = mode;
+                    self.modes.Add(new Option
+                    {
+                        Label = Dialog.Clean("overworld_remix"),
+                        Icon = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/remix")],
+                        ID = "B",
+                        Bg = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModAreaselectTexture", "areaselect/tab")]
+                    });
                 }
-
-                self.modes.Clear();
-
-                string bgTexture = (string)dynamicOuiChapterSelect.Invoke("_ModAreaselectTexture", "areaselect/tab");
-                string playTexture = (string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/play");
-
-                Option aOption = existingModes.TryGetValue("A", out var existingA) ? existingA : new Option();
-                aOption.Bg = GFX.Gui[bgTexture];
-                aOption.Label = Dialog.Clean(self.Data.Interlude_Safe ? "FILE_BEGIN" : "overworld_normal").ToUpper();
-                aOption.Icon = GFX.Gui[playTexture];
-                aOption.ID = "A";
-                self.modes.Add(aOption);
-
-                if (!self.Data.Interlude_Safe && self.Area.ID < 10)
+                if (!self.modes.Any(m => m.ID == "C"))
                 {
-                    string remixTexture = (string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/remix");
-                    string rmx2Texture = (string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/rmx2");
-
-                    Option bOption = existingModes.TryGetValue("B", out var existingB) ? existingB : new Option();
-                    bOption.Label = Dialog.Clean("overworld_remix");
-                    bOption.Icon = GFX.Gui[remixTexture];
-                    bOption.ID = "B";
-                    bOption.Bg = GFX.Gui[bgTexture];
-                    self.modes.Add(bOption);
-
-                    Option cOption = existingModes.TryGetValue("C", out var existingC) ? existingC : new Option();
-                    cOption.Label = Dialog.Clean("overworld_remix2");
-                    cOption.Icon = GFX.Gui[rmx2Texture];
-                    cOption.ID = "C";
-                    cOption.Bg = GFX.Gui[bgTexture];
-                    self.modes.Add(cOption);
+                    self.modes.Add(new Option
+                    {
+                        Label = Dialog.Clean("overworld_remix2"),
+                        Icon = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModMenuTexture", "menu/rmx2")],
+                        ID = "C",
+                        Bg = GFX.Gui[(string)dynamicOuiChapterSelect.Invoke("_ModAreaselectTexture", "areaselect/tab")]
+                    });
                 }
             }
 
