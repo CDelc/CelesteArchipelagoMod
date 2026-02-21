@@ -180,9 +180,15 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             {
                 foreach (LevelSetStats levelSet in SaveData.Instance.LevelSets)
                 {
-                    if(levelSet.Name == "Celeste")
+                    if (levelSet.Name == "Celeste")
                     {
-                        SaveData.Instance.Areas_Safe[0].Modes[0].Completed = true;
+                        for (int i = 0; i < SaveData.Instance.Areas_Safe.Count; i++)
+                        {
+                            for (int j = 0; j < SaveData.Instance.Areas_Safe[i].Modes.Length; j++)
+                            {
+                                SaveData.Instance.Areas_Safe[i].Modes[j].Completed = true;
+                            }
+                        }
                     }
                     else if(levelSet.Name == "StrawberryJam2021/0-Lobbies")
                     {
