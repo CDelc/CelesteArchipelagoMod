@@ -195,7 +195,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public static long getCassetteLocationID(string SID, AreaMode mode)
         {
             long levelID = getLevelID(SID, mode);
-            return 700000000000 + levelID * 100000000;
+            return 300000000000 + levelID * 100000000;
         }
 
         public static long getCheckpointItemID(string SID, AreaMode mode, string roomName)
@@ -218,6 +218,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public static long getRoomLocationID(string SID, AreaMode mode, string room)
         {
             return 1300000000000 + getLocationOffset(SID, mode, room);
+        }
+
+        public static long getLevelCompleteLocationID(string SID, AreaMode mode)
+        {
+            return 400000000000 + getLevelID(SID, mode) * 100000000;
         }
 
         public static long getMiniHeartLocationID(string SID, AreaMode mode)

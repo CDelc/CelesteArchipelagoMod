@@ -228,6 +228,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public async Task<LoginFailure> Disconnect(bool attemptReconnect = true)
         {
+            Ready = false;
             this.ServerItemsRcv = -1;
             this.ItemQueue.Clear();
             this.MessageQueue.Clear();

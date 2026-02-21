@@ -25,7 +25,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             
             AreaKey areaKey = SaveData.Instance.CurrentSession_Safe.Area;
 
-            CelesteArchipelagoModule.SaveData.LocationsChecked.Add(ArchipelagoMapper.getCassetteLocationID(areaKey.SID, areaKey.Mode));
+            long locationID = ArchipelagoMapper.getCassetteLocationID(areaKey.SID, areaKey.Mode);
+
+            CelesteArchipelagoModule.Log($"Cassette for {areaKey.SID} {areaKey.Mode}, mapping to location id {locationID}");
+
+            CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
         }
     }
 }
