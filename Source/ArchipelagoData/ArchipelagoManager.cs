@@ -80,7 +80,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public int total_strawberries = 100;
         public int required_strawberries = 0;
         public bool require_moon_berry = false;
-        public bool lock_win_condition_behind_strawberries = false;
         #endregion
 
         public LevelCategory starting_category
@@ -239,7 +238,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             total_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("total_strawberries", out value) ? value : 0);
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
-            lock_win_condition_behind_strawberries = Convert.ToBoolean(loginData.SlotData.TryGetValue("lock_win_condition_behind_strawberries", out value) ? value : false);
 
             this.AddItemsRcvCallback($"Celeste_Open_Rcv_{_session.Players.GetPlayerName(this.Slot)}", ItemsRcvUpdated);
             this.ServerItemsRcv = -1;
