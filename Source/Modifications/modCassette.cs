@@ -22,7 +22,13 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             {
                 return;
             }
-            
+
+
+            int ID = (self.Scene as Level).Session.Area.ID;
+            SaveData.Instance.Areas_Safe[ID].Cassette = false;
+
+            CelesteArchipelagoModule.Log($"{SaveData.Instance.Areas_Safe[ID].Cassette}");
+
             AreaKey areaKey = SaveData.Instance.CurrentSession_Safe.Area;
 
             long locationID = ArchipelagoMapper.getCassetteLocationID(areaKey.SID, areaKey.Mode);

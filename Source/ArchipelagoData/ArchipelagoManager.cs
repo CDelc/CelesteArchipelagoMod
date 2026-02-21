@@ -83,6 +83,30 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool lock_win_condition_behind_strawberries = false;
         #endregion
 
+        public LevelCategory starting_category
+        {
+            get
+            {
+                switch (start_level_set)
+                {
+                    case 0:
+                        return LevelCategory.A_SIDE;
+                    case 1:
+                        return LevelCategory.BEGINNER;
+                    case 2:
+                        return LevelCategory.INTERMEDIATE;
+                    case 3:
+                        return LevelCategory.ADVANCED;
+                    case 4:
+                        return LevelCategory.EXPERT;
+                    case 5:
+                        return LevelCategory.GRANDMASTER;
+                    default:
+                        return LevelCategory.A_SIDE;
+                }
+            }
+        }
+
         private ArchipelagoSession _session;
 
         public static ArchipelagoManager Instance { get; private set; }
@@ -390,6 +414,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
                 switch (item.ItemId)
                 {
+                    case 100000000000:
+                        CelesteArchipelagoModule.SaveData.GoalLevelCleared = true;
+                        break;
                     //Mechanic
                     case long id when id >= 200000000000 && id < 300000000000:
                         {
@@ -436,6 +463,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     case 900000000000:
                         {
                             CelesteArchipelagoModule.SaveData.Strawberries++;
+                            CelesteArchipelagoModule.SaveData.moonBerryCollected = true;
                             break;
                         }
                     //Silver berries
@@ -618,6 +646,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             catch (ArchipelagoSocketClosedException)
             {
                 Disconnect();
+            }
+        }
+
+        public void CheckCompleteGame()
+        {
+            CelesteArchipelagoModuleSaveData save = CelesteArchipelagoModule.SaveData;
+            if (save.Strawberries >= required_strawberries &&
+                (!require_moon_berry || save.moonBerryCollected) &&
+                save.GoalLevelCleared)
+            {
+                UpdateGameStatus(ArchipelagoClientState.ClientGoal);
             }
         }
 

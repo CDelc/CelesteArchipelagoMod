@@ -7,6 +7,9 @@ public class CelesteArchipelagoModuleSaveData : EverestModuleSaveData
     public int ItemRcv { get; set; } = 0;
     public int Strawberries { get; set; } = 0;
 
+    public bool GoalLevelCleared { get; set; } = false;
+
+    public bool moonBerryCollected { get; set; } = false;
 
     public HashSet<long> Mechanics { get; set; } = new HashSet<long>();
 

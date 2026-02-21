@@ -76,6 +76,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             if (CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 HandleMessageQueue(self);
+                ArchipelagoManager.Instance.CheckCompleteGame();
             }
         }
 

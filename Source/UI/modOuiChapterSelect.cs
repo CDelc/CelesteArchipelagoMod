@@ -113,7 +113,9 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private static bool canEnter(string sid, AreaMode areaMode)
         {
-            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
+            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
+                ArchipelagoManager.PermanentUnlockLevels.Contains(sid) ||
+                ArchipelagoMapper.getLevelCategory(sid) == ArchipelagoManager.Instance.starting_category;
         }
 
         private static Dictionary<int, HashSet<string>> GetUnlockedCheckpointsByMode(string sid)

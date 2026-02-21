@@ -172,7 +172,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static EntityID getStrawberryEntityID(long locationID)
         {
-            if(!(locationID >= 200000000000 && locationID < 300000000000 || locationID >= 900000000000 && locationID < 1000000000000 || locationID >= 1300000000000 && locationID < 1400000000000))
+            if(!(locationID >= 200000000000 && locationID < 300000000000 || locationID >= 900000000000 && locationID < 1000000000000 || locationID >= 1200000000000 && locationID < 1300000000000))
             {
                 throw new IndexOutOfRangeException($"Strawberry was requested at locationID {locationID} but the ID is out of strawberry range");
             }
@@ -295,6 +295,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         {
             {"Celeste/1-ForsakenCity", LevelCategory.A_SIDE}
         };
+
+        private static Dictionary<LevelCategory, HashSet<string>> levelCategoryToSID { get; }
+            = levelSIDToCategory.GroupBy(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Select(i => i.Key).ToHashSet());
 
 
         private static Dictionary<(string SID, AreaMode mode), Dictionary<long, string>> roomIdsToname { get; } = new Dictionary<(string SID, AreaMode mode), Dictionary<long, string>>
