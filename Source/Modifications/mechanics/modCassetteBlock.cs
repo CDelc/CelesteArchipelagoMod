@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Celeste.Mod.CelesteArchipelago.Modifications
+namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 {
     internal class modCassetteBlock : IGameModification
     {

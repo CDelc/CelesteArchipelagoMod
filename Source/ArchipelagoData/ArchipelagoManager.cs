@@ -433,10 +433,10 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                             CelesteArchipelagoModule.SaveData.LevelUnlocks.Add(ArchipelagoMapper.ArchipelagoIDToSID(id));
                             break;
                         }
-                    //Key
+                    //Key Door
                     case long id when id >= 500000000000 && id < 600000000000:
                         {
-                            CelesteArchipelagoModule.SaveData.UnlockedKeys.Add(id);
+                            CelesteArchipelagoModule.SaveData.UnlockedKeyDoors.Add(id);
                             break;
                         }
                     //Vanilla Crystal Heart
@@ -470,8 +470,14 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                             CelesteArchipelagoModule.SaveData.SilverBerriesUnlocked.Add(id);
                             break;
                         }
-                    //Filler Items
+                    //Summit Gems
                     case long id when id >= 1100000000000 && id < 1200000000000:
+                        {
+                            CelesteArchipelagoModule.SaveData.SummitGemsUnlocked.Add(id);
+                            break;
+                        }
+                    //Filler Items
+                    case long id when id >= 1200000000000 && id < 1300000000000:
                         {
                             break;
                         }
@@ -517,7 +523,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {
                 CelesteArchipelagoModule.SaveData.LocationsChecked.Add(newLoc);
                 //strawberry
-                if(newLoc >= 200000000000 && newLoc < 300000000000)
+                if (newLoc >= 200000000000 && newLoc < 300000000000)
                 {
                     EntityID strawberry = ArchipelagoMapper.getStrawberryEntityID(newLoc);
                     long levelID = ArchipelagoMapper.extractLevelID(newLoc);
@@ -538,7 +544,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {
                         throw new ApplicationException($"Areadata not found for SID {SID}");
                     }
-                    
+
                     AreaKey areaKey = areaData.ToKey(mode);
                     SaveData.Instance.RegisterCassette(areaKey);
                 }
@@ -621,7 +627,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 //gem
                 else if (newLoc >= 1400000000000 && newLoc < 1500000000000)
                 {
-
+                    SaveData.Instance.RegisterSummitGem(ArchipelagoMapper.summitGemIndexMapping[ArchipelagoMapper.extractMetadata(newLoc)]);
                 }
             }
 

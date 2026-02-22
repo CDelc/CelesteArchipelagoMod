@@ -1,7 +1,7 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Microsoft.Xna.Framework;
 
-namespace Celeste.Mod.CelesteArchipelago.Modifications
+namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 {
     internal class modTrafficBlocks : IGameModification
     {

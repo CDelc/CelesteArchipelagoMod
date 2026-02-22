@@ -1,5 +1,6 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
@@ -48,8 +49,16 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             string SID = level.Session.Area.SID;
             AreaMode mode = level.Session.Area.Mode;
+            long locationID;
 
-            long locationID = ArchipelagoMapper.getRoomLocationID(SID, mode, room);
+            try
+            {
+                locationID = ArchipelagoMapper.getRoomLocationID(SID, mode, room);
+            }catch(IndexOutOfRangeException e)
+            {
+                Logger.Error(Constants.LOG_PREFIX, e.Message);
+                return;
+            }
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
             CelesteArchipelagoModule.Log($"Room {room} checked in {SID} {mode}, mapping to location id {locationID}");
 

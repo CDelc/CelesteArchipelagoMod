@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             long removeCategory = locationID % 100000000000;
             return (int)(removeCategory % 100000);
         }
-            
+
         public static AreaModeStats getAreaModeStats(long levelID)
         {
             (string SID, AreaMode mode) = getSID(levelID);
@@ -35,7 +35,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
             return SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode];
         }
-        
+
         public static long getLocationOffset(string SID, AreaMode mode, string room)
         {
             return getLevelID(SID, mode) * 100000000 + getRoomID(SID, mode, room) * 100000;
@@ -43,7 +43,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static (string SID, AreaMode mode) getSID(long levelID)
         {
-            if(!levelIDToSID.TryGetValue(levelID, out (string SID, AreaMode mode) rValue)){
+            if (!levelIDToSID.TryGetValue(levelID, out (string SID, AreaMode mode) rValue)) {
                 throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {levelID}");
             }
             return rValue;
@@ -51,12 +51,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static string getRoomName(string SID, AreaMode mode, long roomID)
         {
-            if(!roomIdsToname.TryGetValue((SID, mode), out Dictionary<long, string> roomDict))
+            if (!roomIdsToname.TryGetValue((SID, mode), out Dictionary<long, string> roomDict))
             {
                 throw new IndexOutOfRangeException($"A room name was requested in a level that does not exist {SID} {mode.ToString()}");
             }
 
-            if(!roomDict.TryGetValue(roomID, out string rValue))
+            if (!roomDict.TryGetValue(roomID, out string rValue))
             {
                 throw new IndexOutOfRangeException($"A room name was requested that does not exist in {SID} {mode.ToString()}: Room ID {roomID}");
             }
@@ -72,7 +72,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static long getLevelID(string SID, AreaMode mode)
         {
-            if(!levelSIDToID.TryGetValue((SID, mode), out long rValue))
+            if (!levelSIDToID.TryGetValue((SID, mode), out long rValue))
             {
                 throw new IndexOutOfRangeException($"A level ID was requested that does not exist: ID {SID} | {mode.ToString()}");
             }
@@ -82,7 +82,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public static long getRoomID(string SID, AreaMode mode, string room)
         {
 
-            if(!roomNameToID.TryGetValue((SID, mode), out Dictionary<string, long> roomDict)){
+            if (!roomNameToID.TryGetValue((SID, mode), out Dictionary<string, long> roomDict)) {
                 throw new IndexOutOfRangeException($"A room ID was requested in a level that does not exist {SID} {mode.ToString()}");
             }
 
@@ -105,9 +105,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {id} | {levelId}");
         }
 
-        public static LevelCategory getLevelCategory(string SID)
+        private static LevelCategory getLevelCategory(string SID)
         {
-            if(!levelSIDToCategory.TryGetValue(SID, out LevelCategory rValue))
+            if (!levelSIDToCategory.TryGetValue(SID, out LevelCategory rValue))
             {
                 throw new IndexOutOfRangeException($"A level category was requested for a level that is not mapped: {SID}");
             }
@@ -172,7 +172,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public static EntityID getStrawberryEntityID(long locationID)
         {
-            if(!(locationID >= 200000000000 && locationID < 300000000000 || locationID >= 900000000000 && locationID < 1000000000000 || locationID >= 1200000000000 && locationID < 1300000000000))
+            if (!(locationID >= 200000000000 && locationID < 300000000000 || locationID >= 900000000000 && locationID < 1000000000000 || locationID >= 1200000000000 && locationID < 1300000000000))
             {
                 throw new IndexOutOfRangeException($"Strawberry was requested at locationID {locationID} but the ID is out of strawberry range");
             }
@@ -203,7 +203,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             try
             {
                 return 300000000000 + getLocationOffset(SID, mode, roomName);
-            }catch(Exception e)
+            } catch (Exception e)
             {
                 Logger.Error(Constants.LOG_PREFIX, e.Message);
                 return -1;
@@ -225,6 +225,16 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return 400000000000 + getLevelID(SID, mode) * 100000000;
         }
 
+        public static long getKeyLocationID(string SID, AreaMode mode, EntityID key)
+        {
+            return 800000000000 + getLocationOffset(SID, mode, key.Level) + key.ID;
+        }
+
+        public static long getLockDoorID(string SID, AreaMode mode, EntityID door)
+        {
+            return 500000000000 + getLocationOffset(SID, mode, door.Level) + door.ID;
+        }
+
         public static long getMiniHeartLocationID(string SID, AreaMode mode)
         {
             long levelID = getLevelID(SID, mode);
@@ -241,6 +251,16 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return getCrystalHeartLocationID(SID, mode);
         }
 
+        public static long getGemLocationID(string SID, AreaMode mode, EntityID gem)
+        {
+            return 1400000000000 + getLocationOffset(SID, mode, gem.Level) + gem.ID;
+        }
+
+        public static long getGemItemID(string SID, AreaMode mode, EntityID gem)
+        {
+            return 1100000000000 + getLocationOffset(SID, mode, gem.Level) + gem.ID;
+        }
+
         public static int getLobbyNumHeartsCollected(LevelCategory category)
         {
             if (!isLobbyCategory(category))
@@ -250,7 +270,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             else
             {
                 int count = 0;
-                foreach(long heartID in CelesteArchipelagoModule.SaveData.CrystalHeartsCollab)
+                foreach (long heartID in CelesteArchipelagoModule.SaveData.CrystalHeartsCollab)
                 {
                     string SID = getSID(extractLevelID(heartID)).SID;
                     if (getLevelCategory(SID) == category)
@@ -285,7 +305,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         {
             {1, ("Celeste/1-ForsakenCity", AreaMode.Normal)},
             {2, ("Celeste/1-ForsakenCity", AreaMode.BSide)},
-            {3, ("Celeste/1-ForsakenCity", AreaMode.CSide)}
+            {3, ("Celeste/1-ForsakenCity", AreaMode.CSide)},
+            {4, ("Celeste/2-OldSite", AreaMode.Normal)},
+            {5, ("Celeste/2-OldSite", AreaMode.BSide)},
+            {6, ("Celeste/2-OldSite", AreaMode.CSide)},
+            {19, ("Celeste/7-Summit", AreaMode.Normal) }
         };
 
         private static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
@@ -293,7 +317,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         private static Dictionary<string, LevelCategory> levelSIDToCategory { get; } = new Dictionary<string, LevelCategory>
         {
-            {"Celeste/1-ForsakenCity", LevelCategory.A_SIDE}
+            {"Celeste/1-ForsakenCity", LevelCategory.A_SIDE},
+            {"Celeste/2-OldSite", LevelCategory.A_SIDE},
+            {"Celeste/7-Summit", LevelCategory.A_SIDE}
         };
 
         private static Dictionary<LevelCategory, HashSet<string>> levelCategoryToSID { get; }
@@ -345,6 +371,220 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {38, "12a"},
                     {39, "end"}
                 }
+            },
+            {
+                ("Celeste/1-ForsakenCity", AreaMode.BSide),
+                new Dictionary<long, string>
+                {
+                    {0, "00"},
+                    {1, "01"},
+                    {2, "02"},
+                    {3, "02b"},
+                    {4, "03"},
+                    {5, "04"},
+                    {6, "05"},
+                    {7, "05b"},
+                    {8, "06"},
+                    {9, "07"},
+                    {10, "08"},
+                    {11, "08b"},
+                    {12, "09"},
+                    {13, "10"},
+                    {14, "11"},
+                    {15, "end"}
+                }
+            },
+            {
+                ("Celeste/1-ForsakenCity", AreaMode.CSide),
+                new Dictionary<long, string>
+                {
+                    {0, "00"},
+                    {1, "01"},
+                    {2, "02"}
+                }
+            },
+            {
+                ("Celeste/2-OldSite", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "start"},
+                    {1, "s0"},
+                    {2, "0"},
+                    {3, "1"},
+                    {4, "3x"},
+                    {5, "3"},
+                    {6, "4"},
+                    {7, "5"},
+                    {8, "6"},
+                    {9, "7"},
+                    {10, "8"},
+                    {11, "9"},
+                    {12, "9b"},
+                    {13, "10"},
+                    {14, "2"},
+                    {15, "11"},
+                    {16, "12b"},
+                    {17, "12c"},
+                    {18, "12d"},
+                    {19, "12"},
+                    {20, "13"},
+                    {21, "end_0"},
+                    {22, "end_1"},
+                    {23, "end_2"},
+                    {24, "end_3"},
+                    {25, "end_4"},
+                    {26, "end_3b"},
+                    {27, "end_5"},
+                    {28, "end_6"},
+                    {30, "s1"},
+                    {31, "s2"},
+                    {32, "d0"},
+                    {33, "d1"},
+                    {34, "d6"},
+                    {35, "d9"},
+                    {36, "d7"},
+                    {37, "d2"},
+                    {38, "d4"},
+                    {39, "d5"},
+                    {40, "d8"},
+                    {41, "d3"},
+                    {42, "end_s0"},
+                    {43, "end_s1"},
+                    {44, "end_3cb"},
+                    {45, "end_3c"}
+                }
+            },
+            {
+                ("Celeste/2-OldSite", AreaMode.BSide),
+                new Dictionary<long, string>
+                {
+                    {0, "start"},
+                    {1, "00"},
+                    {2, "01"},
+                    {3, "01b"},
+                    {4, "02b"},
+                    {5, "02"},
+                    {6, "03"},
+                    {7, "04"},
+                    {8, "05"},
+                    {9, "06"},
+                    {10, "07"},
+                    {11, "08b"},
+                    {12, "08"},
+                    {13, "10"},
+                    {14, "11"},
+                    {15, "end"}
+                }
+            },
+            {
+                ("Celeste/2-OldSite", AreaMode.CSide),
+                new Dictionary<long, string>
+                {
+                    {0, "00"},
+                    {1, "01"},
+                    {2, "02"}
+                }
+            },
+            {
+                ("Celeste/7-Summit", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-00"},
+                    {1, "a-01"},
+                    {2, "a-02"},
+                    {3, "a-02b"},
+                    {4, "a-03"},
+                    {5, "a-04"},
+                    {6, "a-04b"},
+                    {7, "a-05"},
+                    {8, "a-06"},
+                    {9, "b-00"},
+                    {10, "b-01"},
+                    {11, "b-02"},
+                    {12, "b-02b"},
+                    {13, "b-03"},
+                    {14, "b-04"},
+                    {15, "b-05"},
+                    {16, "b-06"},
+                    {17, "b-07"},
+                    {18, "b-08"},
+                    {19, "b-09"},
+                    {20, "c-00"},
+                    {21, "c-01"},
+                    {22, "c-02"},
+                    {23, "c-03"},
+                    {24, "c-03b"},
+                    {25, "c-04"},
+                    {26, "c-05"},
+                    {27, "c-06"},
+                    {28, "c-06b"},
+                    {29, "c-06c"},
+                    {30, "c-07"},
+                    {31, "c-07b"},
+                    {32, "c-08"},
+                    {33, "c-09"},
+                    {34, "d-00"},
+                    {35, "d-01"},
+                    {36, "d-01b"},
+                    {37, "d-01c"},
+                    {38, "d-02"},
+                    {39, "d-03"},
+                    {40, "d-03b"},
+                    {41, "d-04"},
+                    {42, "d-05"},
+                    {43, "d-05b"},
+                    {44, "d-06"},
+                    {45, "d-07"},
+                    {46, "d-08"},
+                    {47, "d-09"},
+                    {48, "d-10"},
+                    {49, "d-10b"},
+                    {50, "d-11"},
+                    {51, "e-00b"},
+                    {52, "e-00"},
+                    {53, "e-02"},
+                    {54, "e-03"},
+                    {55, "e-04"},
+                    {56, "e-05"},
+                    {57, "e-06"},
+                    {58, "e-07"},
+                    {59, "e-08"},
+                    {60, "e-09"},
+                    {61, "e-10"},
+                    {62, "e-10b"},
+                    {63, "e-13"},
+                    {64, "f-00"},
+                    {65, "f-01"},
+                    {66, "f-02"},
+                    {67, "f-02b"},
+                    {68, "f-04"},
+                    {69, "f-03"},
+                    {70, "f-05"},
+                    {71, "f-07"},
+                    {72, "f-06"},
+                    {73, "f-08"},
+                    {74, "f-08b"},
+                    {75, "f-09"},
+                    {76, "f-10"},
+                    {77, "f-10b"},
+                    {78, "f-11"},
+                    {79, "g-00"},
+                    {80, "g-00b"},
+                    {81, "g-01"},
+                    {82, "g-02"},
+                    {83, "g-03"},
+                    {85, "b-02e"},
+                    {86, "b-02c"},
+                    {87, "b-02d"},
+                    {88, "d-01d"},
+                    {89, "e-01"},
+                    {90, "e-01b"},
+                    {91, "e-01c"},
+                    {92, "e-11"},
+                    {93, "e-12"},
+                    {94, "f-08d"},
+                    {95, "f-08c"}
+                }
             }
         };
 
@@ -368,7 +608,42 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             TRAFFIC_BLOCKS,
             SPRINGS,
             BLUE_CASSETTE,
-            PINK_CASSETTE
+            PINK_CASSETTE,
+            CRUMBLING_PLATFORM,
+            TOUCH_SWITCH,
+            DREAM_BLOCK,
+            BADELINE_ORB,
+            SINKING_PLATFORM,
+            GREEN_BUBBLES,
+            CLOUDS,
+            PINK_CLOUDS,
+            MOVING_BLOCK,
+            RED_BUBBLES,
+            SWAP_BLOCK,
+            DASH_SWITCH,
+            FEATHER,
+            MOVING_PLATFORM,
+            WHITE_BLOCK
         }
+
+        public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()
+        {
+            {110, 0},
+            {109, 1},
+            {333, 2},
+            {449, 3},
+            {8, 4},
+            {679, 5}
+        };
+
+        public static Dictionary<int, EntityID> summitGemIndexReverseMapping = new Dictionary<int, EntityID>
+        {
+            {0, new EntityID("a-06", 110)},
+            {1, new EntityID("b-02d", 109)},
+            {2, new EntityID("c-06c", 333)},
+            {3, new EntityID("d-05b", 449)},
+            {4, new EntityID("e-01c", 8)},
+            {5, new EntityID("f-02b", 679)}
+        };
     }
 }

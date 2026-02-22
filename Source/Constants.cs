@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod.CelesteArchipelago.Modifications;
+using Celeste.Mod.CelesteArchipelago.Modifications.mechanics;
 using Celeste.Mod.CelesteArchipelago.UI;
 using System.Collections.Generic;
 
@@ -20,7 +21,23 @@ namespace Celeste.Mod.CelesteArchipelago
             new modCassetteBlock(),
             new modDashCrystal(),
             new modCassette(),
-            new modLevel()
+            new modLevel(),
+            new modKey(),
+            new modLockBlock(),
+            new modCrumblePlatform(),
+            new modSummitGem(),
+            new modTouchSwitch(),
+            new modDreamBlock(),
+            new modSinkingPlatform(),
+            new modBadelineBooster(),
+            new modBubbles(),
+            new modCloud(),
+            new modMovingBlock(),
+            new modMovingPlatform(),
+            new modSwapBlock(),
+            new modDashSwitch(),
+            new modFeather(),
+            new modWhiteBlock()
         };
 
         public static int SAVE_ID = 144;

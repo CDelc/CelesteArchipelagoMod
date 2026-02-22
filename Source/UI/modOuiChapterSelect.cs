@@ -115,7 +115,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         {
             return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
                 ArchipelagoManager.PermanentUnlockLevels.Contains(sid) ||
-                ArchipelagoMapper.getLevelCategory(sid) == ArchipelagoManager.Instance.starting_category;
+                ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category;
         }
 
         private static Dictionary<int, HashSet<string>> GetUnlockedCheckpointsByMode(string sid)

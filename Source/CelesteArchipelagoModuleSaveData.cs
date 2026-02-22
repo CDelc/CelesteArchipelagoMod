@@ -17,7 +17,7 @@ public class CelesteArchipelagoModuleSaveData : EverestModuleSaveData
 
     public HashSet<long> UnlockedCheckpoints { get; set; } = new HashSet<long>();
 
-    public HashSet<long> UnlockedKeys { get; set; } = new HashSet<long>();
+    public HashSet<long> UnlockedKeyDoors { get; set; } = new HashSet<long>();
 
     public HashSet<long> CrystalHeartsVanilla { get; set; } = new HashSet<long>();
 
