@@ -28,7 +28,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static void modCloud_Render(On.Celeste.Cloud.orig_Render orig, Cloud self)
         {
 
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
                 return;
@@ -56,7 +56,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
+            if (!CelesteArchipelagoModule.shouldModMechanics) return;
 
             if (isEnabled(self))
             {

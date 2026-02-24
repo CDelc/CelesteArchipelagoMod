@@ -25,7 +25,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 return;
             }
@@ -48,7 +48,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modZipMover_Update(On.Celeste.ZipMover.orig_Update orig, ZipMover self)
         {
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRAFFIC_BLOCKS) || !CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRAFFIC_BLOCKS) || !CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
             }

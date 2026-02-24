@@ -23,7 +23,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modSinkingPlatform_Update(On.Celeste.SinkingPlatform.orig_Update orig, SinkingPlatform self)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
             }

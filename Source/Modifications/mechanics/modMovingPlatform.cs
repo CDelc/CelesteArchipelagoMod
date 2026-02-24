@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modMovingPlatform_Update(On.Celeste.MovingPlatform.orig_Update orig, MovingPlatform self)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
             }

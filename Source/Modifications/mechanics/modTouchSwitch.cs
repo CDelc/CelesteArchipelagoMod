@@ -29,7 +29,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 return;
             }
@@ -52,7 +52,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modTurnOn(On.Celeste.TouchSwitch.orig_TurnOn orig, TouchSwitch self)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TOUCH_SWITCH))
+            if (!CelesteArchipelagoModule.shouldModMechanics || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TOUCH_SWITCH))
             {
                 orig(self);
             }

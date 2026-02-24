@@ -23,7 +23,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modRefill_Render(On.Celeste.Refill.orig_Render orig, Refill self)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
                 return;
@@ -45,7 +45,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static void modRefill_OnPlayer(On.Celeste.Refill.orig_OnPlayer orig, Refill self, Player player)
         {
 
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self, player);
             }

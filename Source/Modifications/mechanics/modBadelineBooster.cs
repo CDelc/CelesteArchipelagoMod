@@ -23,7 +23,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modBadelineBoost_OnPlayer(On.Celeste.BadelineBoost.orig_OnPlayer orig, BadelineBoost self, Player player)
         {
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BADELINE_ORB) || !CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BADELINE_ORB) || !CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self, player);
             }
@@ -31,11 +31,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modBadelineBoost_Update(On.Celeste.BadelineBoost.orig_Update orig, BadelineBoost self)
         {
-            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BADELINE_ORB) && CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BADELINE_ORB) && CelesteArchipelagoModule.shouldModMechanics)
             {
                 self.sprite.Color = Microsoft.Xna.Framework.Color.DarkRed;
             }
-            else
+            else if(CelesteArchipelagoModule.shouldModMechanics)
             {
                 self.sprite.Color = Microsoft.Xna.Framework.Color.White;
             }

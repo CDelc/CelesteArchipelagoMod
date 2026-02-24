@@ -28,7 +28,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private Player modClimbing(On.Celeste.Solid.orig_GetPlayerClimbing orig, Solid self)
         {
-            if(self is not CrumblePlatform || !CelesteArchipelagoModule.IsInArchipelagoSave ||
+            if(self is not CrumblePlatform || !CelesteArchipelagoModule.shouldModMechanics ||
                 ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CRUMBLING_PLATFORM))
             {
                 return orig(self);
@@ -41,7 +41,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private Player modOnTop(On.Celeste.Solid.orig_GetPlayerOnTop orig, Solid self)
         {
-            if (self is not CrumblePlatform || !CelesteArchipelagoModule.IsInArchipelagoSave ||
+            if (self is not CrumblePlatform || !CelesteArchipelagoModule.shouldModMechanics ||
                 ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CRUMBLING_PLATFORM))
             {
                 return orig(self);
@@ -55,7 +55,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static void modAdded(On.Celeste.CrumblePlatform.orig_Added orig, CrumblePlatform self, Scene scene)
         {
             orig(self, scene);
-            if(CelesteArchipelagoModule.IsInArchipelagoSave &&
+            if(CelesteArchipelagoModule.shouldModMechanics &&
                 !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CRUMBLING_PLATFORM))
             {
                 self.Collidable = false;

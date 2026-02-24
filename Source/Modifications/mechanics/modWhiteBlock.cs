@@ -22,7 +22,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modWhiteBlock_Update(On.Celeste.WhiteBlock.orig_Update orig, WhiteBlock self)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
                 return;

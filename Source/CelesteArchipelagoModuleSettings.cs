@@ -16,4 +16,6 @@ public class CelesteArchipelagoModuleSettings : EverestModuleSettings {
     public bool ServerMessages { get; set; } = true;
     public bool RoomPopups { get; set; } = true;
     #endregion
+
+    public bool Debug { get; set;  } = false;
 }

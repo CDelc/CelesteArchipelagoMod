@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modFlyFeather_Render(On.Celeste.FlyFeather.orig_Render orig, FlyFeather self)
         {
-            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) && CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) && CelesteArchipelagoModule.shouldModMechanics)
             {
                 self.sprite.Visible = false;
                 self.Collidable = false;
@@ -37,7 +37,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modFlyFeather_OnPlayer(On.Celeste.FlyFeather.orig_OnPlayer orig, FlyFeather self, Player player)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH))
+            if (!CelesteArchipelagoModule.shouldModMechanics || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH))
             {
                 orig(self, player);
             }

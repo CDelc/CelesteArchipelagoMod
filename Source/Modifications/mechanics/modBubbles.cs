@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modBooster_Render(On.Celeste.Booster.orig_Render orig, Booster self)
         {
-            if (!isEnabled(self))
+            if (!isEnabled(self) && CelesteArchipelagoModule.shouldModMechanics)
             {
                 self.sprite.Visible = false;
                 self.outline.Visible = true;
@@ -38,7 +38,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
+            if (!CelesteArchipelagoModule.shouldModMechanics) return;
 
             //self.Ch9HubBooster = false;
             //self.Ch9HubTransition = false;

@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modDashSwitch_Update(On.Celeste.DashSwitch.orig_Update orig, DashSwitch self)
         {
-            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) && CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) && CelesteArchipelagoModule.shouldModMechanics)
             {
                 self.sprite.Play("idle", true);
             }
@@ -34,7 +34,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static DashCollisionResults modDashSwitch_OnDashed(On.Celeste.DashSwitch.orig_OnDashed orig, DashSwitch self, Player player, Microsoft.Xna.Framework.Vector2 direction)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH))
+            if (!CelesteArchipelagoModule.shouldModMechanics || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH))
             {
                 return orig(self, player, direction);
             }

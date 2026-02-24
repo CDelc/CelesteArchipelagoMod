@@ -27,7 +27,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if(!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if(!CelesteArchipelagoModule.shouldModMechanics)
             {
                 return;
             }
@@ -37,7 +37,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modDreamBlock_Update(On.Celeste.DreamBlock.orig_Update orig, DreamBlock self)
         {
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) || !CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) || !CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
             }
@@ -45,7 +45,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static bool modPlayer_DreamDashCheck(On.Celeste.Player.orig_DreamDashCheck orig, Player self, Microsoft.Xna.Framework.Vector2 dir)
         {
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) || !CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) || !CelesteArchipelagoModule.shouldModMechanics)
             {
                 return orig(self, dir);
             }

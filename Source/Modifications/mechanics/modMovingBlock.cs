@@ -26,7 +26,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modMoveBlock_OnStaticMoverTrigger(On.Celeste.MoveBlock.orig_OnStaticMoverTrigger orig, MoveBlock self, StaticMover sm)
         {
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) || !CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) || !CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self, sm);
             }
@@ -34,7 +34,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modMoveBlock_UpdateColors(On.Celeste.MoveBlock.orig_UpdateColors orig, MoveBlock self)
         {
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) || !CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) || !CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
             }
@@ -60,7 +60,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static bool modMoveBlock_MoveCheck(On.Celeste.MoveBlock.orig_MoveCheck orig, MoveBlock self, Microsoft.Xna.Framework.Vector2 speed)
         {
-            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) || !CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) || !CelesteArchipelagoModule.shouldModMechanics)
             {
                 return orig(self, speed);
             }

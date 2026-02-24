@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modSwapBlock_Update(On.Celeste.SwapBlock.orig_Update orig, SwapBlock self)
         {
-            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWAP_BLOCK) && CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWAP_BLOCK) && CelesteArchipelagoModule.shouldModMechanics)
             {
                 self.redAlpha = 0.0f;
             }
@@ -34,7 +34,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modSwapBlock_OnDash(On.Celeste.SwapBlock.orig_OnDash orig, SwapBlock self, Vector2 direction)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWAP_BLOCK))
+            if (!CelesteArchipelagoModule.shouldModMechanics || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWAP_BLOCK))
             {
                 orig(self, direction);
             }
