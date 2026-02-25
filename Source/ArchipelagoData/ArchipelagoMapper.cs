@@ -327,10 +327,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {22, ("Celeste/9-Core", AreaMode.Normal)},
             {23, ("Celeste/9-Core", AreaMode.BSide)},
             {24, ("Celeste/9-Core", AreaMode.CSide)},
-            {25, ("Celeste/LostLevels", AreaMode.Normal)}
+            {25, ("Celeste/LostLevels", AreaMode.Normal)},
+            {26, ("Celeste/0-Intro", AreaMode.Normal)}
         };
 
-        private static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
+        public static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
 
 
         private static Dictionary<string, LevelCategory> levelSIDToCategory { get; } = new Dictionary<string, LevelCategory>
@@ -343,7 +344,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {"Celeste/6-Reflection", LevelCategory.A_SIDE},
             {"Celeste/7-Summit", LevelCategory.A_SIDE},
             {"Celeste/9-Core", LevelCategory.A_SIDE},
-            {"Celeste/LostLevels", LevelCategory.FAREWELL}
+            {"Celeste/LostLevels", LevelCategory.FAREWELL},
+            {"Celeste/0-Intro", LevelCategory.A_SIDE}
         };
 
         private static Dictionary<LevelCategory, HashSet<string>> levelCategoryToSID { get; }
@@ -1291,6 +1293,18 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {105, "c-alt-01"},
                     {106, "e-00yb"},
                     {107, "h-04b"}
+                }
+            },
+            {
+                ("Celeste/0-Intro", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "01"},
+                    {1, "-1"},
+                    {2, "0b"},
+                    {3, "1"},
+                    {4, "2"},
+                    {5, "3"}
                 }
             }
         };

@@ -59,6 +59,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
                 long locationID = ArchipelagoMapper.getKeyLocationID(SID, mode, self.ID);
 
+                self.Visible = false;
+                self.Collidable = false;
+
                 CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
                 CelesteArchipelagoModule.Log($"Collected Key {SID} {mode} {self.ID.Level} {self.ID.ID}, mapping to location id {locationID}");
             }

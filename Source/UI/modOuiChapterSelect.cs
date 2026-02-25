@@ -59,15 +59,15 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             }
 
             DynamicData dynamicOuiChapterSelect = new DynamicData(self);
+            string sid = self.Area.SID;
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
+            bool mapped = ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal));
 
-            if (ArchipelagoManager.Instance.randomize_checkpoints)
+            if (ArchipelagoManager.Instance.randomize_checkpoints && mapped)
             {
-                savedCheckpoints = GetUnlockedCheckpointsByMode(self.Area.SID);
+                savedCheckpoints = GetUnlockedCheckpointsByMode(sid);
             }
-
-            string sid = self.Area.SID;
 
             if (sid.StartsWith("Celeste/") && !self.Data.Interlude_Safe && self.Area.ID < 10)
             {
@@ -104,7 +104,11 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             foreach (Option mode in self.modes)
             {
                 AreaMode areaMode = mode.ID == "C" ? AreaMode.CSide : mode.ID == "B" ? AreaMode.BSide : AreaMode.Normal;
-                if (!canEnter(sid, areaMode))
+                if (!mapped)
+                {
+                    mode.Label = "NOT IN ARCHIPELAGO MOD";
+                }
+                else if (!canEnter(sid, areaMode))
                 {
                     mode.Label = "LOCKED";
                 }
@@ -113,9 +117,10 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private static bool canEnter(string sid, AreaMode areaMode)
         {
-            return CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
+            return ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) &&
+                (CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
                 ArchipelagoManager.PermanentUnlockLevels.Contains(sid) ||
-                ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category;
+                ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category);
         }
 
         private static Dictionary<int, HashSet<string>> GetUnlockedCheckpointsByMode(string sid)
