@@ -28,9 +28,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 orig(self);
                 return;
             }
-            else if (self.twoDashes)
+            else if (self.twoDashes && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL))
             {
-                //TODO: Add double dash crystal function
+                self.outline.Visible = true;
+                self.sprite.Visible = false;
+                self.Collidable = false;
+                self.respawnTimer = 2.5f;
             }
             else if (!self.twoDashes && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS))
             {

@@ -40,8 +40,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             if (!CelesteArchipelagoModule.shouldModMechanics) return;
 
-            //self.Ch9HubBooster = false;
-            //self.Ch9HubTransition = false;
+            self.Ch9HubBooster = false;
+            self.Ch9HubTransition = false;
 
             if (isEnabled(self))
             {

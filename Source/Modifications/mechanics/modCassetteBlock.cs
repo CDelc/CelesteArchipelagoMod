@@ -26,11 +26,19 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 orig(self);
             }
-            else if (self.color == Calc.HexToColor("49aaf0") && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_CASSETTE))
+            else if (self.Index == 0 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_CASSETTE))
             {
                 Disable(self);
             }
-            else if (self.color == Calc.HexToColor("f049be") && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PINK_CASSETTE))
+            else if (self.Index == 3 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PINK_CASSETTE))
+            {
+                Disable(self);
+            }
+            else if (self.Index == 1 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_CASSETTE))
+            {
+                Disable(self);
+            }
+            else if (self.Index == 2 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_CASSETTE))
             {
                 Disable(self);
             }

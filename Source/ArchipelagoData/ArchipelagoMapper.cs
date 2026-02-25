@@ -323,7 +323,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {18, ("Celeste/6-Reflection", AreaMode.CSide)},
             {19, ("Celeste/7-Summit", AreaMode.Normal)},
             {20, ("Celeste/7-Summit", AreaMode.BSide)},
-            {21, ("Celeste/7-Summit", AreaMode.CSide)}
+            {21, ("Celeste/7-Summit", AreaMode.CSide)},
+            {22, ("Celeste/9-Core", AreaMode.Normal)},
+            {23, ("Celeste/9-Core", AreaMode.BSide)},
+            {24, ("Celeste/9-Core", AreaMode.CSide)},
+            {25, ("Celeste/LostLevels", AreaMode.Normal)}
         };
 
         private static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
@@ -337,7 +341,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {"Celeste/4-GoldenRidge", LevelCategory.A_SIDE},
             {"Celeste/5-MirrorTemple", LevelCategory.A_SIDE},
             {"Celeste/6-Reflection", LevelCategory.A_SIDE},
-            {"Celeste/7-Summit", LevelCategory.A_SIDE}
+            {"Celeste/7-Summit", LevelCategory.A_SIDE},
+            {"Celeste/9-Core", LevelCategory.A_SIDE},
+            {"Celeste/LostLevels", LevelCategory.FAREWELL}
         };
 
         private static Dictionary<LevelCategory, HashSet<string>> levelCategoryToSID { get; }
@@ -1088,6 +1094,204 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {1, "01"},
                     {2, "02"}
                 }
+            },
+            {
+                ("Celeste/9-Core", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "00"},
+                    {1, "0x"},
+                    {2, "01"},
+                    {3, "02"},
+                    {4, "a-00"},
+                    {5, "a-01"},
+                    {6, "a-02"},
+                    {7, "a-03"},
+                    {8, "b-00"},
+                    {9, "b-06"},
+                    {10, "b-07b"},
+                    {11, "b-07"},
+                    {12, "c-00"},
+                    {13, "c-00b"},
+                    {14, "c-01"},
+                    {15, "c-02"},
+                    {16, "c-03"},
+                    {17, "c-03b"},
+                    {18, "c-04"},
+                    {19, "d-00"},
+                    {20, "d-01"},
+                    {21, "d-02"},
+                    {22, "d-03"},
+                    {23, "d-04"},
+                    {24, "d-05"},
+                    {25, "d-06"},
+                    {26, "d-07"},
+                    {27, "d-08"},
+                    {28, "d-09"},
+                    {29, "d-10"},
+                    {30, "d-10b"},
+                    {31, "d-10c"},
+                    {32, "d-11"},
+                    {33, "space"},
+                    {35, "b-02"},
+                    {36, "b-01"},
+                    {37, "b-03"},
+                    {38, "b-04"},
+                    {39, "b-05"}
+                }
+            },
+            {
+                ("Celeste/9-Core", AreaMode.BSide),
+                new Dictionary<long, string>
+                {
+                    {0, "00"},
+                    {1, "01"},
+                    {2, "a-00"},
+                    {3, "a-01"},
+                    {4, "a-02"},
+                    {5, "a-03"},
+                    {6, "a-04"},
+                    {7, "a-05"},
+                    {8, "b-00"},
+                    {9, "b-01"},
+                    {10, "b-02"},
+                    {11, "b-03"},
+                    {12, "b-04"},
+                    {13, "b-05"},
+                    {14, "c-00"},
+                    {15, "c-01"},
+                    {16, "c-02"},
+                    {17, "c-03"},
+                    {18, "c-04"},
+                    {19, "c-05"},
+                    {20, "c-06"},
+                    {21, "c-08"},
+                    {22, "c-07"},
+                    {23, "space"}
+                }
+            },
+            {
+                ("Celeste/9-Core", AreaMode.CSide),
+                new Dictionary<long, string>
+                {
+                    {0, "intro"},
+                    {1, "00"},
+                    {2, "01"},
+                    {3, "02"}
+                }
+            },
+            {
+                ("Celeste/LostLevels", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "intro-01-future"},
+                    {1, "intro-02-launch"},
+                    {2, "intro-03-space"},
+                    {3, "a-00"},
+                    {4, "a-01"},
+                    {5, "a-02"},
+                    {6, "a-03"},
+                    {7, "a-04"},
+                    {8, "a-05"},
+                    {9, "b-00"},
+                    {10, "b-01"},
+                    {11, "b-02"},
+                    {12, "b-03"},
+                    {13, "b-04"},
+                    {14, "b-05"},
+                    {15, "b-06"},
+                    {16, "b-07"},
+                    {17, "c-00"},
+                    {18, "c-00b"},
+                    {19, "c-01"},
+                    {20, "c-02"},
+                    {21, "c-03"},
+                    {22, "d-00"},
+                    {23, "d-01"},
+                    {24, "d-02"},
+                    {25, "d-03"},
+                    {26, "d-04"},
+                    {27, "d-05"},
+                    {28, "e-00y"},
+                    {29, "e-00z"},
+                    {30, "e-00"},
+                    {31, "e-00b"},
+                    {32, "e-01"},
+                    {33, "e-02"},
+                    {34, "e-03"},
+                    {35, "e-04"},
+                    {36, "e-05"},
+                    {37, "e-05b"},
+                    {38, "e-05c"},
+                    {39, "e-06"},
+                    {40, "e-07"},
+                    {41, "e-08"},
+                    {42, "f-door"},
+                    {43, "f-00"},
+                    {44, "f-01"},
+                    {45, "f-02"},
+                    {46, "f-03"},
+                    {47, "f-04"},
+                    {48, "f-05"},
+                    {49, "f-06"},
+                    {50, "f-07"},
+                    {51, "f-08"},
+                    {52, "f-09"},
+                    {53, "g-00"},
+                    {54, "g-01"},
+                    {55, "g-03"},
+                    {56, "g-02"},
+                    {57, "g-04"},
+                    {58, "g-05"},
+                    {59, "g-06"},
+                    {60, "h-00b"},
+                    {61, "h-00"},
+                    {62, "h-01"},
+                    {63, "h-02"},
+                    {64, "h-03"},
+                    {65, "h-03b"},
+                    {66, "h-04"},
+                    {67, "h-05"},
+                    {68, "h-06"},
+                    {69, "h-06b"},
+                    {70, "h-07"},
+                    {71, "h-08"},
+                    {72, "h-09"},
+                    {73, "h-10"},
+                    {74, "i-00"},
+                    {75, "i-00b"},
+                    {76, "i-01"},
+                    {77, "i-02"},
+                    {78, "i-03"},
+                    {79, "i-04"},
+                    {80, "i-05"},
+                    {81, "j-00"},
+                    {82, "j-00b"},
+                    {83, "j-01"},
+                    {84, "j-02"},
+                    {85, "j-03"},
+                    {86, "j-04"},
+                    {87, "j-05"},
+                    {88, "j-06"},
+                    {89, "j-07"},
+                    {90, "j-08"},
+                    {91, "j-09"},
+                    {92, "j-10"},
+                    {93, "j-11"},
+                    {94, "j-12"},
+                    {95, "j-13"},
+                    {96, "j-14"},
+                    {97, "j-14b"},
+                    {98, "j-15"},
+                    {99, "j-16"},
+                    {100, "j-17"},
+                    {101, "j-18"},
+                    {102, "j-19"},
+                    {104, "c-alt-00"},
+                    {105, "c-alt-01"},
+                    {106, "e-00yb"},
+                    {107, "h-04b"}
+                }
             }
         };
 
@@ -1105,6 +1309,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return 200000000000 + (int)mechanic;
         }
 
+
+        //Order matters here, these should be in the order defined in ItemNames.py in the APWorld logic code
         public enum Mechanic
         {
             DASH_CRYSTALS,
@@ -1126,7 +1332,21 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             DASH_SWITCH,
             FEATHER,
             MOVING_PLATFORM,
-            WHITE_BLOCK
+            WHITE_BLOCK,
+            SEEKERS,
+            THEO_CRYSTAL,
+            KEVIN,
+            BUMPER,
+            CORE_BLOCK,
+            CORE_SWITCH,
+            LAVA_ICE_BALLS,
+            BREAKER_SWITCH,
+            FLYING_BIRD,
+            JELLYFISH,
+            PUFFER_FISH,
+            DOUBLE_DASH_CRYSTAL,
+            YELLOW_CASSETTE,
+            GREEN_CASSETTE
         }
 
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()
