@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.Modifications;
+using Celeste.Mod.CelesteArchipelago.Modifications;
 using Celeste.Mod.CelesteArchipelago.Modifications.mechanics;
 using Celeste.Mod.CelesteArchipelago.UI;
 using System.Collections.Generic;
@@ -48,7 +48,8 @@ namespace Celeste.Mod.CelesteArchipelago
             new modPufferFish(),
             new modBird(),
             new modSeeker(),
-            new modTheoCrystal()
+            new modTheoCrystal(),
+            new modLoopBlock()
         };
 
         public static int SAVE_ID = 144;
