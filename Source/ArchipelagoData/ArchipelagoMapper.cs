@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -1360,7 +1360,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             PUFFER_FISH,
             DOUBLE_DASH_CRYSTAL,
             YELLOW_CASSETTE,
-            GREEN_CASSETTE
+            GREEN_CASSETTE,
+            LOOP_BLOCK
         }
 
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()

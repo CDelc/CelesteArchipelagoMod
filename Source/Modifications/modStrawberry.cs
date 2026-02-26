@@ -1,4 +1,4 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
@@ -46,6 +46,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             orig(self);
 
             if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
+
+            if (modRainbowBerry.IsRainbowBerry(self)) return;
 
             string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
             AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
