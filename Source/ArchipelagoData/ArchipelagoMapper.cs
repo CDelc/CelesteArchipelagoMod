@@ -107,11 +107,14 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         private static LevelCategory getLevelCategory(string SID)
         {
-            if (!levelSIDToCategory.TryGetValue(SID, out LevelCategory rValue))
+            foreach (KeyValuePair<string, LevelCategory> kvp in levelSIDToCategory)
             {
-                throw new IndexOutOfRangeException($"A level category was requested for a level that is not mapped: {SID}");
+                if (SID.StartsWith(kvp.Key))
+                {
+                    return kvp.Value;
+                }
             }
-            return rValue;
+            return LevelCategory.A_SIDE;
         }
 
         public static LevelCategory getLevelCategory(string SID, AreaMode mode)
@@ -328,7 +331,16 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {23, ("Celeste/9-Core", AreaMode.BSide)},
             {24, ("Celeste/9-Core", AreaMode.CSide)},
             {25, ("Celeste/LostLevels", AreaMode.Normal)},
-            {26, ("Celeste/0-Intro", AreaMode.Normal)}
+            {26, ("Celeste/0-Intro", AreaMode.Normal)},
+            {27, ("StrawberryJam2021/1-Beginner/coffe", AreaMode.Normal)},
+            {28, ("StrawberryJam2021/1-Beginner/asteriskblue", AreaMode.Normal)},
+            {29, ("StrawberryJam2021/1-Beginner/Bing_Over_Google", AreaMode.Normal)},
+            {30, ("StrawberryJam2021/1-Beginner/cellularAutomaton", AreaMode.Normal)},
+            {999, ("StrawberryJam2021/0-Lobbies/1-Beginner", AreaMode.Normal)},
+            {998, ("StrawberryJam2021/0-Lobbies/2-Intermediate", AreaMode.Normal)},
+            {997, ("StrawberryJam2021/0-Lobbies/3-Advanced", AreaMode.Normal)},
+            {996, ("StrawberryJam2021/0-Lobbies/4-Expert", AreaMode.Normal)},
+            {995, ("StrawberryJam2021/0-Lobbies/5-Grandmaster", AreaMode.Normal)}
         };
 
         public static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
@@ -345,12 +357,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {"Celeste/7-Summit", LevelCategory.A_SIDE},
             {"Celeste/9-Core", LevelCategory.A_SIDE},
             {"Celeste/LostLevels", LevelCategory.FAREWELL},
-            {"Celeste/0-Intro", LevelCategory.A_SIDE}
+            {"Celeste/0-Intro", LevelCategory.A_SIDE},
+            {"StrawberryJam2021/1-Beginner/", LevelCategory.BEGINNER}
         };
-
-        private static Dictionary<LevelCategory, HashSet<string>> levelCategoryToSID { get; }
-            = levelSIDToCategory.GroupBy(kvp => kvp.Value).ToDictionary(x => x.Key, x => x.Select(i => i.Key).ToHashSet());
-
 
         private static Dictionary<(string SID, AreaMode mode), Dictionary<long, string>> roomIdsToname { get; } = new Dictionary<(string SID, AreaMode mode), Dictionary<long, string>>
         {
@@ -1306,6 +1315,82 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {4, "2"},
                     {5, "3"}
                 }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/coffe", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "c-01"},
+                    {1, "c-02"},
+                    {2, "c-03"},
+                    {3, "c-04"},
+                    {4, "c-05"},
+                    {5, "c-06"},
+                    {6, "c-07"},
+                    {7, "c-08"},
+                    {8, "c-08b"},
+                    {9, "c-09"},
+                    {10, "c-10"},
+                    {11, "c-1"},
+                    {12, "c-12"},
+                    {13, "c-13"},
+                    {14, "c-13b"},
+                    {15, "c-14"},
+                    {16, "c-15"},
+                    {17, "c-16"},
+                    {18, "c-17"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/asteriskblue", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-03"},
+                    {3, "a-04"},
+                    {4, "a-05"},
+                    {5, "a-06"},
+                    {6, "a-07"},
+                    {7, "a-08"},
+                    {8, "a-09"},
+                    {9, "a-10"},
+                    {10, "a-11"},
+                    {11, "a-12"},
+                    {12, "a-13"},
+                    {13, "a-16"},
+                    {14, "a-14"},
+                    {15, "a-17"},
+                    {16, "a-15"},
+                    {17, "a-18"},
+                    {18, "a-19"},
+                    {19, "a-20"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Bing_Over_Google", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "00- intro"},
+                    {1, "01- Crusher"},
+                    {2, "02- Bait N'Switch"},
+                    {3, "02B- a strwawbewwy??"},
+                    {4, "03- Uberjump"},
+                    {5, "04- Head Trauma"},
+                    {6, "05- Boing"},
+                    {7, "06- Bubbles"},
+                    {8, "07- Falling Cannon"},
+                    {9, "07B- OwO whats this??"},
+                    {10, "08- U Turn"},
+                    {11, "09- Fin"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/cellularAutomaton", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+
+                }
             }
         };
 
@@ -1360,7 +1445,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             PUFFER_FISH,
             DOUBLE_DASH_CRYSTAL,
             YELLOW_CASSETTE,
-            GREEN_CASSETTE
+            GREEN_CASSETTE,
+            LOOP_BLOCK,
+            DREAM_DASH_CRYSTALS,
+            INTRO_CRUSHER,
+            DASH_ZIP_MOVER
         }
 
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()

@@ -28,14 +28,26 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 orig(self);
                 return;
             }
-            else if (self.twoDashes && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL))
+            bool isDreamRefill = false;
+            if(self.GetType() == CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.DashStates.DreamTunnelRefill"))
+            {
+                isDreamRefill = true;
+            }
+            if (!isDreamRefill && self.twoDashes && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL))
             {
                 self.outline.Visible = true;
                 self.sprite.Visible = false;
                 self.Collidable = false;
                 self.respawnTimer = 2.5f;
             }
-            else if (!self.twoDashes && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS))
+            else if (!isDreamRefill && !self.twoDashes && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS))
+            {
+                self.outline.Visible = true;
+                self.sprite.Visible = false;
+                self.Collidable = false;
+                self.respawnTimer = 2.5f;
+            }
+            else if (isDreamRefill && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_DASH_CRYSTALS))
             {
                 self.outline.Visible = true;
                 self.sprite.Visible = false;
@@ -51,12 +63,19 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self, player);
+                return;
             }
-            else if (self.twoDashes)
+
+            if (self.GetType() == CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.DashStates.DreamTunnelRefill"))
             {
                 orig(self, player);
             }
-            else if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS))
+
+            if (self.twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL))
+            {
+                orig(self, player);
+            }
+            else if (!self.twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS))
             {
                 orig(self, player);
             }

@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using System;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
@@ -47,6 +48,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
 
+            if (IsRainbowBerry(self)) return;
+
             string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
             AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
 
@@ -84,6 +87,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 self.strawberries.OutOf = ArchipelagoManager.Instance.required_strawberries;
             }
             orig(self);
+        }
+
+        public static bool IsRainbowBerry(Strawberry self)
+        {
+            Type rainbowBerryType = CelesteArchipelagoModule.FindType("Celeste.Mod.CollabUtils2.Entities.RainbowBerry");
+            return rainbowBerryType != null && self.GetType() == rainbowBerryType;
         }
     }
 }

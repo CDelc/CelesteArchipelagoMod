@@ -464,12 +464,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                             CelesteArchipelagoModule.SaveData.moonBerryCollected = true;
                             break;
                         }
-                    //Silver berries
-                    case long id when id >= 1000000000000 && id < 1100000000000:
-                        {
-                            CelesteArchipelagoModule.SaveData.SilverBerriesUnlocked.Add(id);
-                            break;
-                        }
+                    ////Silver berries
+                    //case long id when id >= 1000000000000 && id < 1100000000000:
+                    //    {
+                    //        CelesteArchipelagoModule.SaveData.SilverBerriesUnlocked.Add(id);
+                    //        break;
+                    //    }
                     //Summit Gems
                     case long id when id >= 1100000000000 && id < 1200000000000:
                         {
@@ -602,11 +602,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 {
 
                 }
-                //rainbow_berry
-                else if (newLoc >= 1100000000000 && newLoc < 1200000000000)
-                {
+                ////rainbow_berry
+                //else if (newLoc >= 1100000000000 && newLoc < 1200000000000)
+                //{
 
-                }
+                //}
                 //winged_golden
                 else if (newLoc >= 1200000000000 && newLoc < 1300000000000)
                 {

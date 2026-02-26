@@ -23,7 +23,7 @@ public class CelesteArchipelagoModuleSaveData : EverestModuleSaveData
 
     public HashSet<long> CrystalHeartsCollab { get; set; } = new HashSet<long>();
 
-    public HashSet<long> SilverBerriesUnlocked { get; set; } = new HashSet<long>();
+    //public HashSet<long> SilverBerriesUnlocked { get; set; } = new HashSet<long>();
 
     public HashSet<long> SummitGemsUnlocked { get; set; } = new HashSet<long>();
 

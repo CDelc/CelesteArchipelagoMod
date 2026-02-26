@@ -37,8 +37,8 @@ public class CelesteArchipelagoModule : EverestModule {
         foreach (var item in Constants.modifications)
         {
             item.Load();
-            Log("CelesteArchipelago Mod Loaded");
         }
+        Log("CelesteArchipelago Mod Loaded");
     }
 
 
@@ -53,4 +53,15 @@ public class CelesteArchipelagoModule : EverestModule {
     {
         Logger.Log(LogLevel.Info, "CelesteArchipelago", message);
     }
+
+    public static Type FindType(string fullName)
+    {
+        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            var type = asm.GetType(fullName);
+            if (type != null) return type;
+        }
+        return null;
+    }
+
 }
