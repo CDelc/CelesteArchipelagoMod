@@ -49,7 +49,8 @@ namespace Celeste.Mod.CelesteArchipelago
             new modBird(),
             new modSeeker(),
             new modTheoCrystal(),
-            new modLoopBlock()
+            new modLoopBlock(),
+            new modRainbowBerry()
         };
 
         public static int SAVE_ID = 144;
