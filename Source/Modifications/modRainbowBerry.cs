@@ -54,12 +54,15 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             if (addedMethod != null)
                 hookAdded = new Hook(addedMethod,
                     typeof(modRainbowBerry).GetMethod(nameof(ModAdded), BindingFlags.NonPublic | BindingFlags.Static));
+
+            On.Celeste.Strawberry.OnCollect += ModOnCollect;
         }
 
         public override void Unload()
         {
             hookAdded?.Dispose();
             hookAdded = null;
+            On.Celeste.Strawberry.OnCollect -= ModOnCollect;
         }
 
         private static Type FindType(string fullName)
@@ -85,6 +88,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             baseEntityAdded = (Action<Entity, Scene>)dm.CreateDelegate(typeof(Action<Entity, Scene>));
         }
 
+        public static bool IsRainbowBerry(Strawberry self)
+        {
+            return rainbowBerryType != null && self.GetType() == rainbowBerryType;
+        }
+
         private static void ModAdded(orig_Added orig, Entity self, Scene scene)
         {
             if (!CelesteArchipelagoModule.IsInArchipelagoSave)
@@ -92,10 +100,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 orig(self, scene);
                 return;
             }
-
-            // Non-virtual call to Entity.Added for minimal scene setup,
-            // skipping both Strawberry.Added and RainbowBerry.Added logic.
-            baseEntityAdded(self, scene);
 
             string levelSet = (string)levelSetField.GetValue(self);
             string[] maps = (string[])mapsField.GetValue(self);
@@ -105,8 +109,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             int totalBerries = 0;
             int collectedBerries = 0;
+            Dictionary<string, EntityID> levelSetBerries = null;
 
-            if (silverBerries != null && silverBerries.TryGetValue(levelSet, out var levelSetBerries))
+            if (silverBerries != null && silverBerries.TryGetValue(levelSet, out levelSetBerries))
             {
                 foreach (KeyValuePair<string, EntityID> requiredSilver in levelSetBerries)
                 {
@@ -127,11 +132,74 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 totalBerries = requiredBerries.Value;
             }
 
-            Entity hologram = (Entity)holoConstructor.Invoke(
-                new object[] { self.Position, collectedBerries, totalBerries });
-            scene.Add(hologram);
+            if (collectedBerries >= totalBerries && totalBerries > 0)
+            {
+                // All AP silvers collected: inject into vanilla save data so
+                // the original RainbowBerry.Added sees them as collected,
+                // then let normal behavior proceed (solid, collectible berry).
+                if (levelSetBerries != null)
+                    InjectSilverBerriesIntoSaveData(levelSetBerries, maps);
 
-            self.RemoveSelf();
+                orig(self, scene);
+            }
+            else
+            {
+                // Not all collected: show hologram with AP-based progress.
+                baseEntityAdded(self, scene);
+
+                Entity hologram = (Entity)holoConstructor.Invoke(
+                    new object[] { self.Position, collectedBerries, totalBerries });
+                scene.Add(hologram);
+
+                self.RemoveSelf();
+            }
+        }
+
+        private static void InjectSilverBerriesIntoSaveData(Dictionary<string, EntityID> berries, string[] maps)
+        {
+            if (SaveData.Instance == null) return;
+
+            foreach (KeyValuePair<string, EntityID> silver in berries)
+            {
+                if (maps != null && !maps.Contains(silver.Key))
+                    continue;
+
+                AreaData areaData = AreaData.Get(silver.Key);
+                if (areaData == null) continue;
+
+                AreaStats stats = SaveData.Instance.GetAreaStatsFor(areaData.ToKey());
+                if (stats != null)
+                {
+                    stats.Modes[0].Strawberries.Add(silver.Value);
+                }
+            }
+        }
+
+        private static void ModOnCollect(On.Celeste.Strawberry.orig_OnCollect orig, Strawberry self)
+        {
+            orig(self);
+
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
+            if (!IsRainbowBerry(self)) return;
+
+            try
+            {
+                string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
+                AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
+
+                long locationID = 1100000000000
+                    + ArchipelagoMapper.getLocationOffset(SID, mode, self.ID.Level)
+                    + self.ID.ID;
+
+                CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
+
+                CelesteArchipelagoModule.Log(
+                    $"Rainbow Berry {self.ID.Key} checked, mapping to location id {locationID:X}");
+            }
+            catch (Exception e)
+            {
+                CelesteArchipelagoModule.Log($"Failed to check Rainbow Berry location: {e.Message}");
+            }
         }
 
         private static bool IsApSilverBerryUnlocked(string SID, EntityID silverBerryEntityID)
