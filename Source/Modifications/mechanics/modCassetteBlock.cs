@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 {
     internal class modCassetteBlock : IGameModification
     {
+
+        private static Type CassetteZipMoverType;
+
         public override void Load()
         {
+            CassetteZipMoverType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.CassetteZipMover");
             On.Celeste.CassetteBlock.Update += modCassetteBlock_Update;
         }
 
@@ -25,20 +30,33 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             if (!CelesteArchipelagoModule.shouldModMechanics)
             {
                 orig(self);
+                return;
             }
-            else if (self.Index == 0 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_CASSETTE))
+            if (self.GetType() == CassetteZipMoverType && isBlue(self.color) && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_CASSETTE_TRAFFIC_BLOCK))
             {
                 Disable(self);
             }
-            else if (self.Index == 3 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PINK_CASSETTE))
+            else if (self.GetType() == CassetteZipMoverType && isPink(self.color) && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PINK_CASSETTE_TRAFFIC_BLOCK))
             {
                 Disable(self);
             }
-            else if (self.Index == 1 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_CASSETTE))
+            else if (self.GetType() == CassetteZipMoverType && isYellow(self.color) && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_CASSETTE_TRAFFIC_BLOCK))
             {
                 Disable(self);
             }
-            else if (self.Index == 2 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_CASSETTE))
+            else if (self.GetType() != CassetteZipMoverType && isBlue(self.color) && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_CASSETTE))
+            {
+                Disable(self);
+            }
+            else if (self.GetType() != CassetteZipMoverType && isPink(self.color) && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PINK_CASSETTE))
+            {
+                Disable(self);
+            }
+            else if (self.GetType() != CassetteZipMoverType && isYellow(self.color) && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_CASSETTE))
+            {
+                Disable(self);
+            }
+            else if (self.GetType() != CassetteZipMoverType && isGreen(self.color) && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_CASSETTE))
             {
                 Disable(self);
             }
@@ -46,6 +64,26 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 orig(self);
             }
+        }
+
+        private static bool isBlue(Color color)
+        {
+            return color.R == 73 && color.G == 170 && color.B == 240;
+        }
+
+        private static bool isPink(Color color)
+        {
+            return color.R == 240 && color.G == 73 && color.B == 190;
+        }
+
+        private static bool isYellow(Color color)
+        {
+            return color.R == 252 && color.G == 220 && color.B == 58;
+        }
+
+        private static bool isGreen(Color color)
+        {
+            return color.R == 56 && color.G == 224 && color.B == 78;
         }
 
         private static void Disable(CassetteBlock self)

@@ -336,6 +336,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {28, ("StrawberryJam2021/1-Beginner/asteriskblue", AreaMode.Normal)},
             {29, ("StrawberryJam2021/1-Beginner/Bing_Over_Google", AreaMode.Normal)},
             {30, ("StrawberryJam2021/1-Beginner/cellularAutomaton", AreaMode.Normal)},
+            {31, ("StrawberryJam2021/1-Beginner/Ceph", AreaMode.Normal)},
+            {32, ("StrawberryJam2021/1-Beginner/Circumplex", AreaMode.Normal)},
             {999, ("StrawberryJam2021/0-Lobbies/1-Beginner", AreaMode.Normal)},
             {998, ("StrawberryJam2021/0-Lobbies/2-Intermediate", AreaMode.Normal)},
             {997, ("StrawberryJam2021/0-Lobbies/3-Advanced", AreaMode.Normal)},
@@ -1389,7 +1391,58 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 ("StrawberryJam2021/1-Beginner/cellularAutomaton", AreaMode.Normal),
                 new Dictionary<long, string>
                 {
-
+                    {0, "01"},
+                    {1, "02"},
+                    {2, "02b"},
+                    {3, "03"},
+                    {4, "04"},
+                    {5, "04b"},
+                    {6, "05"},
+                    {7, "06"},
+                    {8, "07"},
+                    {9, "08"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Ceph", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1"},
+                    {1, "2"},
+                    {2, "3"},
+                    {3, "4"},
+                    {4, "6"},
+                    {5, "7"},
+                    {6, "8"},
+                    {7, "9"},
+                    {8, "10"},
+                    {9, "11-c"},
+                    {10, "12"},
+                    {12, "ber4"},
+                    {13, "5"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Circumplex", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "01"},
+                    {1, "02"},
+                    {2, "03"},
+                    {3, "04"},
+                    {4, "04b"},
+                    {5, "05"},
+                    {6, "05b"},
+                    {7, "06"},
+                    {8, "07"},
+                    {9, "07b"},
+                    {10, "08"},
+                    {11, "09"},
+                    {12, "10"},
+                    {13, "10b"},
+                    {14, "11"},
+                    {15, "11b"},
+                    {16, "heart"}
                 }
             }
         };
@@ -1408,6 +1461,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return 200000000000 + (int)mechanic;
         }
 
+        public static void logUnlockedMechanics()
+        {
+            foreach (Mechanic mech in Enum.GetValues(typeof(Mechanic))){
+                CelesteArchipelagoModule.Log($"{mech.ToString()} : {mechanicEnabled(mech)}");
+            }
+        }
 
         //Order matters here, these should be in the order defined in ItemNames.py in the APWorld logic code
         public enum Mechanic
@@ -1449,7 +1508,14 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             LOOP_BLOCK,
             DREAM_DASH_CRYSTALS,
             INTRO_CRUSHER,
-            DASH_ZIP_MOVER
+            DASH_ZIP_MOVER,
+            BLUE_CASSETTE_TRAFFIC_BLOCK,
+            PINK_CASSETTE_TRAFFIC_BLOCK,
+            YELLOW_CASSETTE_TRAFFIC_BLOCK,
+            SOAP_BUBBLE,
+            DASHLESS_SPRINGS,
+            SINGLE_JUMP_REFILL,
+            TRIPLE_JUMP_REFILL
         }
 
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()

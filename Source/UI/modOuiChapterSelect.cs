@@ -58,8 +58,11 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 return;
             }
 
+            //ArchipelagoMapper.logUnlockedMechanics();
+
             DynamicData dynamicOuiChapterSelect = new DynamicData(self);
             string sid = self.Area.SID;
+            CelesteArchipelagoModule.Log(sid);
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
             bool mapped = ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal));

@@ -5,7 +5,6 @@ using MonoMod.RuntimeDetour;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +28,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         public override void Load()
         {
-            DashZipMoverType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.StrawberryJam.DashZipMover");
+            DashZipMoverType = CelesteArchipelagoModule.FindType("Celeste.Mod.StrawberryJam2021.Entities.DashZipMover");
             streetLightField = DashZipMoverType.GetField("streetlight", BindingFlags.NonPublic | BindingFlags.Instance);
 
             MethodInfo onDashedMethod = DashZipMoverType.GetMethod("OnDashed", BindingFlags.Public | BindingFlags.Instance);
@@ -77,7 +76,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_ZIP_MOVER))
             {
-                streetlight.Color = Color.DarkRed;
+                streetlight.Color = Color.Purple;
             }
             else
             {

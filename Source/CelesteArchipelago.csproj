@@ -30,6 +30,9 @@
         <Reference Include="CollabUtils2">
           <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\CollabUtils2.dll</HintPath>
         </Reference>
+        <Reference Include="FrostTempleHelper">
+          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\FrostTempleHelper.dll</HintPath>
+        </Reference>
         <Reference Include="StrawberryJam2021">
           <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\StrawberryJam2021.dll</HintPath>
         </Reference>
