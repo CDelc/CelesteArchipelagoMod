@@ -1,4 +1,5 @@
-﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Monocle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,17 +73,14 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             if (self.GetType() == JumpRefillType)
             {
                 int extraJumps = (int)ExtraJumpsField.GetValue(self);
-                if (extraJumps == 1 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SINGLE_JUMP_REFILL))
+                if ((extraJumps == 1 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SINGLE_JUMP_REFILL)) ||
+                    (extraJumps == 3 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRIPLE_JUMP_REFILL)))
                 {
+                    foreach (Component c in self)
+                    {
+                        c.Visible = false;
+                    }
                     self.outline.Visible = true;
-                    self.sprite.Visible = false;
-                    self.Collidable = false;
-                    self.respawnTimer = 2.5f;
-                }
-                else if (extraJumps == 3 && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRIPLE_JUMP_REFILL))
-                {
-                    self.outline.Visible = true;
-                    self.sprite.Visible = false;
                     self.Collidable = false;
                     self.respawnTimer = 2.5f;
                 }
