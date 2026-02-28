@@ -338,6 +338,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {30, ("StrawberryJam2021/1-Beginner/cellularAutomaton", AreaMode.Normal)},
             {31, ("StrawberryJam2021/1-Beginner/Ceph", AreaMode.Normal)},
             {32, ("StrawberryJam2021/1-Beginner/Circumplex", AreaMode.Normal)},
+            {33, ("StrawberryJam2021/1-Beginner/CoupCritik", AreaMode.Normal)},
+            {34, ("StrawberryJam2021/1-Beginner/Eclipse", AreaMode.Normal)},
+            {35, ("StrawberryJam2021/1-Beginner/voliver9", AreaMode.Normal)},
+            {36, ("StrawberryJam2021/1-Beginner/snas", AreaMode.Normal)},
+            {37, ("StrawberryJam2021/1-Beginner/NotYourBadeline", AreaMode.Normal)},
             {999, ("StrawberryJam2021/0-Lobbies/1-Beginner", AreaMode.Normal)},
             {998, ("StrawberryJam2021/0-Lobbies/2-Intermediate", AreaMode.Normal)},
             {997, ("StrawberryJam2021/0-Lobbies/3-Advanced", AreaMode.Normal)},
@@ -1444,6 +1449,104 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {15, "11b"},
                     {16, "heart"}
                 }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/CoupCritik", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "01"},
+                    {1, "02"},
+                    {2, "Berry1"},
+                    {3, "03"},
+                    {4, "04"},
+                    {5, "05"},
+                    {6, "06"},
+                    {7, "07"},
+                    {8, "08"},
+                    {9, "09"},
+                    {10, "10"},
+                    {11, "11"},
+                    {12, "12"},
+                    {13, "Berry2"},
+                    {14, "13"},
+                    {15, "14"},
+                    {16, "15"},
+                    {17, "16"},
+                    {18, "17"},
+                    {20, "RouteB-1"},
+                    {21, "RouteB-2"},
+                    {22, "RouteB-3"},
+                    {23, "RouteB-4"},
+                    {24, "RouteA-2"},
+                    {25, "RouteA-1"},
+                    {26, "RouteA-3"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Eclipse", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_01"},
+                    {1, "a_02"},
+                    {2, "a_03"},
+                    {3, "b_01"},
+                    {4, "b_02"},
+                    {5, "b_03"},
+                    {6, "b_04"},
+                    {7, "b_05"},
+                    {8, "c_01"},
+                    {9, "c_02"},
+                    {10, "c_03_end"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/voliver9", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_01"},
+                    {1, "a_02"},
+                    {2, "a_03"},
+                    {3, "a_04"},
+                    {4, "a_05"},
+                    {5, "a_06"},
+                    {6, "b-01"},
+                    {7, "a_07"},
+                    {8, "a_08"},
+                    {9, "b-02"},
+                    {10, "a_09"},
+                    {11, "b-03"},
+                    {12, "b-04"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/snas", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1"},
+                    {1, "2"},
+                    {2, "3"},
+                    {3, "4"},
+                    {4, "5"},
+                    {5, "6"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/NotYourBadeline", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_01"},
+                    {1, "a_02"},
+                    {2, "a_03"},
+                    {3, "a_04"},
+                    {4, "a_05"},
+                    {5, "a_10"},
+                    {6, "a_06"},
+                    {7, "a_07"},
+                    {8, "a_08"},
+                    {9, "a_09"},
+                    {10, "a_11"},
+                    {11, "a_12"}
+                }
             }
         };
 
@@ -1515,7 +1618,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             SOAP_BUBBLE,
             DASHLESS_SPRINGS,
             SINGLE_JUMP_REFILL,
-            TRIPLE_JUMP_REFILL
+            TRIPLE_JUMP_REFILL,
+            DOUBLE_DASH_DREAM_BLOCK
         }
 
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()
