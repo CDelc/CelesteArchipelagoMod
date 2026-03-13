@@ -16,6 +16,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static Type GenericCustomBoosterType;
         private static Type BlueBoosterType;
+        private static Type GrayBoosterType;
 
         private static Hook hookRender;
         private static Hook hookUpdate;
@@ -27,6 +28,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             GenericCustomBoosterType = CelesteArchipelagoModule.FindType("FrostHelper.Entities.Boosters.GenericCustomBooster");
             BlueBoosterType = CelesteArchipelagoModule.FindType("FrostHelper.Entities.Boosters.BlueBooster");
+            GrayBoosterType = typeof(GrayBooster);
 
             MethodInfo renderMethod = GenericCustomBoosterType.GetMethod("Render", BindingFlags.Public | BindingFlags.Instance);
             hookRender = new Hook(renderMethod, typeof(modGenericCustomBooster).GetMethod(nameof(modRender), BindingFlags.NonPublic | BindingFlags.Static));
@@ -53,7 +55,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             GenericCustomBooster booster = (GenericCustomBooster)self;
 
-            if (self.GetType() == BlueBoosterType && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SOAP_BUBBLE))
+            if (!isActive(self))
             {
                 booster.sprite.Visible = false;
                 booster.outline.Visible = true;
@@ -67,19 +69,23 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             orig(self);
 
             if (!CelesteArchipelagoModule.shouldModMechanics) return;
-
-            if (self.GetType() == BlueBoosterType)
+            if (isActive(self))
             {
-                if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SOAP_BUBBLE))
-                {
-                    self.Collidable = true;
-                }
-                else
-                {
-                    self.Collidable = false;
-
-                }
+                self.Collidable = true;
             }
+            else
+            {
+                self.Collidable = false;
+            }
+
+        }
+
+        private static bool isActive(Entity self)
+        {
+            GenericCustomBooster booster = (GenericCustomBooster)self;
+            return self.GetType() == BlueBoosterType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SOAP_BUBBLE) && !booster.Red ||
+                self.GetType() == BlueBoosterType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_DASHLESS_BUBBLE) && booster.Red ||
+                self.GetType() == GrayBoosterType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GRAY_BUBBLES) && !booster.Red;
         }
     }
 }

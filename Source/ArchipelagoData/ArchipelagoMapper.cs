@@ -332,6 +332,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {24, ("Celeste/9-Core", AreaMode.CSide)},
             {25, ("Celeste/LostLevels", AreaMode.Normal)},
             {26, ("Celeste/0-Intro", AreaMode.Normal)},
+
             {27, ("StrawberryJam2021/1-Beginner/coffe", AreaMode.Normal)},
             {28, ("StrawberryJam2021/1-Beginner/asteriskblue", AreaMode.Normal)},
             {29, ("StrawberryJam2021/1-Beginner/Bing_Over_Google", AreaMode.Normal)},
@@ -343,6 +344,75 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {35, ("StrawberryJam2021/1-Beginner/voliver9", AreaMode.Normal)},
             {36, ("StrawberryJam2021/1-Beginner/snas", AreaMode.Normal)},
             {37, ("StrawberryJam2021/1-Beginner/NotYourBadeline", AreaMode.Normal)},
+            {38, ("StrawberryJam2021/1-Beginner/Flagpole1up", AreaMode.Normal)},
+            {39, ("StrawberryJam2021/1-Beginner/frozenflygone", AreaMode.Normal)},
+            {40, ("StrawberryJam2021/1-Beginner/HankyMueller", AreaMode.Normal)},
+            {41, ("StrawberryJam2021/1-Beginner/hyperlife", AreaMode.Normal)},
+            {42, ("StrawberryJam2021/1-Beginner/Jadeturtle", AreaMode.Normal)},
+            {43, ("StrawberryJam2021/1-Beginner/joltik", AreaMode.Normal)},
+            {44, ("StrawberryJam2021/1-Beginner/mosscairn", AreaMode.Normal)},
+            {45, ("StrawberryJam2021/1-Beginner/Owen-Shirrel", AreaMode.Normal)},
+            {46, ("StrawberryJam2021/1-Beginner/Quinnigan", AreaMode.Normal)},
+            {47, ("StrawberryJam2021/1-Beginner/skeleton", AreaMode.Normal)},
+            {48, ("StrawberryJam2021/1-Beginner/ZZ-HeartSide", AreaMode.Normal)},
+
+            {49, ("StrawberryJam2021/2-Intermediate/Arphimigon", AreaMode.Normal)},
+            {50, ("StrawberryJam2021/2-Intermediate/bryse0n", AreaMode.Normal)},
+            {51, ("StrawberryJam2021/2-Intermediate/Dooshii", AreaMode.Normal)},
+            {52, ("StrawberryJam2021/2-Intermediate/Emik", AreaMode.Normal)},
+            {53, ("StrawberryJam2021/2-Intermediate/Evilleafy", AreaMode.Normal)},
+            {54, ("StrawberryJam2021/2-Intermediate/Ezel", AreaMode.Normal)},
+            {55, ("StrawberryJam2021/2-Intermediate/GlowWoomii", AreaMode.Normal)},
+            {56, ("StrawberryJam2021/2-Intermediate/Ice", AreaMode.Normal)},
+            {57, ("StrawberryJam2021/2-Intermediate/Jems", AreaMode.Normal)},
+            {58, ("StrawberryJam2021/2-Intermediate/LegS", AreaMode.Normal)},
+            {59, ("StrawberryJam2021/2-Intermediate/Liero", AreaMode.Normal)},
+            {60, ("StrawberryJam2021/2-Intermediate/Luma", AreaMode.Normal)},
+            {61, ("StrawberryJam2021/2-Intermediate/marlin", AreaMode.Normal)},
+            {62, ("StrawberryJam2021/2-Intermediate/pixelator", AreaMode.Normal)},
+            {63, ("StrawberryJam2021/2-Intermediate/Rocketguy2", AreaMode.Normal)},
+            {64, ("StrawberryJam2021/2-Intermediate/SpoopySoup", AreaMode.Normal)},
+            {65, ("StrawberryJam2021/2-Intermediate/thebreadstick1", AreaMode.Normal)},
+            {66, ("StrawberryJam2021/2-Intermediate/vitellary", AreaMode.Normal)},
+            {67, ("StrawberryJam2021/2-Intermediate/ZZ-HeartSide", AreaMode.Normal)},
+
+            {68, ("StrawberryJam2021/3-Advanced/astraxel", AreaMode.Normal)},
+            {69, ("StrawberryJam2021/3-Advanced/BlueXans", AreaMode.Normal)},
+            {70, ("StrawberryJam2021/3-Advanced/Citrea", AreaMode.Normal)},
+            {71, ("StrawberryJam2021/3-Advanced/galaksyz", AreaMode.Normal)},
+            {72, ("StrawberryJam2021/3-Advanced/Goldian", AreaMode.Normal)},
+            {73, ("StrawberryJam2021/3-Advanced/hennyburgr", AreaMode.Normal)},
+            {74, ("StrawberryJam2021/3-Advanced/Indecx", AreaMode.Normal)},
+            {75, ("StrawberryJam2021/3-Advanced/JANisEXIST", AreaMode.Normal)},
+            {76, ("StrawberryJam2021/3-Advanced/jolly", AreaMode.Normal)},
+            {77, ("StrawberryJam2021/3-Advanced/Julia", AreaMode.Normal)},
+            {78, ("StrawberryJam2021/3-Advanced/Maladroit", AreaMode.Normal)},
+            {79, ("StrawberryJam2021/3-Advanced/Meario", AreaMode.Normal)},
+            {80, ("StrawberryJam2021/3-Advanced/mmm", AreaMode.Normal)},
+            {81, ("StrawberryJam2021/3-Advanced/MousseMoose", AreaMode.Normal)},
+            {82, ("StrawberryJam2021/3-Advanced/Nic", AreaMode.Normal)},
+            {83, ("StrawberryJam2021/3-Advanced/Oppen", AreaMode.Normal)},
+            {84, ("StrawberryJam2021/3-Advanced/pugroy", AreaMode.Normal)},
+            {85, ("StrawberryJam2021/3-Advanced/RadleyMcTuneston", AreaMode.Normal)},
+            {86, ("StrawberryJam2021/3-Advanced/Roborb", AreaMode.Normal)},
+            {87, ("StrawberryJam2021/3-Advanced/sp1029", AreaMode.Normal)},
+            {88, ("StrawberryJam2021/3-Advanced/TiltTheStars", AreaMode.Normal)},
+            {89, ("StrawberryJam2021/3-Advanced/Tortoise", AreaMode.Normal)},
+            {90, ("StrawberryJam2021/3-Advanced/Vamp", AreaMode.Normal)},
+            {91, ("StrawberryJam2021/3-Advanced/Viv", AreaMode.Normal)},
+            {92, ("StrawberryJam2021/3-Advanced/Worldwaker2", AreaMode.Normal)},
+            {93, ("StrawberryJam2021/3-Advanced/ZZ-HeartSide", AreaMode.Normal)},
+
+            {94, ("StrawberryJam2021/4-Expert/Agent", AreaMode.Normal)},
+            {95, ("StrawberryJam2021/4-Expert/alicequasar", AreaMode.Normal)},
+            {96, ("StrawberryJam2021/4-Expert/Appels", AreaMode.Normal)},
+            {97, ("StrawberryJam2021/4-Expert/Archire", AreaMode.Normal)},
+            {98, ("StrawberryJam2021/4-Expert/Aspar", AreaMode.Normal)},
+            {99, ("StrawberryJam2021/4-Expert/Banana23", AreaMode.Normal)},
+            {100, ("StrawberryJam2021/4-Expert/Cabob", AreaMode.Normal)},
+            {101, ("StrawberryJam2021/4-Expert/DanTKO", AreaMode.Normal)},
+            {102, ("StrawberryJam2021/4-Expert/Flamecrafter113", AreaMode.Normal)},
+
             {999, ("StrawberryJam2021/0-Lobbies/1-Beginner", AreaMode.Normal)},
             {998, ("StrawberryJam2021/0-Lobbies/2-Intermediate", AreaMode.Normal)},
             {997, ("StrawberryJam2021/0-Lobbies/3-Advanced", AreaMode.Normal)},
@@ -365,7 +435,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {"Celeste/9-Core", LevelCategory.A_SIDE},
             {"Celeste/LostLevels", LevelCategory.FAREWELL},
             {"Celeste/0-Intro", LevelCategory.A_SIDE},
-            {"StrawberryJam2021/1-Beginner/", LevelCategory.BEGINNER}
+            {"StrawberryJam2021/1-Beginner/", LevelCategory.BEGINNER},
+            {"StrawberryJam2021/2-Intermediate/", LevelCategory.INTERMEDIATE},
+            {"StrawberryJam2021/3-Advanced/", LevelCategory.INTERMEDIATE}
         };
 
         private static Dictionary<(string SID, AreaMode mode), Dictionary<long, string>> roomIdsToname { get; } = new Dictionary<(string SID, AreaMode mode), Dictionary<long, string>>
@@ -1547,6 +1619,1339 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {10, "a_11"},
                     {11, "a_12"}
                 }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Flagpole1up", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a01"},
+                    {1, "a02"},
+                    {2, "a02_b"},
+                    {3, "a03"},
+                    {4, "a03_s"},
+                    {5, "a04"},
+                    {6, "a05"},
+                    {7, "a06"},
+                    {8, "a06_s"},
+                    {9, "a07"},
+                    {10, "a08"},
+                    {11, "a09"},
+                    {12, "a09_s"},
+                    {13, "a09_b"},
+                    {14, "a09_b_s"},
+                    {15, "a10"},
+                    {16, "a11"},
+                    {17, "a12"},
+                    {18, "a12_s"},
+                    {19, "a13"},
+                    {20, "a13_b"},
+                    {21, "a14_Outro"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/frozenflygone", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "SS2-0"},
+                    {1, "SS2-1"},
+                    {2, "SS2-2"},
+                    {3, "SS2-3"},
+                    {4, "SS2-4"},
+                    {5, "SS2-5b"},
+                    {6, "SS2-6"},
+                    {7, "SS2-7"},
+                    {8, "HUB"},
+                    {9, "FinalChallenge"},
+                    {10, "ESCAPE"},
+                    {11, "HEART"},
+                    {13, "WZ-0"},
+                    {14, "WZ-1"},
+                    {15, "WZ-2"},
+                    {16, "WZ-3a"},
+                    {17, "WZ-4"},
+                    {18, "WZ-5a"},
+                    {19, "WZ-Tele"},
+                    {20, "Lab-0"},
+                    {21, "Lab-1"},
+                    {22, "Lab-2"},
+                    {23, "Lab-3"},
+                    {24, "Lab-4"},
+                    {25, "Lab-5"},
+                    {26, "Lab-6"},
+                    {27, "Lab-7"},
+                    {28, "Lab-Tele"},
+                    {29, "Lab-5berry"},
+                    {30, "Lab-secret"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/HankyMueller", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "Intro A"},
+                    {1, "Intro B"},
+                    {2, "Double Vision"},
+                    {3, "Waiting Room"},
+                    {4, "Timestop Intro"},
+                    {5, "Timestop Intro Again"},
+                    {6, "Stepping Stone"},
+                    {7, "Fork"},
+                    {8, "Seeded Berry"},
+                    {9, "Easter Egg Puzzle"},
+                    {10, "Staircase"},
+                    {11, "End"},
+                    {12, "End Cabin"},
+                    {14, "Shuffle"},
+                    {15, "Feedback Loop"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/hyperlife", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-02-b"},
+                    {3, "a-04"},
+                    {4, "a-05b"},
+                    {5, "a-03"},
+                    {6, "a-05"},
+                    {7, "a-05s"},
+                    {8, "a-06"},
+                    {9, "a-07"},
+                    {10, "a-08"},
+                    {11, "a-08s"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Jadeturtle", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-00"},
+                    {1, "a-01z"},
+                    {2, "a-02y"},
+                    {3, "a-03y"},
+                    {4, "a-04z"},
+                    {5, "a-05z"},
+                    {6, "a-06z"},
+                    {7, "a-07z"},
+                    {8, "a-08z"},
+                    {9, "a-09z"},
+                    {10, "a-11z"},
+                    {11, "a-10z"},
+                    {12, "a-12z"},
+                    {13, "a-13z"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/joltik", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_00"},
+                    {1, "a_01"},
+                    {2, "a_02"},
+                    {3, "a_03"},
+                    {4, "a_04"},
+                    {5, "a_05"},
+                    {6, "a_06"},
+                    {7, "a_07"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/mosscairn", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "intro"},
+                    {1, "a-00"},
+                    {2, "a-01"},
+                    {3, "a-02"},
+                    {4, "a-03"},
+                    {5, "a-03b"},
+                    {6, "a-04a"},
+                    {7, "a-04b"},
+                    {8, "a-05"},
+                    {9, "a-06b"},
+                    {10, "a-06a"},
+                    {11, "a-06c"},
+                    {12, "a-07a"},
+                    {13, "a-08"},
+                    {14, "a-07b"},
+                    {15, "gay"},
+                    {16, "a-09"},
+                    {17, "a-10"},
+                    {18, "b-00"},
+                    {19, "b-berry00"},
+                    {20, "b-01"},
+                    {21, "b-02"},
+                    {22, "b-03"},
+                    {23, "b-berry1"},
+                    {24, "b-04"},
+                    {25, "b-berry2"},
+                    {26, "b-05"},
+                    {27, "b-berry3"},
+                    {28, "b-06"},
+                    {29, "b-06b"},
+                    {30, "b-07"},
+                    {31, "b-08"},
+                    {32, "b-09"},
+                    {33, "b-10"},
+                    {34, "b-11"},
+                    {35, "bus"},
+                    {36, "c-intro"},
+                    {37, "c-00"},
+                    {38, "c-01"},
+                    {39, "c-02"},
+                    {40, "c-03"},
+                    {41, "c-04"},
+                    {42, "c-05"},
+                    {43, "c-06"},
+                    {44, "end"},
+                    {46, "b-tribute"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Owen-Shirrel", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "00 - Overpass"},
+                    {1, "01 - Lockdown"},
+                    {2, "02 - Breadth"},
+                    {3, "03 - Labyrinth"},
+                    {4, "03a - Portcullis"},
+                    {5, "04 - Widdershins"},
+                    {6, "04a - Correlation"},
+                    {7, "05 - Symmetry"},
+                    {8, "06a - Shackle"},
+                    {9, "06 - Socket"},
+                    {10, "07 - Ferry"},
+                    {11, "08 - Daedalus"},
+                    {12, "08a - Reunion"},
+                    {13, "09 - Perpendicular"},
+                    {14, "10 - Downfall"},
+                    {15, "secret"},
+                    {17, "04b - Alcove"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/Quinnigan", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "q00"},
+                    {1, "q01"},
+                    {2, "q02"},
+                    {3, "q03"},
+                    {4, "q04"},
+                    {5, "q05"},
+                    {6, "q06"},
+                    {7, "q07"},
+                    {8, "q08"},
+                    {9, "q09"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/skeleton", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "skeleton_00"},
+                    {1, "skeleton_01"},
+                    {2, "skeleton_02"},
+                    {3, "skeleton_02_berry"},
+                    {4, "skeleton_03"},
+                    {5, "skeleton_04"},
+                    {6, "skeleton_05"},
+                    {7, "skeleton_outro"}
+                }
+            },
+            {
+                ("StrawberryJam2021/1-Beginner/ZZ-HeartSide", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "cp1_heartside_intro"},
+                    {1, "cp1_21_heartside_Bing_Over_Google"},
+                    {2, "cp1_20_heartside_hyperlife"},
+                    {3, "cp1_19_heartside_cellularAutomaton"},
+                    {4, "cp1_18_heartside_Eclipse"},
+                    {5, "cp2_checkpoint"},
+                    {6, "cp2-17-heartside_NotYourBadeline"},
+                    {7, "cp2-16-heartside_snas"},
+                    {8, "cp2_15_heartside_frozenflygone_a"},
+                    {9, "cp2_15_heartside_frozenflygone_b"},
+                    {10, "cp2_15_heartside_frozenflygone_c"},
+                    {11, "cp2_15_heartside_frozenflygone_d"},
+                    {12, "cp3_checkpoint"},
+                    {13, "cp3_14_heartside_asterisk"},
+                    {14, "cp3_13_heartside_skeleton"},
+                    {15, "cp3_12_heartside_coffe"},
+                    {16, "cp3_11_heartside_joltik"},
+                    {17, "cp4_checkpoint"},
+                    {18, "cp4_10_heartside_Hanky"},
+                    {19, "cp4_09_heartside_jadeturtle"},
+                    {20, "cp4_08_heartside_quinnigan"},
+                    {21, "cp5_checkpoint"},
+                    {22, "cp5_07_heartside_voliver9"},
+                    {23, "cp5_06_heartside_CoupCritik1"},
+                    {24, "cp5_06_heartside_CoupCritik2"},
+                    {25, "cp5_06_heartside_CoupCritik3"},
+                    {26, "cp5_05_Flagpole1up_Heartside"},
+                    {27, "cp5_04_heartside_circumplex"},
+                    {28, "cp6_checkpoint"},
+                    {29, "cp6_03_heartside_awheyaway"},
+                    {30, "cp6_02_heartside_Ceph"},
+                    {31, "cp6_03_heartside_Moss_1"},
+                    {32, "cp6_03_heartside_Moss_2"},
+                    {33, "heartside_outro"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Arphimigon", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_01"},
+                    {1, "a_02"},
+                    {2, "a_03"},
+                    {3, "a_04"},
+                    {4, "a_05"},
+                    {5, "b_01"},
+                    {6, "b_02"},
+                    {7, "b_02b"},
+                    {8, "b_03"},
+                    {9, "b_04"},
+                    {10, "b_05"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/bryse0n", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_01"},
+                    {1, "a-02"},
+                    {2, "a_02.5"},
+                    {3, "a_03"},
+                    {4, "b_01"},
+                    {5, "a_04"},
+                    {6, "b_02"},
+                    {7, "a_05"},
+                    {8, "a_06"},
+                    {9, "b_03"},
+                    {10, "a_07"},
+                    {11, "a_08"},
+                    {12, "b_04"},
+                    {13, "a_09"},
+                    {14, "a_10"},
+                    {15, "outro"},
+                    {16, "hmmmm"},
+                    {17, "uwu"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Dooshii", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a1"},
+                    {1, "a1.5v2"},
+                    {2, "a2v2"},
+                    {3, "a3v2"},
+                    {4, "a4v2"},
+                    {5, "a5_"},
+                    {6, "a6v2"},
+                    {7, "r_00v2"},
+                    {8, "pushupv2"},
+                    {9, "reboundv2"},
+                    {10, "a9v2"},
+                    {11, "a_10v2"},
+                    {12, "r_01v2"},
+                    {13, "downmoveblockv2"},
+                    {14, "end_but_for_real_this_time"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Emik", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_01"},
+                    {1, "a_02"},
+                    {2, "a_03"},
+                    {3, "a_04"},
+                    {4, "a_05"},
+                    {5, "a_06"},
+                    {6, "a_07"},
+                    {7, "a_08"},
+                    {8, "a_09"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Evilleafy", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "Evilleafy-00"},
+                    {1, "Evilleafy-01"},
+                    {2, "Evilleafy-02"},
+                    {3, "Evilleafy-03a"},
+                    {4, "Evilleafy-04a"},
+                    {5, "Evilleafy-06"},
+                    {6, "Evilleafy-07"},
+                    {7, "Evilleafy-04"},
+                    {8, "Evilleafy-08b"},
+                    {9, "Evilleafy-09"},
+                    {10, "Evilleafy-10"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Ezel", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "A-01"},
+                    {1, "A-02"},
+                    {2, "A-03"},
+                    {3, "A-04"},
+                    {4, "A-05"},
+                    {5, "A-05b"},
+                    {6, "A-06"},
+                    {7, "A-07"},
+                    {8, "A-07b"},
+                    {9, "A-08"},
+                    {10, "A-09"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/GlowWoomii", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "startroom"},
+                    {1, "r1"},
+                    {2, "r2"},
+                    {3, "r3"},
+                    {4, "rhub"},
+                    {5, "r4"},
+                    {6, "r5"},
+                    {7, "r6"},
+                    {8, "r7"},
+                    {9, "r8"},
+                    {10, "r9"},
+                    {11, "r9sb"},
+                    {12, "endroom"},
+                    {13, "endroomsecret"},
+                    {15, "r6sb"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Ice", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-03"},
+                    {3, "a-04"},
+                    {4, "b-01"},
+                    {5, "c-01"},
+                    {6, "c-02"},
+                    {8, "b-05"},
+                    {9, "b-06"},
+                    {10, "b-07"},
+                    {11, "b-02"},
+                    {12, "b-03"},
+                    {13, "b-04"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Jems", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "btd-00"},
+                    {1, "btd-02"},
+                    {2, "btd-02b"},
+                    {3, "btd-02c"},
+                    {4, "btd-02a"},
+                    {5, "btd-03"},
+                    {6, "btd-04"},
+                    {7, "btd-04a"},
+                    {8, "btd-05"},
+                    {9, "btd-05a"},
+                    {10, "btd-06"},
+                    {11, "btd-07"},
+                    {12, "btd-09"},
+                    {13, "btd-20"},
+                    {14, "btd-20a"},
+                    {15, "btd-21"},
+                    {16, "btd-30"},
+                    {17, "btd-31"},
+                    {18, "btd-33"},
+                    {19, "btd-35"},
+                    {20, "btd-42"},
+                    {21, "gg"},
+                    {23, "btd-12"},
+                    {24, "btd-13"},
+                    {25, "btd-11"},
+                    {26, "btd-10"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/LegS", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "LegS-0"},
+                    {1, "LegS-1"},
+                    {2, "LegS-2"},
+                    {3, "LegS-B1"},
+                    {4, "LegS-3"},
+                    {5, "LegS-Intermediate"},
+                    {6, "LegS-4"},
+                    {7, "LegS-B2"},
+                    {8, "LegS-5"},
+                    {9, "LegS-6"},
+                    {10, "LegS-7"},
+                    {12, "LegS-CR"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Liero", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "A00"},
+                    {1, "A01"},
+                    {2, "A02"},
+                    {3, "A03"},
+                    {4, "A04"},
+                    {5, "A05"},
+                    {6, "A06"},
+                    {7, "A07"},
+                    {8, "A08"},
+                    {9, "A09"},
+                    {10, "A10"},
+                    {11, "A11"},
+                    {12, "A12"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Luma", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "Intro"},
+                    {1, "1"},
+                    {2, "2"},
+                    {3, "2b"},
+                    {4, "3"},
+                    {5, "4"},
+                    {6, "5"},
+                    {7, "5b"},
+                    {8, "6"},
+                    {9, "outro"},
+                    {10, "outrob"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/marlin", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1"},
+                    {1, "2"},
+                    {2, "3"},
+                    {3, "4"},
+                    {4, "5"},
+                    {5, "5b"},
+                    {6, "6"},
+                    {7, "7"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/pixelator", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "lvl00"},
+                    {1, "lvl01"},
+                    {2, "lvl02"},
+                    {3, "lvl03"},
+                    {4, "lvl04"},
+                    {5, "lvl05"},
+                    {6, "lvl06"},
+                    {7, "lvl07"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/Rocketguy2", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "RG2-0"},
+                    {1, "RG2-1"},
+                    {2, "RG2-2"},
+                    {3, "RG2-3"},
+                    {4, "RG2-4"},
+                    {5, "RG2-4-S1"},
+                    {6, "RG2-4-S2"},
+                    {7, "RG2-5"},
+                    {8, "RG2-5-S"},
+                    {9, "RG2-6"},
+                    {10, "RG2-7"},
+                    {11, "RG2-8"},
+                    {12, "RG2-9"},
+                    {13, "RG2-End"},
+                    {15, "RG2-huh"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/SpoopySoup", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "soup-1"},
+                    {1, "soup-2"},
+                    {2, "soup-3"},
+                    {3, "soup-4"},
+                    {4, "soup-4b"},
+                    {5, "soup-5"},
+                    {6, "soup-5b"},
+                    {7, "soup-6"},
+                    {8, "soup-6b"},
+                    {9, "soup-7"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/thebreadstick1", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-001"},
+                    {1, "a-000"},
+                    {2, "a-002"},
+                    {3, "a-003"},
+                    {4, "a-004"},
+                    {5, "a-005"},
+                    {6, "a-006"},
+                    {7, "a-007"},
+                    {8, "a-008"},
+                    {9, "a-009"},
+                    {10, "a-011"},
+                    {11, "a-010"},
+                    {12, "a-012"},
+                    {13, "a-013"},
+                    {15, "a-000S"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/vitellary", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "01"},
+                    {1, "02"},
+                    {2, "03"},
+                    {3, "03-berry"},
+                    {4, "04"},
+                    {5, "05"},
+                    {6, "06"},
+                    {7, "06-berry"},
+                    {8, "07"},
+                    {9, "08"},
+                    {10, "09"}
+                }
+            },
+            {
+                ("StrawberryJam2021/2-Intermediate/ZZ-HeartSide", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "cp1-0-intro"},
+                    {1, "cp1-1-liero"},
+                    {2, "cp1-2-pixelator"},
+                    {3, "cp1-3-Evilleafy"},
+                    {4, "cp1-4-ezel"},
+                    {5, "cp2-0-Cp"},
+                    {6, "cp2-1-SpoopySoup"},
+                    {7, "cp2-2-dooshii"},
+                    {8, "cp2-3-glowwoomii"},
+                    {9, "cp2-4-ice"},
+                    {10, "cp2-5-bryse0n"},
+                    {11, "cp3-0-Cp"},
+                    {12, "cp3-1-Arphimigon"},
+                    {13, "cp3-2-LegS"},
+                    {14, "cp3-3-Jems"},
+                    {15, "cp3-4-vitellary"},
+                    {16, "cp3-5-RG2"},
+                    {17, "cp4-0-Cp"},
+                    {18, "cp4-1-Emik"},
+                    {19, "cp4-2-thebreadstick1"},
+                    {20, "cp4-3-Luma"},
+                    {21, "cp4-4-Marlin"},
+                    {22, "cp4-5-Heart"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/astraxel", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-00"},
+                    {1, "a-01"},
+                    {2, "a-02"},
+                    {3, "a-03"},
+                    {4, "a-04-bis"},
+                    {5, "a-05"},
+                    {6, "a-06"},
+                    {7, "a-strawberry"},
+                    {8, "b-01"},
+                    {9, "b-01-view"},
+                    {10, "b-02"},
+                    {11, "b-03"},
+                    {12, "mini-hearth"},
+                    {13, "b-strawberry"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/BlueXans", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "intro"},
+                    {1, "1"},
+                    {2, "2"},
+                    {3, "3"},
+                    {4, "berry1"},
+                    {5, "reverseTutorial"},
+                    {6, "4"},
+                    {7, "5"},
+                    {8, "outro"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Citrea", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "intro"},
+                    {1, "a-1"},
+                    {2, "a-2"},
+                    {3, "berry0"},
+                    {4, "a-3"},
+                    {5, "berry1"},
+                    {6, "a-4"},
+                    {7, "bhop"},
+                    {8, "a-5"},
+                    {9, "berry2"},
+                    {10, "a-6"},
+                    {11, "epilogue"},
+                    {12, "heart"},
+                    {13, "outlook"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/galaksyz", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_00-Worldwaker2"},
+                    {1, "a_01-Gala"},
+                    {2, "a_02-Gala"},
+                    {3, "a_03-Oppen_heimer"},
+                    {4, "a_04-Gala"},
+                    {5, "berry-01-Oppen"},
+                    {6, "a_05-TiltTheStars"},
+                    {7, "a_06-TiltTheStars"},
+                    {8, "a_07-TiltTheStars"},
+                    {9, "a_08-TiltTheStars"},
+                    {10, "heart_room"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Goldian", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "start"},
+                    {1, "tutorial-1"},
+                    {2, "goldian-1"},
+                    {3, "aiden-2"},
+                    {4, "goldian-3"},
+                    {5, "goldian-4"},
+                    {6, "tutorial-2"},
+                    {7, "goldian-5"},
+                    {8, "goldian-berry"},
+                    {9, "goldian-6"},
+                    {10, "goldian-7"},
+                    {11, "end"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/hennyburgr", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a_01"},
+                    {1, "a_02"},
+                    {2, "a_03"},
+                    {3, "a_04"},
+                    {4, "a_05"},
+                    {5, "a_06"},
+                    {6, "a_06b"},
+                    {7, "a_07"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Indecx", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1"},
+                    {1, "2"},
+                    {2, "3"},
+                    {3, "4"},
+                    {4, "5"},
+                    {5, "6"},
+                    {6, "7"},
+                    {7, "8"},
+                    {8, "9"},
+                    {9, "10"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/JANisEXIST", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1"},
+                    {1, "2"},
+                    {2, "3"},
+                    {3, "4"},
+                    {4, "5"},
+                    {5, "6"},
+                    {6, "7"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/jolly", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a0"},
+                    {1, "a-secret"},
+                    {2, "a1"},
+                    {3, "a2"},
+                    {4, "a-berry"},
+                    {5, "a3"},
+                    {6, "b1"},
+                    {7, "b2"},
+                    {8, "b3"},
+                    {9, "b4"},
+                    {10, "b-berry"},
+                    {11, "b5"},
+                    {12, "65"},
+                    {13, "b7"},
+                    {14, "brys1"},
+                    {15, "brys2"},
+                    {16, "brys3"},
+                    {17, "brys4"},
+                    {18, "brys-berry"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Julia", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-03"},
+                    {3, "a-04"},
+                    {4, "a-05intro"},
+                    {5, "transition"},
+                    {6, "a-05"},
+                    {7, "a-07"},
+                    {8, "a-06"},
+                    {10, "Berry 1"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Maladroit", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "A0"},
+                    {1, "A2"},
+                    {2, "A2_v2"},
+                    {3, "A4"},
+                    {4, "A5"},
+                    {5, "A5_v2"},
+                    {6, "Brys2-2-2"},
+                    {7, "A6_v2-flip-2"},
+                    {8, "A6"},
+                    {9, "A7"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Meario", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "b-01"},
+                    {2, "a-02"},
+                    {3, "a-03"},
+                    {4, "a-04"},
+                    {5, "a-05"},
+                    {6, "a-06"},
+                    {7, "a-07"},
+                    {8, "a-08"},
+                    {9, "a-09"},
+                    {10, "a-10"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/mmm", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a00"},
+                    {1, "a01"},
+                    {2, "a02"},
+                    {3, "a03"},
+                    {4, "a04"},
+                    {5, "a05"},
+                    {6, "a06"},
+                    {7, "a07"},
+                    {8, "a07b"},
+                    {9, "a08"},
+                    {10, "a09"},
+                    {11, "a10"},
+                    {12, "a10b"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/MousseMoose", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "intro_fall"},
+                    {1, "intro_a1"},
+                    {2, "a1"},
+                    {3, "a2"},
+                    {4, "a3"},
+                    {5, "a4"},
+                    {6, "a5"},
+                    {7, "b1"},
+                    {8, "b1_b"},
+                    {9, "b2"},
+                    {10, "b3"},
+                    {11, "c1"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Nic", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "01-a"},
+                    {1, "02-a"},
+                    {2, "03-a"},
+                    {3, "05-a"},
+                    {4, "06-a"},
+                    {5, "06-s1"},
+                    {6, "06-b"},
+                    {7, "07-a"},
+                    {8, "08-a"},
+                    {10, "04-a"},
+                    {11, "04-s1"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Oppen", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "oppen_intro"},
+                    {1, "oppen_1a"},
+                    {2, "oppen_berry"},
+                    {3, "oppen_1b"},
+                    {4, "oppen_1c"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/pugroy", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "BR-00"},
+                    {1, "BR-02"},
+                    {2, "BR-01"},
+                    {3, "BR-08"},
+                    {4, "BR-03"},
+                    {5, "BR-04"},
+                    {6, "BR-07"},
+                    {7, "BR-05"},
+                    {8, "BR-Outro"},
+                    {9, "BR-Extra"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/RadleyMcTuneston", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "start-01-Radley"},
+                    {1, "start-02-Radley"},
+                    {2, "start-03-Radley/Worldwaker2"},
+                    {3, "start-04-Radley"},
+                    {4, "start-05-TiltTheStars"},
+                    {5, "hub"},
+                    {6, "cross-01-Worldwaker2"},
+                    {7, "cross-02-TiltTheStars"},
+                    {8, "cross-03-TiltTheStars"},
+                    {9, "evade-01-Quantum"},
+                    {10, "evade-02b-Quantum"},
+                    {11, "evade-02-TiltTheStars"},
+                    {12, "evade-03-Worldwaker2"},
+                    {13, "move-01-TiltTheStars"},
+                    {14, "move-02-Worldwaker2"},
+                    {15, "move-02b-Quantum"},
+                    {16, "escape-01-Worldwaker2"},
+                    {17, "escape-02-Worldwaker2"},
+                    {18, "escape-03-Worldwaker2"},
+                    {19, "start-00-Radley"},
+                    {20, "end_HideInMap"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Roborb", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1-intro"},
+                    {1, "1-a"},
+                    {2, "1-b"},
+                    {3, "1-c"},
+                    {4, "1-e"},
+                    {5, "1-f"},
+                    {6, "1-d"},
+                    {7, "1-g"},
+                    {8, "1-h"},
+                    {9, "2-a"},
+                    {10, "2-b"},
+                    {11, "2-c"},
+                    {12, "2-d"},
+                    {13, "2-secret :D"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/sp1029", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-04"},
+                    {3, "a-05"},
+                    {4, "a-06"},
+                    {5, "a-07"},
+                    {6, "a-08"},
+                    {7, "a-10"},
+                    {8, "a-09"},
+                    {9, "a-11"},
+                    {10, "a-12"},
+                    {11, "a-13"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/TiltTheStars", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "intro_v1"},
+                    {1, "intro_v2"},
+                    {2, "a-01"},
+                    {3, "a-02"},
+                    {4, "a-03"},
+                    {5, "a-04"},
+                    {6, "a-05"},
+                    {7, "a-06"},
+                    {8, "secret-01"},
+                    {9, "a-07"},
+                    {10, "a-08"},
+                    {11, "badeline_v2"},
+                    {12, "mini_heart_room"},
+                    {14, "secret-02"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Tortoise", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "0b"},
+                    {1, "0"},
+                    {2, "1"},
+                    {3, "1b"},
+                    {4, "2"},
+                    {5, "2b"},
+                    {6, "3"},
+                    {7, "3b"},
+                    {8, "4"},
+                    {9, "4b"},
+                    {10, "5"},
+                    {11, "6"},
+                    {12, "6e"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Vamp", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "intro_SJ"},
+                    {1, "Vamp_2"},
+                    {2, "Vamp_3"},
+                    {3, "Vamp_4"},
+                    {4, "Vamp_5"},
+                    {5, "Vamp_6"},
+                    {6, "Vamp_7"},
+                    {7, "Vamp_8"},
+                    {8, "Vamp_9"},
+                    {9, "Vamp_Final"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Viv", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "viv0"},
+                    {1, "viv1"},
+                    {2, "viv2"},
+                    {3, "viv2b"},
+                    {4, "viv3"},
+                    {5, "viv3x"},
+                    {6, "viv4"},
+                    {7, "viv5"},
+                    {8, "viv5b"},
+                    {9, "viv5x"},
+                    {10, "viv6"},
+                    {11, "viv7"},
+                    {12, "viv7b"},
+                    {13, "viv8"},
+                    {14, "vivEnd"},
+                    {15, "vivEB"},
+                    {16, "vivEB_"},
+                    {17, "_Endgame"},
+                    {18, "vivBonus"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/Worldwaker2", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1"},
+                    {1, "1B"},
+                    {2, "2"},
+                    {3, "2B"},
+                    {4, "3"},
+                    {5, "4"},
+                    {6, "5"},
+                    {7, "6"},
+                    {8, "7"},
+                    {9, "8"},
+                    {10, "9"}
+                }
+            },
+            {
+                ("StrawberryJam2021/3-Advanced/ZZ-HeartSide", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "Start"},
+                    {1, "heartside_oppen_intro"},
+                    {2, "heartside_oppen_a"},
+                    {3, "heartside_oppen_b"},
+                    {4, "heartside_oppen_c"},
+                    {5, "heartside_Worldwaker2"},
+                    {6, "heartside_TiltTheStars"},
+                    {7, "heartside_Galaksyz"},
+                    {8, "heartside_mmm"},
+                    {9, "Crest"},
+                    {10, "heartside_MousseMoose"},
+                    {11, "heartside_Meario"},
+                    {12, "heartside_YaGrillRobib"},
+                    {13, "heartside_maladroit"},
+                    {14, "heartside_pugroy"},
+                    {15, "Ravine"},
+                    {16, "heartside_astraxel"},
+                    {17, "heartside_Tortoise"},
+                    {18, "heartside_Tortoise_B"},
+                    {19, "heartside_bluexans"},
+                    {20, "heartside_Vamp"},
+                    {21, "heartside_Julia"},
+                    {22, "Aquifer"},
+                    {23, "heartside_sp1029"},
+                    {24, "heartside_hennyburgr"},
+                    {25, "heartside_Indecx"},
+                    {26, "heartside_Nic"},
+                    {27, "heartside_Ian"},
+                    {28, "Landing"},
+                    {29, "heartside_citrea"},
+                    {30, "heartside_RadleyMcTuneston"},
+                    {31, "heartside_Goldian"},
+                    {32, "heartside_jolly"},
+                    {33, "heartside_Viv"},
+                    {34, "Fin"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/Agent", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "Ru_and_AV_and_Zucchini_Are_Cool"},
+                    {1, "Agent_00"},
+                    {2, "Agent_00a"},
+                    {3, "Agent_01"},
+                    {4, "Agent_02"},
+                    {5, "Agent_03"},
+                    {6, "Agent_04"},
+                    {7, "Agent_04b"},
+                    {8, "Agent_05"},
+                    {9, "Agent_06"},
+                    {10, "Agent_07"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/alicequasar", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-03"},
+                    {3, "a-04"},
+                    {4, "a-05"},
+                    {5, "a-06"},
+                    {6, "a-07"},
+                    {7, "a-08"},
+                    {8, "a-08b"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/Appels", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "INTRO1"},
+                    {1, "INTRO2"},
+                    {2, "a01"},
+                    {3, "a01b"},
+                    {4, "a02"},
+                    {5, "a03"},
+                    {6, "a04"},
+                    {7, "a05"},
+                    {8, "a06new"},
+                    {9, "a07"},
+                    {10, "a07b"},
+                    {11, "a08outro"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/Archire", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-00"},
+                    {1, "a-01"},
+                    {2, "a-02"},
+                    {3, "a-03"},
+                    {4, "a-04"},
+                    {5, "a-05"},
+                    {6, "a-06"},
+                    {7, "a-07"},
+                    {8, "a-08"},
+                    {9, "a-09"},
+                    {10, "a-10"},
+                    {11, "a-11"},
+                    {12, "a-12"},
+                    {13, "a-13"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/Aspar", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "00-intro"},
+                    {1, "00-intro-cutscene"},
+                    {2, "01"},
+                    {3, "03"},
+                    {4, "05-hub"},
+                    {5, "06-crossroad"},
+                    {6, "06-berry"},
+                    {7, "07"},
+                    {8, "07-berry"},
+                    {9, "08"},
+                    {10, "09"},
+                    {11, "11"},
+                    {12, "99-end"},
+                    {14, "07-berry-2"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/Banana23", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-03"},
+                    {3, "a-04"},
+                    {4, "a-04b"},
+                    {5, "a-05"},
+                    {6, "a-06"},
+                    {7, "a-06b"},
+                    {8, "a-07"},
+                    {9, "a-08"},
+                    {10, "a-09"},
+                    {11, "a-09b"},
+                    {12, "a-10"},
+                    {13, "a-11"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/Cabob", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-start"},
+                    {1, "s-Path of Plane"},
+                    {2, "a-00"},
+                    {3, "a-01"},
+                    {4, "a-02"},
+                    {5, "s-Flushed Down"},
+                    {6, "a-03"},
+                    {7, "a-03x"},
+                    {8, "a-04"},
+                    {9, "a-05"},
+                    {10, "a-06"},
+                    {11, "s-Swamp Ascent"},
+                    {12, "a-07"},
+                    {13, "a-08"},
+                    {14, "a-08x"},
+                    {15, "a-09"},
+                    {16, "a-10"},
+                    {17, "a-10x"},
+                    {18, "a-end"},
+                    {19, "a-end2"},
+                    {20, "s-True Ending"},
+                    {21, "s-Graveyard"},
+                    {23, "s-Water Splash"},
+                    {24, "s-Shrek Swamp"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/DanTKO", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "DanTKO_Intro"},
+                    {1, "DanTKO_Monolith_1"},
+                    {2, "DanTKO_Plane"},
+                    {3, "DanTKO_01"},
+                    {4, "DanTKO_02"},
+                    {5, "DanTKO_blueTutorial_2"},
+                    {6, "DanTKO_03"},
+                    {7, "DanTKO_04"},
+                    {8, "DanTKO_05"},
+                    {9, "DanTKO_06"},
+                    {10, "DanTKO_06b"},
+                    {11, "DanTKO_Berry01"},
+                    {12, "DanTKO_07"},
+                    {13, "DanTKO_08"},
+                    {14, "DanTKO_09"},
+                    {15, "DanTKO_Berry02"},
+                    {16, "DanTKO_Outro"},
+                    {18, "Aperture_Mountain Relic"},
+                    {19, "Aperture_Mountain Relic_EXIT"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/Flamecrafter113", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-00-start"},
+                    {1, "a-00a"},
+                    {2, "a-01"},
+                    {3, "a-01_berry"},
+                    {4, "a-02"},
+                    {5, "a-03"},
+                    {6, "a-04"},
+                    {7, "a-05"},
+                    {8, "a-06"},
+                    {9, "a-07"},
+                    {10, "a-07_berry"},
+                    {11, "a-08"},
+                    {12, "a-08_berry"},
+                    {13, "a-09"},
+                    {14, "a-10-end"},
+                    {15, "a-10_berry"},
+                    {16, "a-10a"},
+                    {18, "a-00c"},
+                    {19, "a-00b"},
+                    {20, "a-00y"}
+                }
             }
         };
 
@@ -1619,7 +3024,103 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             DASHLESS_SPRINGS,
             SINGLE_JUMP_REFILL,
             TRIPLE_JUMP_REFILL,
-            DOUBLE_DASH_DREAM_BLOCK
+            DOUBLE_DASH_DREAM_BLOCK,
+            GREEN_SWITCH_BLOCK,
+            ORANGE_SWITCH_BLOCK,
+            SWITCH_BLOCK_SWITCH,
+            GRAVITY_FIELD,
+            BLUE_TIME_CRYSTAL,
+            DASH_CRYSTAL_SHARDS,
+            PIPE,
+            BIG_YELLOW_BUTTON,
+            PUZZLE_KEVIN,
+            TRIPLE_BOOST_FLOWER,
+            BOUNCE_DREAM_BLOCKS,
+            ORANGE_LINKED_TRAFFIC_BLOCK,
+            BLUE_LINKED_TRAFFIC_BLOCK,
+            TOGGLE_SWAP_BLOCK,
+            GREEN_LINKED_TRAFFIC_BLOCK,
+            STRAWBERRY_JAM,
+            NEON_BLUE_KEVIN,
+            NEON_PURPLE_KEVIN,
+            PUSH_BLOCK,
+            VERTIGO_LINKED_TELEPORT,
+            YELLOW_PORTAL,
+            PURPLE_PORTAL,
+            PUSH_STATION_BLOCK,
+            BLUE_PORTAL,
+            RED_PORTAL,
+            TIMED_TOUCH_SWITCH,
+            HONEY_BUBBLES,
+            ZIPLINE,
+            YELLOW_LINKED_TRAFFIC_BLOCK,
+            YELLOW_LASER,
+            TORQUOISE_LASER,
+            GREEN_LASER,
+            MAGENTA_LINKED_TRAFFIC_BLOCK,
+            TORQUOISE_LINKED_TRAFFIC_BLOCK,
+            RED_LINKED_TRAFFIC_BLOCK,
+            CRYSTAL_BOMB,
+            BOWL_PUFFER,
+            PURPLE_DASHLESS_BUBBLE,
+            PULL_STATION_BLOCK,
+            DASH_SPRING,
+            TRACK_SWITCH_BOX,
+            PURPLE_LINKED_TRAFFIC_BLOCK,
+            GRAY_TIME_CRYSTAL,
+            PURPLE_JELLYFISH,
+            DASH_REFILL_WALL,
+            DOUBLE_DASH_REFILL_WALL,
+            GRAY_BUBBLES,
+            SWITCH_CRATE,
+            GREEN_PORTAL,
+            MOVING_TOUCH_SWITCH,
+            DREAM_TRAFFIC_BLOCK,
+            BOUNCY_SPIKES,
+            MOMENTUM_SPRING,
+            PURPLE_CASSETTE_BLOCK,
+            ORANGE_CASSETTE_BLOCK,
+            RED_CASSETTE_BLOCK,
+            GREEN_CASSETTE_TRAFFIC_BLOCK,
+            PURPLE_MOVING_CASSETTE_BLOCK,
+            BLUE_MOVING_CASSETTE_BLOCK,
+            PURPLE_CASSETTE_SWAP_BLOCK,
+            PINK_CASSETTE_SWAP_BLOCK,
+            RED_CASSETTE_SWAP_BLOCK,
+            ORANGE_MOVING_CASSETTE_BLOCK,
+            ORANGE_CASSETTE_TRAFFIC_BLOCK,
+            GREEN_CASSETTE_SWAP_BLOCK,
+            RED_CASSETTE_TRAFFIC_BLOCK,
+            YELLOW_CASSETTE_SWAP_BLOCK,
+            PINK_MOVING_CASSETTE_BLOCK,
+            GREEN_MOVING_CASSETTE_BLOCK,
+            WORMHOLE_BUBBLE,
+            FAKE_CRYSTAL_HEART,
+            MINI_FAKE_CRYSTAL_HEART,
+            THROW_BOX,
+            PURPLE_REBOUND_BOOSTER,
+            GROWTH_POTION,
+            BLUE_GRAVITY_SPRING,
+            RED_GRAVITY_SPRING,
+            PURPLE_GRAVITY_SPRING,
+            YELLOW_MOVING_CASSETTE_BLOCK,
+            MOVE_BLOCK_ACCELERATOR_FIELD,
+            MOVE_BLOCK_DELETE_FIELD,
+            MOVE_BLOCK_DECELERATOR_FIELD,
+            MOVE_BLOCK_REDIRECT_FIELD,
+            DREAM_MOVE_BLOCK,
+            BATTERY,
+            RED_PROPELLER_BLOCK,
+            YELLOW_PROPELLER_BLOCK,
+            DASH_BOOST_FIELD,
+            FORCE_JUMP_CRYSTAL,
+            NO_STAMINA_DASH_CRYSTAL,
+            SPEED_MUSHROOMS,
+            SPEED_MUSHROOM_WALL,
+            WHITE_DREAM_BLOCK,
+            RED_SPEED_MOSS,
+            BLUE_BOUNCE_MOSS,
+            TAN_LINKED_TRAFFIC_BLOCK
         }
 
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()

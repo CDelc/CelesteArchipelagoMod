@@ -30,6 +30,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 self.Collidable = false;
                 self.goneTimer = 2.5f;
                 self.state = Puffer.States.Gone;
+                self.sprite.Color.R = (byte)(0.5f * 255);
+                self.sprite.Color.G = (byte)(0.5f * 255);
+                self.sprite.Color.B = (byte)(0.5f * 255);
+                self.sprite.Color.A = (byte)(0.1f * 255);
             }
         }
     }
