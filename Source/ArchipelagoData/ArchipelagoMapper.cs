@@ -412,6 +412,10 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {100, ("StrawberryJam2021/4-Expert/Cabob", AreaMode.Normal)},
             {101, ("StrawberryJam2021/4-Expert/DanTKO", AreaMode.Normal)},
             {102, ("StrawberryJam2021/4-Expert/Flamecrafter113", AreaMode.Normal)},
+            {103, ("StrawberryJam2021/4-Expert/fonda1515", AreaMode.Normal)},
+            {104, ("StrawberryJam2021/4-Expert/hivemindsrule", AreaMode.Normal)},
+            {105, ("StrawberryJam2021/4-Expert/itsabrody", AreaMode.Normal)},
+            {106, ("StrawberryJam2021/4-Expert/jackal", AreaMode.Normal)},
 
             {999, ("StrawberryJam2021/0-Lobbies/1-Beginner", AreaMode.Normal)},
             {998, ("StrawberryJam2021/0-Lobbies/2-Intermediate", AreaMode.Normal)},
@@ -2952,6 +2956,81 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {19, "a-00b"},
                     {20, "a-00y"}
                 }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/fonda1515", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a-00"},
+                    {1, "a-01"},
+                    {2, "a-02"},
+                    {3, "a-03"},
+                    {4, "a-04"},
+                    {5, "a-05"},
+                    {6, "a-05b"},
+                    {7, "a-06"},
+                    {8, "a-07"},
+                    {9, "a-07b"},
+                    {10, "secret"},
+                    {11, "a-08"},
+                    {12, "a-09"},
+                    {13, "a-09b"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/hivemindsrule", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a1"},
+                    {1, "a2"},
+                    {2, "a3"},
+                    {3, "a4"},
+                    {4, "a5"},
+                    {5, "a6"},
+                    {6, "a7"},
+                    {7, "a8"},
+                    {8, "a9"},
+                    {9, "b1"},
+                    {10, "bones_room"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/itsabrody", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "1"},
+                    {1, "2"},
+                    {2, "3"},
+                    {3, "4"},
+                    {4, "5"},
+                    {5, "6"},
+                    {6, "berry"},
+                    {7, "7"},
+                    {8, "8"},
+                    {9, "9"},
+                    {10, "10"}
+                }
+            },
+            {
+                ("StrawberryJam2021/4-Expert/jackal", AreaMode.Normal),
+                new Dictionary<long, string>
+                {
+                    {0, "a01"},
+                    {1, "a02"},
+                    {2, "a04"},
+                    {3, "a05"},
+                    {4, "a06"},
+                    {5, "a07"},
+                    {6, "a08"},
+                    {7, "a09"},
+                    {8, "a10"},
+                    {9, "a10b"},
+                    {10, "a12"},
+                    {11, "a12b"},
+                    {12, "a14"},
+                    {13, "a15"},
+                    {15, "a03"}
+                }
             }
         };
 
@@ -3120,7 +3199,23 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             WHITE_DREAM_BLOCK,
             RED_SPEED_MOSS,
             BLUE_BOUNCE_MOSS,
-            TAN_LINKED_TRAFFIC_BLOCK
+            TAN_LINKED_TRAFFIC_BLOCK,
+            SQUARE_BUMPER,
+            BLUE_FLOATING_FIELDS,
+            RED_FLOATING_FIELDS,
+            PURPLE_FLOATING_FIELDS,
+            BLUE_FLIP_SWITCH,
+            GREEN_FLIP_SWITCH,
+            PINK_FLIP_SWITCH,
+            PURPLE_FLIP_SWITCH,
+            PINK_SWITCH_BLOCK,
+            PURPLE_SWITCH_BLOCK,
+            CLOUD_CRYSTAL,
+            JELLYFISH_CRYSTAL,
+            REWIND_CRYSTAL,
+            CURVED_TRAFFIC_BLOCK,
+            REVERSE_JELLY,
+            INFINITE_DASH_CRYSTAL
         }
 
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()
