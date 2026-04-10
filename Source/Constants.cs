@@ -94,6 +94,8 @@ namespace Celeste.Mod.CelesteArchipelago
 
         public static readonly Color DisabledColor = Color.DarkRed * 0.5f;
 
+        public static string VERSION_NUMBER = "0.9.0";
+
         public static void DrawDisabledRect(Collider collider, Color? color = null)
         {
             Color drawColor = color ?? DisabledColor;

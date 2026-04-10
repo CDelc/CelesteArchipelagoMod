@@ -83,6 +83,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public int total_strawberries = 100;
         public int required_strawberries = 0;
         public bool require_moon_berry = false;
+        public string apworld_verison = "";
         #endregion
 
         public LevelCategory starting_category
@@ -114,6 +115,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public static ArchipelagoManager Instance { get; private set; }
         
         public bool Ready { get; private set; }
+        public bool VersionError { get; private set; }
         public bool WasConnected { get; private set; }
         public int Slot => _session.ConnectionInfo.Slot;
 
@@ -176,14 +178,15 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public async Task<LoginFailure> Connect()
         {
-            _session = ArchipelagoSessionFactory.CreateSession(CelesteArchipelagoModule.Settings.Address);
 
             Ready = false;
             ItemQueue = new();
             GoalSent = false;
+            VersionError = false;
 
             try
             {
+                _session = ArchipelagoSessionFactory.CreateSession(CelesteArchipelagoModule.Settings.Address);
                 await _session.ConnectAsync();
             }
             catch (Exception ex)
@@ -252,6 +255,16 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             total_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("total_strawberries", out value) ? value : 0);
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
+            apworld_verison = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
+
+            if (!VersionCompatible(apworld_verison))
+            {
+                Disconnect();
+                string message = $"Version mismatch: Mod version {Constants.VERSION_NUMBER} is not compatible with APWorld Version {apworld_verison}";
+                Monocle.Engine.Commands.Log(message, Color.Red);
+                VersionError = true;
+                return new(message);
+            }
 
             this.AddItemsRcvCallback($"Celeste_Modded_Rcv_{_session.Players.GetPlayerName(this.Slot)}", ItemsRcvUpdated);
             this.ServerItemsRcv = -1;
@@ -780,6 +793,21 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public void ItemsRcvUpdated(int newItemsRcv)
         {
             this.ServerItemsRcv = newItemsRcv;
+        }
+
+        private bool VersionCompatible(string apworld_version)
+        {
+            string mod_version = Constants.VERSION_NUMBER;
+
+            string[] apworld_version_split = apworld_version.Split('.');
+            string[] mod_version_split = mod_version.Split(".");
+
+            if(apworld_version_split.Length < 3 || mod_version_split.Length < 3)
+            {
+                throw new ApplicationException($"One or both version numbers is not formatted correctly:\nAPWORLD_VERSION: {apworld_version}\nMOD_VERSION: {mod_version}");
+            }
+
+            return apworld_version_split[0] == mod_version_split[0] && apworld_version_split[1] == mod_version_split[1];
         }
     }
 }

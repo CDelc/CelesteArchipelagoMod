@@ -34,10 +34,18 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                         waitingOnConnect = false;
                         return;
                     }
+                    else if (ArchipelagoManager.Instance.VersionError)
+                    {
+                        (this.connectMenu.items[6] as TextMenu.Header).Title = "Incompatible APWorld Version";
+                        Logger.Error(Constants.LOG_PREFIX, "Incompatible APWorld Version");
+                        connectTask = null;
+                        waitingOnConnect = false;
+                        return;
+                    }
                     else
                     {
                         (this.connectMenu.items[6] as TextMenu.Header).Title = "Connection Failed";
-                        Logger.Error("AP", "Connection Failed.");
+                        Logger.Error(Constants.LOG_PREFIX, "Connection Failed.");
                         connectTask = null;
                         waitingOnConnect = false;
                         return;
