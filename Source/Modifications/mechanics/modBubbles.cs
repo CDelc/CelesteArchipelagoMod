@@ -87,11 +87,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             self.Ch9HubBooster = false;
             self.Ch9HubTransition = false;
 
-            if (isEnabled(self))
-            {
-                self.Collidable = true;
-            }
-            else
+            if (!isEnabled(self))
             {
                 if (self.outline.Scene == null)
                 {

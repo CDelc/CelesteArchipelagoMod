@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VivHelper.Entities;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 {
@@ -29,6 +30,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Type ThrowBoxType;
         private static Type BatteryType;
         private static Type PropellerBoxType;
+        private static Type AntiGravJellyType;
+        private static Type CustomGliderType;
 
         private static Hook TheoCrystalHook;
         private static Hook BowlPufferHook;
@@ -41,6 +44,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Hook ThrowBoxHook;
         private static Hook BatteryHook;
         private static Hook PropellerBoxHook;
+        private static Hook AntiGravJellyHook;
+        private static Hook CustomGliderHook;
 
         private static FieldInfo RidablePlatformField;
         private static FieldInfo VanillaDestroyed;
@@ -62,6 +67,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             ThrowBoxType = typeof(ThrowBox);
             BatteryType = typeof(Batteries.Battery);
             PropellerBoxType = CelesteArchipelagoModule.FindType("Celeste.Mod.PandorasBox.PropellerBox");
+            AntiGravJellyType = CelesteArchipelagoModule.FindType("Celeste.Mod.StrawberryJam2021.Entities.SkyLantern");
+            CustomGliderType = typeof(CustomGlider);
 
             RidablePlatformField = PlatformJellyType.GetField("ridablePlatform", BindingFlags.NonPublic | BindingFlags.Instance);
             VanillaDestroyed = VanillaJelly.GetField("destroyed", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -82,6 +89,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             ThrowBoxHook = new Hook(ThrowBoxType.GetMethod("Update", updateFlags), hookMethod);
             BatteryHook = new Hook(BatteryType.GetMethod("Update", updateFlags), hookMethod);
             PropellerBoxHook = new Hook(PropellerBoxType.GetMethod("Update", updateFlags), hookMethod);
+            AntiGravJellyHook = new Hook(AntiGravJellyType.GetMethod("Update", updateFlags), hookMethod);
+            CustomGliderHook = new Hook(CustomGliderType.GetMethod("Update", updateFlags), hookMethod);
 
         }
 
@@ -98,6 +107,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             ThrowBoxHook?.Dispose();
             BatteryHook?.Dispose();
             PropellerBoxHook?.Dispose();
+            AntiGravJellyHook?.Dispose();
 
             TheoCrystalHook = null;
             BowlPufferHook = null;
@@ -110,6 +120,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             ThrowBoxHook = null;
             BatteryHook = null;
             PropellerBoxHook = null;
+            AntiGravJellyHook = null;
         }
 
         private static void modActor_Update(orig_Update orig, Actor self)
@@ -127,7 +138,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 Enable(self, spriteField);
             }
-
         }
 
         private static bool isActive(Actor self)
@@ -137,25 +147,37 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 propellerUses = (int)PropellerChargesField.GetValue(self);
             }
-            return self.GetType() == TheoCrystalType && !isStrawberryOrchard() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.THEO_CRYSTAL) ||
+            return self.GetType() == TheoCrystalType && !isStrawberryOrchard() && !isBellyoftheBeast() && !isSolex() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.THEO_CRYSTAL) ||
                 self.GetType() == TheoCrystalType && isStrawberryOrchard() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.STRAWBERRY_JAM) ||
+                self.GetType() == TheoCrystalType && isBellyoftheBeast() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CANNON_BALL) ||
+                self.GetType() == TheoCrystalType && isSolex() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_ROCK) ||
                 self.GetType() == BowlPufferType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BOWL_PUFFER) ||
                 self.GetType() == CrystalBombType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.CRYSTAL_BOMB) ||
                 self.GetType() == TripleBoostFlowerType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TRIPLE_BOOST_FLOWER) ||
-                self.GetType() == VanillaJelly && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JELLYFISH) ||
+                self.GetType() == VanillaJelly && !isStormRunner() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JELLYFISH) ||
+                self.GetType() == VanillaJelly && isStormRunner() && !isStormRunnerJellyException(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JELLYFISH_CRYSTAL) ||
+                self.GetType() == VanillaJelly && isStormRunner() && isStormRunnerJellyException(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JELLYFISH) ||
                 self.GetType() == PlatformJellyType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_JELLYFISH) ||
                 self.GetType() == SwitchCrateType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWITCH_CRATE) ||
-                self.GetType() == RespawningJellyFishType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JELLYFISH) ||
+                self.GetType() == RespawningJellyFishType && !isNelumbo() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JELLYFISH) ||
+                self.GetType() == RespawningJellyFishType && isNelumbo() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_FLYING_LANTERN) ||
+                self.GetType() == CustomGliderType && !isNelumbo() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JELLYFISH) ||
+                self.GetType() == CustomGliderType && isNelumbo() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_FLYING_LANTERN) ||
                 self.GetType() == ThrowBoxType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.THROW_BOX) ||
                 self.GetType() == BatteryType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BATTERY) ||
                 self.GetType() == PropellerBoxType && propellerUses == 3 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_PROPELLER_BLOCK) ||
-                self.GetType() == PropellerBoxType && propellerUses != 3 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_PROPELLER_BLOCK);
+                self.GetType() == PropellerBoxType && propellerUses != 3 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_PROPELLER_BLOCK) ||
+                self.GetType() == AntiGravJellyType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SKY_LANTERN);
         }
 
         private static FieldInfo getSpriteField(Actor self)
         {
             Type type = self.GetType();
-            FieldInfo spriteField = self.GetType().GetField(type == BowlPufferType ? "puffer" : type == PropellerBoxType ? "chargeSprites" : "sprite", BindingFlags.NonPublic | BindingFlags.Instance);
+            if(type == RespawningJellyFishType)
+            {
+                return typeof(Glider).GetField("sprite", BindingFlags.NonPublic | BindingFlags.Instance);
+            }
+            FieldInfo spriteField = type.GetField(type == BowlPufferType ? "puffer" : type == PropellerBoxType ? "chargeSprites" : "sprite", BindingFlags.NonPublic | BindingFlags.Instance);
             return spriteField;
         }
 
@@ -191,9 +213,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             }
             else
             {
-                JumpThru platform = null;
                 if (self.GetType() == PlatformJellyType)
                 {
+                    JumpThru platform = null;
                     platform = (JumpThru)RidablePlatformField.GetValue(self);
                     platform.Collidable = false;
                     RidablePlatformField.SetValue(self, platform);
@@ -235,9 +257,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             }
             else
             {
-                JumpThru platform = null;
                 if (self.GetType() == PlatformJellyType)
                 {
+                    JumpThru platform = null;
                     platform = (JumpThru)RidablePlatformField.GetValue(self);
                     platform.Collidable = true;
                     RidablePlatformField.SetValue(self, platform);
@@ -269,6 +291,39 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/1-Beginner/Jadeturtle") ||
                 SaveData.Instance.CurrentSession_Safe.Level.Equals("cp4_09_heartside_jadeturtle");
+        }
+
+        private static bool isBellyoftheBeast()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/5-Grandmaster/CaptainCarpensir") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("d2_08-Aiden");
+        }
+
+        private static bool isSolex()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/5-Grandmaster/Soloiini") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("f2_02-Soloiini");
+        }
+
+        private static bool isNelumbo()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/5-Grandmaster/tofu") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("e1_06-tofu");
+        }
+
+        private static bool isStormRunner()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/4-Expert/LethargicDoggo") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("d02_lethargicdoggo");
+        }
+
+        private static bool isStormRunnerJellyException(Actor self)
+        {
+            if (self.GetType() != VanillaJelly) return false;
+            Glider jelly = (Glider)self;
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/4-Expert/LethargicDoggo") &&
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("a-10") &&
+                jelly.SourceId.ID == 1660;
         }
 
     }

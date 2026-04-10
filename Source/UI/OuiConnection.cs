@@ -1,5 +1,7 @@
 ﻿using Archipelago.MultiClient.Net;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CollabUtils2;
+using Celeste.Mod.StrawberryJam2021;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
@@ -180,6 +182,13 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             {
                 foreach (LevelSetStats levelSet in SaveData.Instance.LevelSets)
                 {
+                    if (levelSet.Name.StartsWith("StrawberryJam2021"))
+                    {
+                        foreach (AreaStats area in levelSet.Areas)
+                        {
+                            StrawberryJam2021Module.SaveData.FilledJamJarSIDs.Add(area.SID);
+                        }
+                    }
                     if (levelSet.Name == "Celeste")
                     {
                         for (int i = 0; i < SaveData.Instance.Areas_Safe.Count; i++)

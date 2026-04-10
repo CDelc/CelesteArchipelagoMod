@@ -11,8 +11,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
     internal class modDashSwitch : IGameModification
     {
 
+        private static Type FlagDashSwitchType;
         public override void Load()
         {
+            FlagDashSwitchType = CelesteArchipelagoModule.FindType("Celeste.Mod.StrawberryJam2021.Entities.FlagDashSwitch");
+
             On.Celeste.DashSwitch.Update += modDashSwitch_Update;
             On.Celeste.DashSwitch.OnDashed += modDashSwitch_OnDashed;
         }
@@ -50,6 +53,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             return self.GetType() == typeof(ResizableDashSwitch) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BIG_YELLOW_BUTTON) ||
                 self.GetType() == typeof(DashSwitch) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) ||
+                self.GetType() == FlagDashSwitchType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) ||
+                self.GetType() == typeof(BarrierDashSwitch) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) ||
                 self.GetType() == typeof(DashSwitch) && isInJavasCrypt() && !self.mirrorMode && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GROWTH_POTION);
         }
 

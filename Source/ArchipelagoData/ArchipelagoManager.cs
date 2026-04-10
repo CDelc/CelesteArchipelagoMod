@@ -57,13 +57,15 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool include_expert = false;
         public bool include_grandmaster = false;
         public bool include_cracked_grandmaster = false;
+        public bool include_a_sides = false;
         public bool include_b_sides = false;
         public bool include_c_sides = false;
         public bool include_farewell = false;
 
         public bool randomize_checkpoints = false;
         public bool room_checks = false;
-        public bool include_heart_side_golden = false;
+        public bool winged_golden = false;
+
         public bool include_beginner_silvers = false;
         public bool include_intermediate_silvers = false;
         public bool include_advanced_silvers = false;
@@ -74,6 +76,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool include_b_sides_goldens = false;
         public bool include_c_sides_goldens = false;
         public bool include_farewell_golden = false;
+
         public int win_condition_level = 0;
         public bool protect_victory_level_checkpoints = false;
         public int strawberries_required_percentage = 80;
@@ -132,6 +135,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             "StrawberryJam2021/0-Lobbies/3-Advanced",
             "StrawberryJam2021/0-Lobbies/4-Expert",
             "StrawberryJam2021/0-Lobbies/5-Grandmaster",
+            "StrawberryJam2021/0-Gyms/0-Prologue",
+            "StrawberryJam2021/0-Gyms/1-Beginner",
+            "StrawberryJam2021/0-Gyms/2-Intermediate",
+            "StrawberryJam2021/0-Gyms/3-Advanced",
+            "StrawberryJam2021/0-Gyms/4-Expert",
+            "StrawberryJam2021/0-Gyms/5-Grandmaster",
+            "StrawberryJam2021/1-Beginner/ZZ-HeartSide",
+            "StrawberryJam2021/2-Intermediate/ZZ-HeartSide",
+            "StrawberryJam2021/3-Advanced/ZZ-HeartSide",
+            "StrawberryJam2021/4-Expert/ZZ-HeartSide",
+            "StrawberryJam2021/5-Grandmaster/ZZ-HeartSide"
         };
 
 
@@ -207,21 +221,21 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
             object value;
 
-            start_level_set = Convert.ToInt32(loginData.SlotData.TryGetValue("start_level_set", out value) ? value : 0);
             include_beginner = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_beginner", out value) ? value : false);
             include_intermediate = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_intermediate", out value) ? value : false);
             include_advanced = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_advanced", out value) ? value : false);
             include_expert = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_expert", out value) ? value : false);
             include_grandmaster = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_grandmaster", out value) ? value : false);
             include_cracked_grandmaster = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_cracked_grandmaster", out value) ? value : false);
+            include_a_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_a_sides", out value) ? value : false);
             include_b_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_b_sides", out value) ? value : false);
             include_c_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_c_sides", out value) ? value : false);
             include_farewell = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_farewell", out value) ? value : false);
 
             randomize_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_checkpoints", out value) ? value : false);
             room_checks = Convert.ToBoolean(loginData.SlotData.TryGetValue("room_checks", out value) ? value : false);
+            winged_golden = Convert.ToBoolean(loginData.SlotData.TryGetValue("winged_golden", out value) ? value : false);
 
-            include_heart_side_golden = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_heart_side_golden", out value) ? value : false);
             include_beginner_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_beginner_silvers", out value) ? value : false);
             include_intermediate_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_intermediate_silvers", out value) ? value : false);
             include_advanced_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_advanced_silvers", out value) ? value : false);
@@ -239,7 +253,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
 
-            this.AddItemsRcvCallback($"Celeste_Open_Rcv_{_session.Players.GetPlayerName(this.Slot)}", ItemsRcvUpdated);
+            this.AddItemsRcvCallback($"Celeste_Modded_Rcv_{_session.Players.GetPlayerName(this.Slot)}", ItemsRcvUpdated);
             this.ServerItemsRcv = -1;
 
             Ready = true;
@@ -413,8 +427,10 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 switch (item.ItemId)
                 {
                     case 100000000000:
-                        CelesteArchipelagoModule.SaveData.GoalLevelCleared = true;
-                        break;
+                        {
+                            CelesteArchipelagoModule.SaveData.GoalLevelCleared = true;
+                            break;
+                        }
                     //Mechanic
                     case long id when id >= 200000000000 && id < 300000000000:
                         {

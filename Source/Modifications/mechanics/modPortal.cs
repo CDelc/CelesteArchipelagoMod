@@ -24,7 +24,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private delegate void orig_OnPlayer(Portal self, Player player);
         private delegate void orig_Update(Portal self);
 
-        private static HashSet<int> mappedColors = new HashSet<int> {0, 1, 2, 3, 4};
+        private static HashSet<int> mappedColors = new HashSet<int> {0, 1, 2, 3, 4, 11, 13};
 
         public override void Load()
         {
@@ -91,6 +91,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 readyColor == 1 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_PORTAL) ||
                 readyColor == 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_PORTAL) ||
                 readyColor == 4 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_PORTAL) ||
+                readyColor == 13 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SILVER_PORTAL) ||
+                readyColor == 11 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.NAVY_PORTAL) ||
                 !mappedColors.Contains(readyColor);
 
         }

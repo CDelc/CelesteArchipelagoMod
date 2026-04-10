@@ -23,6 +23,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Type VanillaSpringType;
         private static Type MomentumSpringType;
         private static Type GravitySpringType;
+        private static Type FixedLaunchSpringType;
 
         private static Hook hookOnCollideDashless;
 
@@ -35,6 +36,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Hook GravityOnPufferHook;
         private static Hook GravityOnHoldableHook;
         private static FieldInfo GravityTypeField;
+
+        private static Hook FixedOnCollideHook;
+        private static Hook FixedOnHoldableHook;
+        private static Hook FixedOnPufferHook;
 
         private static Hook DashSpringOnCollideHook;
 
@@ -54,6 +59,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             VanillaSpringType = typeof(Spring);
             MomentumSpringType = typeof(DJMapHelper.Entities.SpringGreen);
             GravitySpringType = typeof(GravitySpring);
+            FixedLaunchSpringType = CelesteArchipelagoModule.FindType("Celeste.Mod.Spirialis.FixedLaunchSpring");
 
             GravityTypeField = GravitySpringType.GetField("GravityType", BindingFlags.Public | BindingFlags.Instance);
 
@@ -68,6 +74,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             MethodInfo gravityPufferMethod = GravitySpringType.GetMethod("OnPuffer", BindingFlags.NonPublic | BindingFlags.Instance);
             MethodInfo gravityHoldableMethod = GravitySpringType.GetMethod("OnHoldable", BindingFlags.NonPublic | BindingFlags.Instance);
 
+            MethodInfo FixedCollideMethod = FixedLaunchSpringType.GetMethod("onCollideFixed", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo FixedHoldableMethod = FixedLaunchSpringType.GetMethod("onHoldableFixed", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo FixedPufferMethod = FixedLaunchSpringType.GetMethod("onPufferFixed", BindingFlags.NonPublic | BindingFlags.Instance);
+
             NewRenderHook = new Hook(customRender, typeof(modSpring).GetMethod(nameof(modSpring_Render), BindingFlags.NonPublic | BindingFlags.Static));
             NewOnCollideHook = new Hook(customCollide, typeof(modSpring).GetMethod(nameof(modSpring_OnCollide), BindingFlags.NonPublic | BindingFlags.Static));
             NewOnHoldableHook = new Hook(customHoldable, typeof(modSpring).GetMethod(nameof(modSpring_OnHoldable), BindingFlags.NonPublic | BindingFlags.Static));
@@ -76,9 +86,13 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             hookOnCollideDashless = new Hook(dashlessCollideMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnCollide), BindingFlags.NonPublic | BindingFlags.Static));
             DashSpringOnCollideHook = new Hook(dashCollideMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnCollide), BindingFlags.NonPublic | BindingFlags.Static));
 
-            DashSpringOnCollideHook = new Hook(gravityCollideMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnCollide), BindingFlags.NonPublic | BindingFlags.Static));
+            GravityOnCollideHook = new Hook(gravityCollideMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnCollide), BindingFlags.NonPublic | BindingFlags.Static));
             GravityOnPufferHook = new Hook(gravityPufferMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnPuffer), BindingFlags.NonPublic | BindingFlags.Static));
             GravityOnHoldableHook = new Hook(gravityHoldableMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnHoldable), BindingFlags.NonPublic | BindingFlags.Static));
+
+            FixedOnCollideHook = new Hook(FixedCollideMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnCollide), BindingFlags.NonPublic | BindingFlags.Static));
+            FixedOnHoldableHook = new Hook(FixedHoldableMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnHoldable), BindingFlags.NonPublic | BindingFlags.Static)); ;
+            FixedOnPufferHook = new Hook(FixedPufferMethod, typeof(modSpring).GetMethod(nameof(modSpring_OnPuffer), BindingFlags.NonPublic | BindingFlags.Static)); ;
         }
 
         public override void Unload()
@@ -189,6 +203,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             return self.GetType() == VanillaSpringType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS) ||
                 self.GetType() == CustomSpringType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS) ||
+                self.GetType() == FixedLaunchSpringType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS) ||
                 self.GetType() == DashlessSpringType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASHLESS_SPRINGS) ||
                 self.GetType() == DashSpringType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SPRING) ||
                 self.GetType() == MomentumSpringType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOMENTUM_SPRING) ||

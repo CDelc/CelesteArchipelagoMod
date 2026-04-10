@@ -1,5 +1,7 @@
 ﻿using Celeste.Mod.BounceHelper;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.DJMapHelper.Entities;
+using Celeste.Mod.MaxHelpingHand.Entities;
 using Celeste.Mod.StrawberryJam2021.Entities;
 using FrostHelper;
 using Monocle;
@@ -23,6 +25,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Type ResettingRefillType;
         private static Type PlusOneRefillType;
         private static Type BounceRefillType;
+        private static Type CustomizableRefillType;
 
         private static FieldInfo ExtraJumpsField;
         private static FieldInfo numDashesField;
@@ -50,6 +53,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             ResettingRefillType = typeof(ResettingRefill);
             PlusOneRefillType = typeof(PlusOneRefill);
             BounceRefillType = typeof(BounceRefill);
+            CustomizableRefillType = typeof(CustomizableRefill);
 
             numDashesField = ResettingRefillType.GetField("dashes", BindingFlags.NonPublic | BindingFlags.Instance);
             ExtraJumpsField = JumpRefillType.GetField("extraJumps", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -75,6 +79,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             On.Celeste.Refill.Render -= modRefill_Render;
             PlusOneRefillHook?.Dispose();
             PlusOneRefillHook = null;
+            BounceRefillHook?.Dispose();
+            BounceRefillHook = null;
         }
 
         private static void modRefill_Render(On.Celeste.Refill.orig_Render orig, Refill self)
@@ -170,8 +176,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             return self.GetType() == DashCrystalType && twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == DashCrystalType && !twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
+                self.GetType() == CustomizableRefillType && !twoDashes && !isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
+                self.GetType() == CustomizableRefillType && !twoDashes && isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.INFINITE_DASH_CRYSTAL) ||
+                self.GetType() == CustomizableRefillType && twoDashes && !isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == ResettingRefillType && numDashes == 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == ResettingRefillType && numDashes == 1 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
+                self.GetType() == typeof(ColorfulRefill) && numDashes == 1 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
                 self.GetType() == ResettingRefillType && numDashes == 0 && extraJump && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SINGLE_JUMP_REFILL) ||
                 self.GetType() == DreamRefillType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_DASH_CRYSTALS) ||
                 self.GetType() == JumpRefillType && extraJumps == 1 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SINGLE_JUMP_REFILL) ||
@@ -181,6 +191,13 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 self.GetType() == PlusOneRefillType && !recoverStamina && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.NO_STAMINA_DASH_CRYSTAL) ||
                 self.GetType() == BounceRefillType && twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == BounceRefillType && !twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS);
+        }
+
+        private static bool isMosaicCrystal(Entity self)
+        {
+            return self.GetType() == CustomizableRefillType &&
+                (SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/4-Expert/Scroogle") || SaveData.Instance.CurrentSession_Safe.Level.Equals("e04_scroogle")) &&
+                !((CustomizableRefill)self).oneUse;
         }
     }
 }

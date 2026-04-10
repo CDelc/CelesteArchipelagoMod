@@ -22,6 +22,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Type VanillaMoveBlockType;
         private static Type ConnectedMoveBlockType;
         private static Type BounceMoveBlockType;
+        private static Type TimeMoveBlockType;
 
         private static Hook VanillaMoveBlockUpdateColors;
         private static Hook VanillaMoveBlockMoveCheck;
@@ -50,6 +51,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             VanillaMoveBlockType = typeof(MoveBlock);
             ConnectedMoveBlockType = typeof(ConnectedMoveBlock);
             BounceMoveBlockType = typeof(BounceMoveBlock);
+            TimeMoveBlockType = CelesteArchipelagoModule.FindType("Celeste.Mod.Spirialis.TimeMoveBlock");
 
             ConnectedMoveBlockGroupableField = ConnectedMoveBlockType.GetField("groupable", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -104,13 +106,14 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 BindingFlags privateLookup = BindingFlags.NonPublic | BindingFlags.Instance;
                 BindingFlags publicLookup = BindingFlags.Public | BindingFlags.Instance;
                 Color fillColor = MoveBlock.breakingBgFill;
-                self.GetType().GetField("fillColor", privateLookup).SetValue(self, fillColor);
+                Type type = self.GetType() == TimeMoveBlockType ? typeof(MoveBlock) : self.GetType();
+                type.GetField("fillColor", privateLookup).SetValue(self, fillColor);
 
-                if(self.GetType() != ConnectedMoveBlockType && self.GetType() != BounceMoveBlockType)
+                if(type != ConnectedMoveBlockType && type != BounceMoveBlockType)
                 {
-                    List<Image> topButton = (List<Image>)self.GetType().GetField("topButton", privateLookup).GetValue(self);
-                    List<Image> leftButton = (List<Image>)self.GetType().GetField("leftButton", privateLookup).GetValue(self);
-                    List<Image> rightButton = (List<Image>)self.GetType().GetField("rightButton", privateLookup).GetValue(self);
+                    List<Image> topButton = (List<Image>)type.GetField("topButton", privateLookup).GetValue(self);
+                    List<Image> leftButton = (List<Image>)type.GetField("leftButton", privateLookup).GetValue(self);
+                    List<Image> rightButton = (List<Image>)type.GetField("rightButton", privateLookup).GetValue(self);
 
                     foreach (Image image in topButton)
                     {
@@ -125,11 +128,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                         image3.Color = fillColor;
                     }
 
-                    self.GetType().GetField("topButton", privateLookup).SetValue(self, topButton);
-                    self.GetType().GetField("leftButton", privateLookup).SetValue(self, leftButton);
-                    self.GetType().GetField("rightButton", privateLookup).SetValue(self, rightButton);
+                    type.GetField("topButton", privateLookup).SetValue(self, topButton);
+                    type.GetField("leftButton", privateLookup).SetValue(self, leftButton);
+                    type.GetField("rightButton", privateLookup).SetValue(self, rightButton);
                 }
-                if(self.GetType() == ConnectedMoveBlockType)
+                if(type == ConnectedMoveBlockType)
                 {
                     GroupableMoveBlock groupable = (GroupableMoveBlock)ConnectedMoveBlockGroupableField.GetValue(self);
                     groupable.State = GroupableMoveBlock.MovementState.Idling;
@@ -137,7 +140,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 }
                 else
                 {
-                    self.GetType().GetField("state", self.GetType() == VanillaMoveBlockType || self.GetType() == BounceMoveBlockType ? privateLookup : publicLookup)
+                    type.GetField("state", type == VanillaMoveBlockType || type == BounceMoveBlockType ? privateLookup : publicLookup)
                         .SetValue(self, 0);
                 }
             }
@@ -172,7 +175,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             return self.GetType() == VanillaMoveBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) ||
                 self.GetType() == VitMoveBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) ||
                 self.GetType() == ConnectedMoveBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) ||
-                self.GetType() == BounceMoveBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK);
+                self.GetType() == BounceMoveBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK) ||
+                self.GetType() == TimeMoveBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_BLOCK);
         }
 
     }

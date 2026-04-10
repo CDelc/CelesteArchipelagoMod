@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CollabUtils2.Entities;
 using System;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
@@ -27,7 +28,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             if (SaveData.Instance != null && CelesteArchipelagoModule.IsInArchipelagoSave)
             {
-                if (self.Golden)
+                if (self.Golden || self.GetType() == typeof(SilverBerry))
                 {
                     string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
                     AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
@@ -57,7 +58,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
 
-            CelesteArchipelagoModule.Log($"Strawberry {self.ID.Key} checked, mapping to location id {locationID.ToString("X")}");
+            CelesteArchipelagoModule.Log($"Strawberry {self.ID.Key} checked, mapping to location id {locationID}");
         }
 
         private static void modSaveData_AddStrawberry_AreaKey_EntityID_bool(On.Celeste.SaveData.orig_AddStrawberry_AreaKey_EntityID_bool orig, SaveData self, AreaKey area, EntityID strawberry, bool golden)

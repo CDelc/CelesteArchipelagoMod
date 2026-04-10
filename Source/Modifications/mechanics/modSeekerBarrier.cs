@@ -32,6 +32,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 Constants.DrawDisabledRect(self.Collider, Color.Black * 0.9f);
             }
+            else if (CelesteArchipelagoModule.shouldModMechanics && isInCMB() && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.INFINITE_DASH_FIELD))
+            {
+                Constants.DrawDisabledRect(self.Collider, Color.Black * 0.6f);
+            }
         }
 
         private static bool isInPotential()
@@ -44,6 +48,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/3-Advanced/Vamp") ||
                 SaveData.Instance.CurrentSession_Safe.Level.Equals("heartside_Vamp");
+        }
+
+        private static bool isInCMB()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/5-Grandmaster/DeathKontrol") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("c2_11-DeathKontrol");
         }
     }
 }

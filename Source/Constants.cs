@@ -77,7 +77,15 @@ namespace Celeste.Mod.CelesteArchipelago
             new modDashBoostField(),
             new modForceJumpCrystal(),
             new modShroomRefill(),
-            new modGardenMoss()
+            new modGardenMoss(),
+            new modFloatingPoint(),
+            new modMonumentSwitch(),
+            new modStormRunner(),
+            new modStopWatchRefill(),
+            new modStopwatch(),
+            new modBubbleEmitters(),
+            new modInfiniteDashField(),
+            //new modJournal()
         };
 
         public static int SAVE_ID = 144;

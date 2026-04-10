@@ -17,5 +17,6 @@ public class CelesteArchipelagoModuleSettings : EverestModuleSettings {
     public bool RoomPopups { get; set; } = true;
     #endregion
 
+    [SettingIgnore]
     public bool Debug { get; set;  } = false;
 }

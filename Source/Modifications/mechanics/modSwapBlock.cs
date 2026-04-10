@@ -82,7 +82,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static void modSwapBlock_Render(On.Celeste.SwapBlock.orig_Render orig, SwapBlock self)
         {
             orig(self);
-            if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWAP_BLOCK) && CelesteArchipelagoModule.shouldModMechanics)
+            if (!SwapBlockIsActive() && CelesteArchipelagoModule.shouldModMechanics)
             {
                 Constants.DrawDisabledRect(self.Collider);
             }
@@ -90,7 +90,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modSwapBlock_OnDash(On.Celeste.SwapBlock.orig_OnDash orig, SwapBlock self, Vector2 direction)
         {
-            if (!CelesteArchipelagoModule.shouldModMechanics || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWAP_BLOCK))
+            if (!CelesteArchipelagoModule.shouldModMechanics || SwapBlockIsActive())
             {
                 orig(self, direction);
             }
@@ -100,7 +100,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if (CelesteArchipelagoModule.shouldModMechanics && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TOGGLE_SWAP_BLOCK))
+            if (CelesteArchipelagoModule.shouldModMechanics && !ToggleSwapBlockIsActive())
             {
                 Constants.DrawDisabledRect(self.Collider, isInToggleTheory() ? Color.Black * 0.8f : Constants.DisabledColor);
             }
@@ -109,16 +109,34 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modToggleSwapBlock_OnDash(orig_OnDash orig, Solid self, Vector2 direction)
         {
-            if (!CelesteArchipelagoModule.shouldModMechanics || ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TOGGLE_SWAP_BLOCK))
+            if (!CelesteArchipelagoModule.shouldModMechanics || ToggleSwapBlockIsActive())
             {
                 orig(self, direction);
             }
+        }
+
+        private static bool SwapBlockIsActive()
+        {
+            return ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SWAP_BLOCK) && !isNelumbo() ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_DRUM) && isNelumbo();
+        }
+
+        private static bool ToggleSwapBlockIsActive()
+        {
+            return ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TOGGLE_SWAP_BLOCK) && !isNelumbo() ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TOGGLE_DRUM) && isNelumbo();
         }
 
         private static bool isInToggleTheory()
         {
             return SaveData.Instance.CurrentSession_Safe.Area.SID == "StrawberryJam2021/3-Advanced/Citrea" ||
                 SaveData.Instance.CurrentSession_Safe.Level == "heartside_citrea";
+        }
+
+        private static bool isNelumbo()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/5-Grandmaster/tofu") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("e1_06-tofu");
         }
     }
 }

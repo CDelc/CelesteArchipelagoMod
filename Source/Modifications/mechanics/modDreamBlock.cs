@@ -26,6 +26,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Type DreamZipMoverType;
         private static Type DreamMoveBlockType;
         private static Type BounceDreamBlockType;
+        private static Type DreamSwitchGateType;
 
         private static FieldInfo RefillCountField;
 
@@ -55,6 +56,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             DreamZipMoverType = typeof(DreamZipMover);
             DreamMoveBlockType = typeof(DreamMoveBlock);
             BounceDreamBlockType = CelesteArchipelagoModule.FindType("Celeste.Mod.BounceHelper.BounceDreamBlock");
+            DreamSwitchGateType = typeof(DreamSwitchGate);
 
             RefillCountField = CustomDreamBlockType.GetField("RefillCount", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -274,12 +276,14 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 FrostActiveBackColor = ((CustomDreamBlockV2)self).ActiveBackColor;
             }
 
-            return self.GetType() == NormalDreamBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+            return self.GetType() == NormalDreamBlockType && !isSummitDownSide() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+                self.GetType() == NormalDreamBlockType && isSummitDownSide() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_DREAM_BLOCK) ||
                 self.GetType() == FrostHelperCustomDreamBlockType && isHoneyDreamColor(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BOUNCE_DREAM_BLOCKS) ||
                 self.GetType() == FrostHelperCustomDreamBlockType && isWhite(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_DREAM_BLOCK) ||
                 self.GetType() == FrostHelperCustomDreamBlockType && !isHoneyDreamColor(FrostActiveBackColor) && !isWhite(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == ConnectedDreamBlockType && refillCount == 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_DREAM_BLOCK) ||
                 self.GetType() == ConnectedDreamBlockType && refillCount != 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+                self.GetType() == DreamSwitchGateType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == FallingDreamBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == BounceDreamBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == DreamZipMoverType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_TRAFFIC_BLOCK) ||
@@ -294,6 +298,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static bool isWhite(Color color)
         {
             return color.R == 255 && color.G == 255 && color.B == 255;
+        }
+
+        private static bool isSummitDownSide()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/4-Expert/Linj") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("e01_linj");
         }
     }
 }

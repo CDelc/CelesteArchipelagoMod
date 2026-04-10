@@ -56,8 +56,16 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         public override void Render()
         {
             float textWidth = ActiveFont.Measure(message).X * TextScale;
+            float boxWidth = textWidth + 20f;
             float x = (1920f - textWidth) / 2f;
+            float boxX = x - 10f;
 
+            Draw.Rect(
+                new Vector2(boxX, YPosition),
+                boxWidth,
+                100f,
+                Color.Black * 0.7f
+            );
             ActiveFont.Draw(
                 message,
                 new Vector2(x, YPosition),

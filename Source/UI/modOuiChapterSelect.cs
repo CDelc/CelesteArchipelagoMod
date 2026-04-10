@@ -17,13 +17,26 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         {
             On.Celeste.OuiChapterPanel.Reset += modReset;
             On.Celeste.OuiChapterPanel.Start += modStartLevelGuard;
+            On.Celeste.OuiChapterPanel.Update += modUpdate;
         }
-
 
         public override void Unload()
         {
             On.Celeste.OuiChapterPanel.Reset -= modReset;
             On.Celeste.OuiChapterPanel.Start -= modStartLevelGuard;
+            On.Celeste.OuiChapterPanel.Update -= modUpdate;
+        }
+
+        private void modUpdate(On.Celeste.OuiChapterPanel.orig_Update orig, OuiChapterPanel self)
+        {
+            orig(self);
+            if (CelesteArchipelagoModule.IsInArchipelagoSave && self.Area.SID.StartsWith("StrawberryJam2021") && !canEnter(self.Area.SID, AreaMode.Normal))
+            {
+                foreach (Option checkpoint in self.checkpoints)
+                {
+                    checkpoint.Label = "LOCKED";
+                }
+            }
         }
 
         static bool levelGuardRunning = false;
@@ -58,14 +71,12 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 return;
             }
 
-            //ArchipelagoMapper.logUnlockedMechanics();
-
             DynamicData dynamicOuiChapterSelect = new DynamicData(self);
             string sid = self.Area.SID;
             CelesteArchipelagoModule.Log(sid);
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
-            bool mapped = ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal));
+            bool mapped = ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
 
             if (ArchipelagoManager.Instance.randomize_checkpoints && mapped)
             {
@@ -109,7 +120,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 AreaMode areaMode = mode.ID == "C" ? AreaMode.CSide : mode.ID == "B" ? AreaMode.BSide : AreaMode.Normal;
                 if (!mapped)
                 {
-                    mode.Label = "NOT IN ARCHIPELAGO MOD";
+                    mode.Label = "NOT IN ARCHIPELAGO";
                 }
                 else if (!canEnter(sid, areaMode))
                 {
@@ -120,10 +131,10 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private static bool canEnter(string sid, AreaMode areaMode)
         {
-            return ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) &&
+            return ArchipelagoManager.PermanentUnlockLevels.Contains(sid) || (
+                ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) &&
                 (CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
-                ArchipelagoManager.PermanentUnlockLevels.Contains(sid) ||
-                ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category);
+                ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category));
         }
 
         private static Dictionary<int, HashSet<string>> GetUnlockedCheckpointsByMode(string sid)
@@ -168,7 +179,8 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             if (CelesteArchipelagoModule.SaveData == null)
                 return true;
 
-            return CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(ArchipelagoMapper.getCheckpointItemID(sid, mode, checkpoint));
+            if (sid.StartsWith("StrawberryJam2021")) return canEnter(sid, mode);
+            else return CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(ArchipelagoMapper.getCheckpointItemID(sid, mode, checkpoint));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.TwigHelper.Entities;
+using ExtendedVariants.Entities.ForMappers;
 using Monocle;
 using MonoMod.RuntimeDetour;
 using System;
@@ -76,6 +77,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             Entity tiedEntity = (Entity)TiedEntityField.GetValue(self);
             if (tiedEntity.GetType() == ShroomRefillType && CelesteArchipelagoModule.shouldModMechanics && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPEED_MUSHROOM_WALL))
+            {
+                RespawnTimerFieldWall.SetValue(self, 1.0f);
+                self.Collidable = false;
+            }
+            //Jump refill walls here just because
+            else if(tiedEntity.GetType() == typeof(JumpRefill) && CelesteArchipelagoModule.shouldModMechanics && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.JUMP_REFILL_WALL))
             {
                 RespawnTimerFieldWall.SetValue(self, 1.0f);
                 self.Collidable = false;
