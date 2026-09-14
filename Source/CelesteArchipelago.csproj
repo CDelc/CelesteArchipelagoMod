@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -28,94 +28,94 @@
         <Reference Include="$(CelestePrefix)\MMHOOK_Celeste.dll" Private="false" />
         <Reference Include="$(CelestePrefix)\FNA.dll" Private="false" />
         <Reference Include="AdventureHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\AdventureHelper.dll</HintPath>
+          <HintPath>..\Assemblies\AdventureHelper.dll</HintPath>
         </Reference>
         <Reference Include="Anonhelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\Anonhelper.dll</HintPath>
+          <HintPath>..\Assemblies\Anonhelper.dll</HintPath>
         </Reference>
         <Reference Include="Batteries">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\Batteries.dll</HintPath>
+          <HintPath>..\Assemblies\Batteries.dll</HintPath>
         </Reference>
         <Reference Include="BGswitch">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\BGswitch.dll</HintPath>
+          <HintPath>..\Assemblies\BGswitch.dll</HintPath>
         </Reference>
         <Reference Include="BounceHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\BounceHelper.dll</HintPath>
+          <HintPath>..\Assemblies\BounceHelper.dll</HintPath>
         </Reference>
         <Reference Include="BrokemiaHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\BrokemiaHelper.dll</HintPath>
+          <HintPath>..\Assemblies\BrokemiaHelper.dll</HintPath>
         </Reference>
         <Reference Include="CanyonHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\CanyonHelper.dll</HintPath>
+          <HintPath>..\Assemblies\CanyonHelper.dll</HintPath>
         </Reference>
         <Reference Include="CavernHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\CavernHelper.dll</HintPath>
+          <HintPath>..\Assemblies\CavernHelper.dll</HintPath>
         </Reference>
         <Reference Include="CherryHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\CherryHelper.dll</HintPath>
+          <HintPath>..\Assemblies\CherryHelper.dll</HintPath>
         </Reference>
         <Reference Include="CollabUtils2">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\CollabUtils2.dll</HintPath>
+          <HintPath>..\Assemblies\CollabUtils2.dll</HintPath>
         </Reference>
         <Reference Include="CommunalHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\CommunalHelper.dll</HintPath>
+          <HintPath>..\Assemblies\CommunalHelper.dll</HintPath>
         </Reference>
         <Reference Include="DJMapHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\DJMapHelper.dll</HintPath>
+          <HintPath>..\Assemblies\DJMapHelper.dll</HintPath>
         </Reference>
         <Reference Include="EmHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\EmHelper.dll</HintPath>
+          <HintPath>..\Assemblies\EmHelper.dll</HintPath>
         </Reference>
         <Reference Include="ExtendedVariantMode">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\ExtendedVariantMode.dll</HintPath>
+          <HintPath>..\Assemblies\ExtendedVariantMode.dll</HintPath>
         </Reference>
         <Reference Include="FactoryHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\FactoryHelper.dll</HintPath>
+          <HintPath>..\Assemblies\FactoryHelper.dll</HintPath>
         </Reference>
         <Reference Include="FemtoHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\FemtoHelper.dll</HintPath>
+          <HintPath>..\Assemblies\FemtoHelper.dll</HintPath>
         </Reference>
         <Reference Include="FlaglinesAndSuch">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\FlaglinesAndSuch.dll</HintPath>
+          <HintPath>..\Assemblies\FlaglinesAndSuch.dll</HintPath>
         </Reference>
         <Reference Include="FrostTempleHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\FrostTempleHelper.dll</HintPath>
+          <HintPath>..\Assemblies\FrostTempleHelper.dll</HintPath>
         </Reference>
         <Reference Include="GravityHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\GravityHelper.dll</HintPath>
+          <HintPath>..\Assemblies\GravityHelper.dll</HintPath>
         </Reference>
         <Reference Include="HonlyHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\HonlyHelper.dll</HintPath>
+          <HintPath>..\Assemblies\HonlyHelper.dll</HintPath>
         </Reference>
         <Reference Include="IsaMods">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\IsaMods.dll</HintPath>
+          <HintPath>..\Assemblies\IsaMods.dll</HintPath>
         </Reference>
         <Reference Include="JackalHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\JackalHelper.dll</HintPath>
+          <HintPath>..\Assemblies\JackalHelper.dll</HintPath>
         </Reference>
         <Reference Include="MaxHelpingHand">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\MaxHelpingHand.dll</HintPath>
+          <HintPath>..\Assemblies\MaxHelpingHand.dll</HintPath>
         </Reference>
         <Reference Include="OutbackHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\OutbackHelper.dll</HintPath>
+          <HintPath>..\Assemblies\OutbackHelper.dll</HintPath>
         </Reference>
         <Reference Include="PandorasBox">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\PandorasBox.dll</HintPath>
+          <HintPath>..\Assemblies\PandorasBox.dll</HintPath>
         </Reference>
         <Reference Include="Spirialis">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\Spirialis.dll</HintPath>
+          <HintPath>..\Assemblies\Spirialis.dll</HintPath>
         </Reference>
         <Reference Include="StrawberryJam2021">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\StrawberryJam2021.dll</HintPath>
+          <HintPath>..\Assemblies\StrawberryJam2021.dll</HintPath>
         </Reference>
         <Reference Include="vitmod">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\vitmod.dll</HintPath>
+          <HintPath>..\Assemblies\CrystallineHelper.vitmod.dll</HintPath>
         </Reference>
         <Reference Include="VivHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\VivHelper.dll</HintPath>
+          <HintPath>..\Assemblies\VivHelper.dll</HintPath>
         </Reference>
         <Reference Include="VortexHelper">
-          <HintPath>..\..\..\..\..\..\..\..\Users\carpd\Desktop\assemblies\VortexHelper.dll</HintPath>
+          <HintPath>..\Assemblies\VortexHelper.dll</HintPath>
         </Reference>
     </ItemGroup>
 

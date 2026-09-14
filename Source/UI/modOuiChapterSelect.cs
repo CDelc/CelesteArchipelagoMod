@@ -131,8 +131,9 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private static bool canEnter(string sid, AreaMode areaMode)
         {
-            return ArchipelagoManager.PermanentUnlockLevels.Contains(sid) || (
-                ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) &&
+            CelesteArchipelagoModule.Log(areaMode + " ------------------------------- " + sid);
+            return (ArchipelagoManager.PermanentUnlockLevels.Contains(sid) && areaMode == AreaMode.Normal) ||
+                (ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) &&
                 (CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
                 ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category));
         }

@@ -83,7 +83,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public int total_strawberries = 100;
         public int required_strawberries = 0;
         public bool require_moon_berry = false;
-        public string apworld_verison = "";
+        public string apworld_version = "";
         #endregion
 
         public LevelCategory starting_category
@@ -105,7 +105,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     case 5:
                         return LevelCategory.GRANDMASTER;
                     default:
-                        return LevelCategory.A_SIDE;
+                        return LevelCategory.NONE;
                 }
             }
         }
@@ -147,7 +147,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             "StrawberryJam2021/2-Intermediate/ZZ-HeartSide",
             "StrawberryJam2021/3-Advanced/ZZ-HeartSide",
             "StrawberryJam2021/4-Expert/ZZ-HeartSide",
-            "StrawberryJam2021/5-Grandmaster/ZZ-HeartSide"
+            "StrawberryJam2021/5-Grandmaster/ZZ-HeartSide",
+            "Celeste/1-ForsakenCity"
         };
 
 
@@ -234,6 +235,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             include_b_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_b_sides", out value) ? value : false);
             include_c_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_c_sides", out value) ? value : false);
             include_farewell = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_farewell", out value) ? value : false);
+            start_level_set = Convert.ToInt32(loginData.SlotData.TryGetValue("start_level_set", out value) ? value : 0);
 
             randomize_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_checkpoints", out value) ? value : false);
             room_checks = Convert.ToBoolean(loginData.SlotData.TryGetValue("room_checks", out value) ? value : false);
@@ -255,12 +257,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             total_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("total_strawberries", out value) ? value : 0);
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
-            apworld_verison = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
+            apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
 
-            if (!VersionCompatible(apworld_verison))
+            if (!VersionCompatible(apworld_version))
             {
                 Disconnect();
-                string message = $"Version mismatch: Mod version {Constants.VERSION_NUMBER} is not compatible with APWorld Version {apworld_verison}";
+                string message = $"Version mismatch: Mod version {Constants.VERSION_NUMBER} is not compatible with APWorld Version {apworld_version}";
                 Monocle.Engine.Commands.Log(message, Color.Red);
                 VersionError = true;
                 return new(message);

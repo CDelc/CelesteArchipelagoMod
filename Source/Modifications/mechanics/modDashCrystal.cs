@@ -41,7 +41,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static FieldInfo OutlineBounceField;
         private static FieldInfo SpriteBounceField;
 
-        private delegate void orig_RenderPlusOne(PlusOneRefill self);
+        private delegate void orig_RenderPlusOne(Entity self);
         private delegate void orig_RenderBounceRefill(BounceRefill self);
 
         public override void Load()
@@ -51,7 +51,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             DreamRefillType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.DashStates.DreamTunnelRefill");
             ExpiringDashRefillType = typeof(ExpiringDashRefill);
             ResettingRefillType = typeof(ResettingRefill);
-            PlusOneRefillType = typeof(PlusOneRefill);
+            PlusOneRefillType = CelesteArchipelagoModule.FindType("FrostHelper.PlusOneRefill");
             BounceRefillType = typeof(BounceRefill);
             CustomizableRefillType = typeof(CustomizableRefill);
 
@@ -59,9 +59,9 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             ExtraJumpsField = JumpRefillType.GetField("extraJumps", BindingFlags.NonPublic | BindingFlags.Instance);
             ExtraJumpFieldBool = ResettingRefillType.GetField("extraJump", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            SpriteField = PlusOneRefillType.GetField("sprite", BindingFlags.NonPublic | BindingFlags.Instance);
-            OutlineField = PlusOneRefillType.GetField("outline", BindingFlags.NonPublic | BindingFlags.Instance);
-            RecoverStaminaField = PlusOneRefillType.GetField("recoverStamina", BindingFlags.NonPublic | BindingFlags.Instance);
+            SpriteField = PlusOneRefillType.GetField("_sprite", BindingFlags.NonPublic | BindingFlags.Instance);
+            OutlineField = PlusOneRefillType.GetField("_outline", BindingFlags.NonPublic | BindingFlags.Instance);
+            RecoverStaminaField = PlusOneRefillType.GetField("_recoverStamina", BindingFlags.NonPublic | BindingFlags.Instance);
 
             TwoDashesBounceField = BounceRefillType.GetField("twoDashes", BindingFlags.NonPublic | BindingFlags.Instance);
             OutlineBounceField = BounceRefillType.GetField("outline", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -100,7 +100,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             orig(self);
         }
 
-        private static void modRenderPlusOneRefill(orig_RenderPlusOne orig, PlusOneRefill self)
+        private static void modRenderPlusOneRefill(orig_RenderPlusOne orig, Entity self)
         {
             if (!CelesteArchipelagoModule.shouldModMechanics)
             {
