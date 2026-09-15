@@ -7,56 +7,6 @@ using static Celeste.Mod.CelesteArchipelago.ArchipelagoData.ArchipelagoManager;
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
 
-    public class RoomDisplay : Monocle.Entity
-    {
-        public static string CurrentRoom = "";
-        public static int RoomDisplayTimer = 0;
-
-        public RoomDisplay()
-        {
-            base.Y = 196f;
-            base.Depth = -101;
-            base.Tag = Tags.HUD | Tags.Global | Tags.PauseUpdate | Tags.TransitionUpdate;
-        }
-
-        public override void Render()
-        {
-            if (SaveData.Instance == null ||
-                SaveData.Instance.CurrentSession_Safe == null ||
-                !CelesteArchipelagoModule.Settings.RoomPopups ||
-                !CelesteArchipelagoModule.IsInArchipelagoSave)
-            {
-                return;
-            }
-
-            if (SaveData.Instance.CurrentSession_Safe.Level != CurrentRoom && SaveData.Instance.CurrentSession_Safe.Level != "")
-            {
-                CurrentRoom = SaveData.Instance.CurrentSession_Safe.Level;
-
-                RoomDisplayTimer = 180;
-            }
-
-            if (RoomDisplayTimer >= 0)
-            {
-                float alpha = 1.0f;
-
-                if (RoomDisplayTimer > 150)
-                {
-                    alpha = (float)(180.0f - RoomDisplayTimer) / 30.0f;
-                }
-                else if (RoomDisplayTimer < 30)
-                {
-                    alpha = (float)(RoomDisplayTimer) / 30.0f;
-                }
-
-                Color TextColor = new Color(0.96078f, 0.25882f, 0.78431f, alpha);
-
-                ActiveFont.Draw($"Room: {CurrentRoom}", new Vector2(50f, 1030f), new Vector2(0.0f, 0.5f), Vector2.One, TextColor, 5.0f, new Color(0.0f, 0.0f, 0.0f, alpha), 0.0f, new Color(1.0f, 0.0f, 0.0f, 0.0f));
-                RoomDisplayTimer--;
-            }
-        }
-    }
-
     internal class modPlayer : IGameModification
     {
         public override void Load()

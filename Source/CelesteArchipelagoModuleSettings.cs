@@ -19,4 +19,6 @@ public class CelesteArchipelagoModuleSettings : EverestModuleSettings {
 
     [SettingIgnore]
     public bool Debug { get; set;  } = false;
+
+    public bool DisplayRoomName { get; set; } = true;
 }

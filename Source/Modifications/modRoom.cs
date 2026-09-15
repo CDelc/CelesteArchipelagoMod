@@ -1,11 +1,15 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Microsoft.Xna.Framework;
 using System;
+using Celeste.Mod.CelesteArchipelago.UI;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
     internal class modRoom : IGameModification
     {
+
+        private static RoomDisplayText roomDisplayText = null;
+
         public override void Load()
         {
             On.Celeste.Level.LoadLevel += modLevel_LoadLevel;
@@ -22,6 +26,16 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self, next, direction);
 
+            if (CelesteArchipelagoModule.Settings.DisplayRoomName)
+            {
+                RoomDisplayText text = new RoomDisplayText(next.Name);
+                if (roomDisplayText != null)
+                {
+                    self.Remove(roomDisplayText);
+                }
+                self.Add(text);
+                roomDisplayText = text;
+            }
             if (CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 CheckRoom(self, next.Name);
@@ -33,6 +47,16 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self, playerIntro, isFromLoader);
 
+            if (CelesteArchipelagoModule.Settings.DisplayRoomName)
+            {
+                RoomDisplayText text = new RoomDisplayText(self.Session.Level);
+                if (roomDisplayText != null)
+                {
+                    self.Remove(roomDisplayText);
+                }
+                self.Add(text);
+                roomDisplayText = text;
+            }
             if (CelesteArchipelagoModule.IsInArchipelagoSave)
             {
                 CheckRoom(self, self.Session.Level);
