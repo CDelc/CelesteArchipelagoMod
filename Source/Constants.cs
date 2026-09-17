@@ -85,7 +85,7 @@ namespace Celeste.Mod.CelesteArchipelago
             new modStopwatch(),
             new modBubbleEmitters(),
             new modInfiniteDashField(),
-            //new modJournal()
+            new modJournal()
         };
 
         public static int SAVE_ID = 144;
@@ -93,8 +93,6 @@ namespace Celeste.Mod.CelesteArchipelago
         public static string LOG_PREFIX = "CelesteArchipelago";
 
         public static readonly Color DisabledColor = Color.DarkRed * 0.5f;
-
-        public static string VERSION_NUMBER = "0.9.0";
 
         public static void DrawDisabledRect(Collider collider, Color? color = null)
         {

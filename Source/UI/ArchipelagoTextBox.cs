@@ -12,7 +12,6 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         private float alpha;
         private Color color;
 
-        private static readonly float TextScale = 1f;
         private static readonly float YPosition = 48f;
         private static readonly Color OutlineColor = Color.Black;
 
@@ -37,6 +36,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 yield return null;
             }
 
+            if (color == Color.Orange) displayDuration *= 2;
             float timer = displayDuration;
             while (timer > 0f)
             {
@@ -55,22 +55,29 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         public override void Render()
         {
-            float textWidth = ActiveFont.Measure(message).X * TextScale;
+            float textScalar = 1f;
+            float textWidth = ActiveFont.Measure(message).X * textScalar;
             float boxWidth = textWidth + 20f;
-            float x = (1920f - textWidth) / 2f;
+            if(boxWidth > Celeste.TargetWidth - 40f)
+            {
+                textScalar = (Celeste.TargetWidth + boxWidth - 80f) / textWidth - 1;
+                textWidth = ActiveFont.Measure(message).X * textScalar;
+                boxWidth = textWidth + 20f;
+            }
+            float x = (Celeste.TargetWidth - textWidth) / 2f;
             float boxX = x - 10f;
 
             Draw.Rect(
                 new Vector2(boxX, YPosition),
                 boxWidth,
-                100f,
+                100f * textScalar,
                 Color.Black * 0.7f
             );
             ActiveFont.Draw(
                 message,
                 new Vector2(x, YPosition),
                 Vector2.Zero,
-                Vector2.One * TextScale,
+                Vector2.One * textScalar,
                 color * alpha,
                 1f,
                 OutlineColor * (alpha * 0.8f),

@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.Modifications;
 using FMOD.Studio;
 using System;
 
@@ -6,6 +7,10 @@ using System;
 namespace Celeste.Mod.CelesteArchipelago;
 
 public class CelesteArchipelagoModule : EverestModule {
+
+    public static readonly string MOD_VERSION = "1.0.0";
+    public static readonly string APWORLD_MINIMUM_VERSION = "1.0.0";
+
     public static CelesteArchipelagoModule Instance { get; private set; }
 
     public override Type SettingsType => typeof(CelesteArchipelagoModuleSettings);
@@ -53,6 +58,11 @@ public class CelesteArchipelagoModule : EverestModule {
     public static void Log(string message)
     {
         Logger.Log(LogLevel.Info, "CelesteArchipelago", message);
+    }
+
+    public static void Error(string message)
+    {
+        Logger.Log(LogLevel.Error, "CelesteArchipelago", message);
     }
 
     public static Type FindType(string fullName)

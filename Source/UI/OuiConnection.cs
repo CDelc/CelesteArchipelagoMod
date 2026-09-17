@@ -1,5 +1,6 @@
 ﻿using Archipelago.MultiClient.Net;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.CelesteArchipelago.Modifications;
 using Celeste.Mod.CollabUtils2;
 using Celeste.Mod.StrawberryJam2021;
 using Microsoft.Xna.Framework;
@@ -214,12 +215,8 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 }
 
                 SaveData.Instance.UnlockedAreas = 10;
-                //CelesteArchipelagoModule.Log("------------------------------------------------------");
 
-                //CelesteArchipelagoModule.Log($"{SaveData.Instance.UnlockedModes}");
-                //CelesteArchipelagoModule.Log($"{AreaData.Areas[1].Interlude_Safe}");
-                //CelesteArchipelagoModule.Log($"{AreaData.Areas[1].HasMode(AreaMode.CSide)}");
-                //CelesteArchipelagoModule.Log($"{Celeste.PlayMode != Celeste.PlayModes.Event}");
+                modJournal.InitializeMapLookup();
             }
 
             (Scene as Overworld).Goto<OuiChapterSelect>();

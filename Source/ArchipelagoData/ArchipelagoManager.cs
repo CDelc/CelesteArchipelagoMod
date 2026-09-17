@@ -5,6 +5,7 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using FactoryHelper.Entities;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -84,6 +85,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public int required_strawberries = 0;
         public bool require_moon_berry = false;
         public string apworld_version = "";
+        public string minimum_mod_version = "";
         #endregion
 
         public LevelCategory starting_category
@@ -258,12 +260,26 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
             apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
+            minimum_mod_version = Convert.ToString(loginData.SlotData.TryGetValue("minimum_mod_version", out value) ? value : "");
 
-            if (!VersionCompatible(apworld_version))
+            int versionCompatible;
+            try
+            {
+                versionCompatible = VersionCompatible();
+            } catch(Exception e)
             {
                 Disconnect();
-                string message = $"Version mismatch: Mod version {Constants.VERSION_NUMBER} is not compatible with APWorld Version {apworld_version}";
-                Monocle.Engine.Commands.Log(message, Color.Red);
+                string message = $"Error while parsing world versions, let the developer know this happened.";
+                CelesteArchipelagoModule.Error(message);
+                return new(message);
+            }
+
+            if (versionCompatible != 0)
+            {
+                Disconnect();
+                string message = $"Version mismatch/error: Mod version {CelesteArchipelagoModule.MOD_VERSION} is not compatible with APWorld Version {apworld_version}. " +
+                    (versionCompatible == 1 ?  $"Please update mod to at least {minimum_mod_version}" : $"Please update APWorld to at least {CelesteArchipelagoModule.APWORLD_MINIMUM_VERSION}");
+                CelesteArchipelagoModule.Error(message);
                 VersionError = true;
                 return new(message);
             }
@@ -797,19 +813,20 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             this.ServerItemsRcv = newItemsRcv;
         }
 
-        private bool VersionCompatible(string apworld_version)
+        private int VersionCompatible()
         {
-            string mod_version = Constants.VERSION_NUMBER;
+            bool a = Version.TryParse(apworld_version, out Version apworldVersion);
+            bool b = Version.TryParse(minimum_mod_version, out Version modMinimumVersion);
+            bool c = Version.TryParse(CelesteArchipelagoModule.MOD_VERSION, out Version modVersion);
+            bool d = Version.TryParse(CelesteArchipelagoModule.APWORLD_MINIMUM_VERSION, out Version apworldMinimumVersion);
 
-            string[] apworld_version_split = apworld_version.Split('.');
-            string[] mod_version_split = mod_version.Split(".");
-
-            if(apworld_version_split.Length < 3 || mod_version_split.Length < 3)
+            if (!a || !b || !c || !d)
             {
-                throw new ApplicationException($"One or both version numbers is not formatted correctly:\nAPWORLD_VERSION: {apworld_version}\nMOD_VERSION: {mod_version}");
+                Logger.Warn(LOG_PREFIX, $"Version parsing failed. apworld_version: {apworld_version}, minimum_mod_version: {minimum_mod_version}, mod_version: {CelesteArchipelagoModule.MOD_VERSION}");
+                throw new Exception("Version parsing failed.");
             }
 
-            return apworld_version_split[0] == mod_version_split[0] && apworld_version_split[1] == mod_version_split[1];
+            return modVersion < modMinimumVersion ? 1 : apworldVersion < apworldMinimumVersion ? 2 : 0;
         }
     }
 }

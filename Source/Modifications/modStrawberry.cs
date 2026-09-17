@@ -1,5 +1,6 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CollabUtils2.Entities;
+using Monocle;
 using System;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
@@ -28,13 +29,21 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             if (SaveData.Instance != null && CelesteArchipelagoModule.IsInArchipelagoSave)
             {
-                if (self.Golden || self.GetType() == typeof(SilverBerry))
+                if ((self.Golden || self.GetType() == typeof(SilverBerry)) && !self.Winged)
                 {
                     string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
                     AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
                     LevelCategory levelCategory = ArchipelagoMapper.getLevelCategory(SID, mode);
 
                     bool isEnabled = ArchipelagoMapper.goldensEnabledOnCategory(levelCategory);
+
+                    self.Active = isEnabled;
+                    self.Visible = isEnabled;
+                    self.Collidable = isEnabled;
+                }
+                if (SaveData.Instance.CurrentSession_Safe.Area.SID == "Celeste/1-ForsakenCity" && SaveData.Instance.CurrentSession_Safe.Area.Mode == AreaMode.Normal && Engine.Scene is Level level && level.Session.Level == "end")
+                {
+                    bool isEnabled = ArchipelagoManager.Instance.winged_golden;
 
                     self.Active = isEnabled;
                     self.Visible = isEnabled;
