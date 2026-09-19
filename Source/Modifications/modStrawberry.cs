@@ -63,11 +63,16 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
             AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
 
-            long locationID = ArchipelagoMapper.getStrawberryLocationID(SID, mode, self.ID, self.Golden, self.Winged);
+            long locationID = ArchipelagoMapper.getStrawberryLocationID(SID, mode, self.ID, self.Golden, self.Winged, isSilverLevel(SID));
 
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
 
             CelesteArchipelagoModule.Log($"Strawberry {self.ID.Key} checked, mapping to location id {locationID}");
+        }
+
+        private static bool isSilverLevel(string sid)
+        {
+            return sid.Contains("StrawberryJam2021") && !sid.Contains("ZZ-HeartSide");
         }
 
         private static void modSaveData_AddStrawberry_AreaKey_EntityID_bool(On.Celeste.SaveData.orig_AddStrawberry_AreaKey_EntityID_bool orig, SaveData self, AreaKey area, EntityID strawberry, bool golden)

@@ -1,4 +1,6 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Celeste.Mod.MaxHelpingHand.Entities;
+using Celeste.Mod.StrawberryJam2021.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if (!CelesteArchipelagoModule.shouldModMechanics) return;
+            if (!CelesteArchipelagoModule.shouldModMechanics || self is MaxHelpingHand.Entities.BeeFireball || self is StrawberryJam2021.Entities.BeeFireball) return;
 
             if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.LAVA_ICE_BALLS))
             {

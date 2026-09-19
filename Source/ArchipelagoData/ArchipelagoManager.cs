@@ -78,12 +78,14 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool include_c_sides_goldens = false;
         public bool include_farewell_golden = false;
 
-        public int win_condition_level = 0;
+        public int win_condition_level_selection = 0;
+        public (string sid, AreaMode mode) win_condition_level = ("Celeste/7-Summit", AreaMode.Normal);
         public bool protect_victory_level_checkpoints = false;
         public int strawberries_required_percentage = 80;
         public int total_strawberries = 100;
         public int required_strawberries = 0;
         public bool require_moon_berry = false;
+        public bool require_berries_for_goal = true;
         public string apworld_version = "";
         public string minimum_mod_version = "";
         #endregion
@@ -117,6 +119,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public static ArchipelagoManager Instance { get; private set; }
         
         public bool Ready { get; private set; }
+        public bool Disconnecting { get; private set; }
         public bool VersionError { get; private set; }
         public bool WasConnected { get; private set; }
         public int Slot => _session.ConnectionInfo.Slot;
@@ -182,6 +185,10 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public async Task<LoginFailure> Connect()
         {
 
+            if(Disconnecting)
+            {
+                return new("Disconnect operation still running, please wait.");
+            }
             Ready = false;
             ItemQueue = new();
             GoalSent = false;
@@ -253,12 +260,15 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             include_b_sides_goldens = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_b_sides_goldens", out value) ? value : false);
             include_c_sides_goldens = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_c_sides_goldens", out value) ? value : false);
             include_farewell_golden = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_farewell_golden", out value) ? value : false);
-            win_condition_level = Convert.ToInt32(loginData.SlotData.TryGetValue("win_condition_level", out value) ? value : 0);
+            win_condition_level_selection = Convert.ToInt32(loginData.SlotData.TryGetValue("win_condition_level", out value) ? value : 0);
+            win_condition_level = ArchipelagoMapper.getWinConditionLevel(win_condition_level_selection);
             protect_victory_level_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("protect_victory_level_checkpoints", out value) ? value : false);
             strawberries_required_percentage = Convert.ToInt32(loginData.SlotData.TryGetValue("strawberries_required_percentage", out value) ? value : 0);
             total_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("total_strawberries", out value) ? value : 0);
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
+            require_berries_for_goal = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_berries_for_goal", out value) ? value : false);
+
             apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
             minimum_mod_version = Convert.ToString(loginData.SlotData.TryGetValue("minimum_mod_version", out value) ? value : "");
 
@@ -296,10 +306,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public async Task<LoginFailure> Disconnect(bool attemptReconnect = true)
         {
             Ready = false;
+            Disconnecting = true;
             this.ServerItemsRcv = -1;
             this.ItemQueue.Clear();
             this.MessageQueue.Clear();
             this.GoalSent = false;
+            this.SentLocations.Clear();
 
             if (!attemptReconnect)
             {
@@ -316,6 +328,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 await _session.Socket.DisconnectAsync();
                 _session = null;
             }
+            Disconnecting = false;
 
             if (this.WasConnected && attemptReconnect)
             {
@@ -647,7 +660,14 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 //silver_berry
                 else if (newLoc >= 1000000000000 && newLoc < 1100000000000)
                 {
+                    EntityID strawberry = ArchipelagoMapper.getStrawberryEntityID(newLoc);
+                    long levelID = ArchipelagoMapper.extractLevelID(newLoc);
+                    AreaModeStats areaModeStats = ArchipelagoMapper.getAreaModeStats(levelID);
 
+                    if (areaModeStats.Strawberries.Add(strawberry))
+                    {
+                        areaModeStats.TotalStrawberries++;
+                    }
                 }
                 ////rainbow_berry
                 //else if (newLoc >= 1100000000000 && newLoc < 1200000000000)

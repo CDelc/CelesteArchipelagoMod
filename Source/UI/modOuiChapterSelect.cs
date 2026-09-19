@@ -4,6 +4,7 @@ using Celeste.Mod.CelesteArchipelago.Modifications;
 using FMOD;
 using MonoMod.Utils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using static Celeste.OuiChapterPanel;
@@ -18,6 +19,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             On.Celeste.OuiChapterPanel.Reset += modReset;
             On.Celeste.OuiChapterPanel.Start += modStartLevelGuard;
             On.Celeste.OuiChapterPanel.Update += modUpdate;
+            On.Celeste.OuiChapterPanel.IncrementStats += modIncrementStats;
         }
 
         public override void Unload()
@@ -25,6 +27,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             On.Celeste.OuiChapterPanel.Reset -= modReset;
             On.Celeste.OuiChapterPanel.Start -= modStartLevelGuard;
             On.Celeste.OuiChapterPanel.Update -= modUpdate;
+            On.Celeste.OuiChapterPanel.IncrementStats -= modIncrementStats;
         }
 
         private void modUpdate(On.Celeste.OuiChapterPanel.orig_Update orig, OuiChapterPanel self)
@@ -39,6 +42,12 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             }
         }
 
+        private IEnumerator modIncrementStats(On.Celeste.OuiChapterPanel.orig_IncrementStats orig, OuiChapterPanel self, bool shouldAdvance)
+        {
+            self.DisplayedStats.Cassette = true;
+            yield return orig(self, shouldAdvance);
+        }
+        
         static bool levelGuardRunning = false;
         private static void modStartLevelGuard(On.Celeste.OuiChapterPanel.orig_Start orig, OuiChapterPanel self, string checkpoint)
         {
@@ -122,19 +131,40 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 {
                     mode.Label = "NOT IN ARCHIPELAGO";
                 }
-                else if (!canEnter(sid, areaMode))
+                else if (!levelUnlocked(sid, areaMode))
                 {
                     mode.Label = "LOCKED";
+                }
+                else if (isGoalLevel(sid, areaMode) && !berriesMissing())
+                {
+                    mode.Label = CelesteArchipelagoModule.SaveData.Strawberries < ArchipelagoManager.Instance.required_strawberries ?
+                        $"STRAWBERRIES: {CelesteArchipelagoModule.SaveData.Strawberries} / {ArchipelagoManager.Instance.required_strawberries}" :
+                        ArchipelagoManager.Instance.require_moon_berry && !CelesteArchipelagoModule.SaveData.moonBerryCollected ? "MISSING MOON BERRY" : "";
                 }
             }
         }
 
-        private static bool canEnter(string sid, AreaMode areaMode)
+        private static bool levelUnlocked(string sid, AreaMode areaMode)
         {
             return (ArchipelagoManager.PermanentUnlockLevels.Contains(sid) && areaMode == AreaMode.Normal) ||
                 (ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) &&
                 (CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
                 ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category));
+        }
+
+        private static bool berriesMissing()
+        {
+            return CelesteArchipelagoModule.SaveData.Strawberries < ArchipelagoManager.Instance.required_strawberries || (ArchipelagoManager.Instance.require_moon_berry && !CelesteArchipelagoModule.SaveData.moonBerryCollected);
+        }
+
+        private static bool isGoalLevel(string sid, AreaMode areaMode)
+        {
+            return ArchipelagoManager.Instance.win_condition_level == (sid, areaMode);
+        }
+
+        private static bool canEnter(string sid, AreaMode areaMode)
+        {
+            return levelUnlocked(sid, areaMode) && !isGoalLevel(sid, areaMode) || levelUnlocked(sid, areaMode) && !berriesMissing();
         }
 
         private static Dictionary<int, HashSet<string>> GetUnlockedCheckpointsByMode(string sid)

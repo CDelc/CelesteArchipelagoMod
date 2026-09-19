@@ -191,14 +191,14 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
         }
 
-        public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID, bool golden, bool winged)
+        public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID, bool golden, bool winged, bool silver)
         {
-            return (golden ? winged ? 1300000000000 : 900000000000 : 200000000000) + getLocationOffset(SID, mode, strawberryID.Level) + strawberryID.ID;
+            return (golden ? winged ? 1300000000000 : silver ? 1000000000000 : 900000000000 : 200000000000) + getLocationOffset(SID, mode, strawberryID.Level) + strawberryID.ID;
         }
 
         public static EntityID getStrawberryEntityID(long locationID)
         {
-            if (!(locationID >= 200000000000 && locationID < 300000000000 || locationID >= 900000000000 && locationID < 1000000000000 || locationID >= 1200000000000 && locationID < 1300000000000))
+            if (!(locationID >= 200000000000 && locationID < 300000000000 || locationID >= 900000000000 && locationID < 1100000000000 || locationID >= 1200000000000 && locationID < 1300000000000))
             {
                 throw new IndexOutOfRangeException($"Strawberry was requested at locationID {locationID} but the ID is out of strawberry range");
             }
@@ -322,6 +322,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         {
             return levelSIDToID.ContainsKey((sid, AreaMode.Normal)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
         }
+
+        public static (string sid, AreaMode mode) getWinConditionLevel(int selection)
+        {
+            if(selection > win_condition_level_lookup.Length)
+            {
+                return ("Celeste/7-Summit", AreaMode.Normal);
+            }
+            return levelIDToSID.TryGetValue(win_condition_level_lookup[selection], out (string sid, AreaMode mode) level) ? level : ("Celeste/7-Summit", AreaMode.Normal);
+        }
+
+        private static readonly int[] win_condition_level_lookup = [19,20,25,48,67,93,123,142];
 
         private static Dictionary<long, (string SID, AreaMode mode)> levelIDToSID { get; } = new Dictionary<long, (string SID, AreaMode mode)>
         {
@@ -684,7 +695,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {2, "s2"},
                     {3, "s3"},
                     {4, "0x-a"},
-                    {5, "00a"},
+                    {5, "00-a"},
                     {6, "02-a"},
                     {7, "02-b"},
                     {8, "03-a"},
@@ -1886,7 +1897,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 }
             },
             {
-                ("StrawberryJam2021/1-Beginner/Owen-Shirrel", AreaMode.Normal),
+                ("StrawberryJam2021/1-Beginner/Owen-Shirrell", AreaMode.Normal),
                 new Dictionary<long, string>
                 {
                     {0, "00 - Overpass"},
@@ -2481,7 +2492,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 }
             },
             {
-                ("StrawberryJam2021/3-Advanced/jolly", AreaMode.Normal),
+                ("StrawberryJam2021/3-Advanced/Jolly", AreaMode.Normal),
                 new Dictionary<long, string>
                 {
                     {0, "a0"},
@@ -3084,7 +3095,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 }
             },
             {
-                ("StrawberryJam2021/4-Expert/jackal", AreaMode.Normal),
+                ("StrawberryJam2021/4-Expert/Jackal", AreaMode.Normal),
                 new Dictionary<long, string>
                 {
                     {0, "a01"},
