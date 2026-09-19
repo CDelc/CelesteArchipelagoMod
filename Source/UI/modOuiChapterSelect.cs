@@ -135,11 +135,11 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 {
                     mode.Label = "LOCKED";
                 }
-                else if (isGoalLevel(sid, areaMode) && !berriesMissing())
+                else if (isGoalLevel(sid, areaMode) && berriesMissing())
                 {
                     mode.Label = CelesteArchipelagoModule.SaveData.Strawberries < ArchipelagoManager.Instance.required_strawberries ?
                         $"STRAWBERRIES: {CelesteArchipelagoModule.SaveData.Strawberries} / {ArchipelagoManager.Instance.required_strawberries}" :
-                        ArchipelagoManager.Instance.require_moon_berry && !CelesteArchipelagoModule.SaveData.moonBerryCollected ? "MISSING MOON BERRY" : "";
+                        ArchipelagoManager.Instance.require_moon_berry && !CelesteArchipelagoModule.SaveData.moonBerryCollected ? "MISSING MOON BERRY" : "CLIMB";
                 }
             }
         }
