@@ -1916,7 +1916,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {13, "09 - Perpendicular"},
                     {14, "10 - Downfall"},
                     {15, "secret"},
-                    {17, "04b - Alcove"}
+                    {17, "04b - Alcove "}
                 }
             },
             {
