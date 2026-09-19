@@ -1,6 +1,18 @@
 # CelesteArchipelago
 This mod is for compatibility with the Celeste Modded archipelago world. It currently supports all of the vanilla game plus strawberry jam.
 
+## How to use
+### Mod
+1. Get Olympus and Everest for your Celeste installation if you don't have them already
+2. Put the .zip into the Mods folder in your Celeste directory
+3. Make sure the mod is enabled under "Manage Installed Mods" in Olympus
+### APWorld
+1. Install the Archipelago launcher
+2. Press the "Install APWorld" button and select the celeste_modded apworld file.
+3. Press "Generate Template Options" and find the celeste_modded.yaml.
+4. Fill out this yaml as desired and send it to your host. Once you have an archipelago server address you can connect to it with the mod.
+
+
 ## Important notes
 - In order to keep the mod working consistently, it requires that specific versions of strawberry jam and many of its dependencies be used. This can be handled by Olympus, but may require downgrading some mods.
 - Forsaken City A-Side will always be unlocked and included in the archipelago at the start of the game. I could not find a better way to make sphere 1 consistently work, as just about every strawberry jam level requires some mechanic to progress in.
