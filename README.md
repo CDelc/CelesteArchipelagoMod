@@ -15,7 +15,7 @@ This mod is for compatibility with the Celeste Modded archipelago world. It curr
 
 ## Important notes
 - In order to keep the mod working consistently, it requires that specific versions of strawberry jam and many of its dependencies be used. This can be handled by Olympus, but may require downgrading some mods.
-- Forsaken City A-Side will always be unlocked and included in the archipelago at the start of the game. I could not find a better way to make sphere 1 consistently work, as just about every strawberry jam level requires some mechanic to progress in.
+- Forsaken City A-Side will always be unlocked and included in the archipelago at the start of the game. I could not find a better way to make sphere 1 consistently work, as just about every strawberry jam level requires some mechanic to progress.
 
 ## Features
 - Archipelago support for every map in strawberry jam and the vanilla game
