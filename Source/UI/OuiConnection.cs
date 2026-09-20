@@ -215,6 +215,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 }
 
                 SaveData.Instance.UnlockedAreas = 10;
+                SaveData.Instance.CheatMode = true;
 
                 modJournal.InitializeMapLookup();
             }
