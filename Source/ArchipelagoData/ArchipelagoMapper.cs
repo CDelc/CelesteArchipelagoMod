@@ -2011,7 +2011,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 new Dictionary<long, string>
                 {
                     {0, "a_01"},
-                    {1, "a-02"},
+                    {1, "a_02"},
                     {2, "a_02.5"},
                     {3, "a_03"},
                     {4, "b_01"},
