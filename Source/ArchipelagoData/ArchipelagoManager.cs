@@ -62,6 +62,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool include_b_sides = false;
         public bool include_c_sides = false;
         public bool include_farewell = false;
+        public bool heart_sides_start_unlocked = true;
+        public bool exclude_puzzle_levels = false;
 
         public bool randomize_checkpoints = false;
         public bool room_checks = false;
@@ -86,6 +88,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public int required_strawberries = 0;
         public bool require_moon_berry = false;
         public bool require_berries_for_goal = true;
+        public bool open_heart_gates = false;
+
+
         public string apworld_version = "";
         public string minimum_mod_version = "";
         #endregion
@@ -108,11 +113,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                         return LevelCategory.EXPERT;
                     case 5:
                         return LevelCategory.GRANDMASTER;
+                    case 6:
+                        return LevelCategory.NONE;
+                    case 7:
+                        return LevelCategory.ALL;
                     default:
                         return LevelCategory.NONE;
                 }
             }
         }
+        public string starting_level_sid { get; private set; } = "Celeste/1-ForsakenCity";
+
 
         private ArchipelagoSession _session;
 
@@ -133,28 +144,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public int ServerItemsRcv = -1;
         private bool ItemRcvCallbackSet = false;
-
-
-        public static readonly HashSet<string> PermanentUnlockLevels = new HashSet<string>
-        {
-            "StrawberryJam2021/0-Lobbies/1-Beginner",
-            "StrawberryJam2021/0-Lobbies/2-Intermediate",
-            "StrawberryJam2021/0-Lobbies/3-Advanced",
-            "StrawberryJam2021/0-Lobbies/4-Expert",
-            "StrawberryJam2021/0-Lobbies/5-Grandmaster",
-            "StrawberryJam2021/0-Gyms/0-Prologue",
-            "StrawberryJam2021/0-Gyms/1-Beginner",
-            "StrawberryJam2021/0-Gyms/2-Intermediate",
-            "StrawberryJam2021/0-Gyms/3-Advanced",
-            "StrawberryJam2021/0-Gyms/4-Expert",
-            "StrawberryJam2021/0-Gyms/5-Grandmaster",
-            "StrawberryJam2021/1-Beginner/ZZ-HeartSide",
-            "StrawberryJam2021/2-Intermediate/ZZ-HeartSide",
-            "StrawberryJam2021/3-Advanced/ZZ-HeartSide",
-            "StrawberryJam2021/4-Expert/ZZ-HeartSide",
-            "StrawberryJam2021/5-Grandmaster/ZZ-HeartSide",
-            "Celeste/1-ForsakenCity"
-        };
 
 
         public ArchipelagoManager(Game game) : base(game)
@@ -245,6 +234,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             include_c_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_c_sides", out value) ? value : false);
             include_farewell = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_farewell", out value) ? value : false);
             start_level_set = Convert.ToInt32(loginData.SlotData.TryGetValue("start_level_set", out value) ? value : 0);
+            heart_sides_start_unlocked = Convert.ToBoolean(loginData.SlotData.TryGetValue("heart_sides_start_unlocked", out value) ? value : false);
+            exclude_puzzle_levels = Convert.ToBoolean(loginData.SlotData.TryGetValue("exclude_puzzle_levels", out value) ? value : false);
 
             randomize_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_checkpoints", out value) ? value : false);
             room_checks = Convert.ToBoolean(loginData.SlotData.TryGetValue("room_checks", out value) ? value : false);
@@ -268,6 +259,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
             require_berries_for_goal = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_berries_for_goal", out value) ? value : false);
+            open_heart_gates = Convert.ToBoolean(loginData.SlotData.TryGetValue("open_heart_gates", out value) ? value : false);
 
             apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
             minimum_mod_version = Convert.ToString(loginData.SlotData.TryGetValue("minimum_mod_version", out value) ? value : "");

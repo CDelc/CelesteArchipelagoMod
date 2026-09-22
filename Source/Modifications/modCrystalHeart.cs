@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Monocle;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 
@@ -37,6 +38,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                         BindingFlags.NonPublic | BindingFlags.Static)
                 );
             }
+
+            On.Celeste.HeartGemDoor.Added += modHeartGemDoorAdded;
         }
 
 
@@ -49,6 +52,18 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             _levelSetTotalHeartGemsHook?.Dispose();
             _levelSetTotalHeartGemsHook = null;
+
+            On.Celeste.HeartGemDoor.Added -= modHeartGemDoorAdded;
+        }
+
+        private static void modHeartGemDoorAdded(On.Celeste.HeartGemDoor.orig_Added orig, HeartGemDoor self, Scene scene)
+        {
+            if (CelesteArchipelagoModule.IsInArchipelagoSave && ArchipelagoManager.Instance.open_heart_gates)
+            {
+                (scene as Level).Session.SetFlag("opened_heartgem_door_" + self.Requires);
+            }
+
+            orig(self, scene);
         }
 
 
@@ -85,15 +100,15 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 case "Celeste":
                     return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count;
                 case "StrawberryJam2021/1-Beginner":
-                    return ArchipelagoMapper.getLobbyNumHeartsCollected(LevelCategory.BEGINNER);
+                    return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.BEGINNER);
                 case "StrawberryJam2021/2-Intermediate":
-                    return ArchipelagoMapper.getLobbyNumHeartsCollected(LevelCategory.INTERMEDIATE);
+                    return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.INTERMEDIATE);
                 case "StrawberryJam2021/3-Advanced":
-                    return ArchipelagoMapper.getLobbyNumHeartsCollected(LevelCategory.ADVANCED);
+                    return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.ADVANCED);
                 case "StrawberryJam2021/4-Expert":
-                    return ArchipelagoMapper.getLobbyNumHeartsCollected(LevelCategory.EXPERT);
+                    return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.EXPERT);
                 case "StrawberryJam2021/5-Grandmaster":
-                    return ArchipelagoMapper.getLobbyNumHeartsCollected(LevelCategory.GRANDMASTER) + ArchipelagoMapper.getLobbyNumHeartsCollected(LevelCategory.CRACKED_GRANDMASTER);
+                    return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.GRANDMASTER) + ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.CRACKED_GRANDMASTER);
                 default:
                     return 0;
             }
