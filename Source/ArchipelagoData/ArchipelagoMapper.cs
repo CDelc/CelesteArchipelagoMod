@@ -1471,7 +1471,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {8, "c-08b"},
                     {9, "c-09"},
                     {10, "c-10"},
-                    {11, "c-1"},
+                    {11, "c-11"},
                     {12, "c-12"},
                     {13, "c-13"},
                     {14, "c-13b"},
@@ -1514,7 +1514,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {0, "00- intro"},
                     {1, "01- Crusher"},
                     {2, "02- Bait N'Switch"},
-                    {3, "02B- a strwawbewwy??"},
+                    {3, "02B- a stwawbewwy??"},
                     {4, "03- Uberjump"},
                     {5, "04- Head Trauma"},
                     {6, "05- Boing"},
@@ -1985,7 +1985,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 new Dictionary<long, string>
                 {
                     {0, "a_01"},
-                    {1, "a-02"},
+                    {1, "a_02"},
                     {2, "a_02.5"},
                     {3, "a_03"},
                     {4, "b_01"},

@@ -310,17 +310,31 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 this.WasConnected = false;
             }
 
-            if (_session != null)
+            try
             {
-                _session.Socket.ErrorReceived -= OnError;
-                _session.Socket.SocketClosed -= OnSocketClosed;
-                _session.Items.ItemReceived -= OnItemReceived;
-                _session.Locations.CheckedLocationsUpdated -= OnLocationReceived;
-                _session.MessageLog.OnMessageReceived -= OnMessageReceived;
-                await _session.Socket.DisconnectAsync();
-                _session = null;
+                if (_session != null)
+                {
+                    _session.Socket.ErrorReceived -= OnError;
+                    _session.Socket.SocketClosed -= OnSocketClosed;
+                    _session.Items.ItemReceived -= OnItemReceived;
+                    _session.Locations.CheckedLocationsUpdated -= OnLocationReceived;
+                    _session.MessageLog.OnMessageReceived -= OnMessageReceived;
+
+                    if (_session.Socket != null)
+                    {
+                        await _session.Socket.DisconnectAsync();
+                    }
+                }
             }
-            Disconnecting = false;
+            catch (Exception ex)
+            {
+                Logger.Error(Constants.LOG_PREFIX, $"Socket disconnect threw an exception: {ex.Message}");
+            }
+            finally
+            {
+                _session = null;
+                Disconnecting = false;
+            }
 
             if (this.WasConnected && attemptReconnect)
             {
