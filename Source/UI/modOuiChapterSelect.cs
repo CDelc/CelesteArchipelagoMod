@@ -33,13 +33,13 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         private void modUpdate(On.Celeste.OuiChapterPanel.orig_Update orig, OuiChapterPanel self)
         {
             orig(self);
-            if (CelesteArchipelagoModule.IsInArchipelagoSave && self.Area.SID.StartsWith("StrawberryJam2021") && !canEnter(self.Area.SID, AreaMode.Normal))
-            {
-                foreach (Option checkpoint in self.checkpoints)
-                {
-                    checkpoint.Label = "LOCKED";
-                }
-            }
+            //if (CelesteArchipelagoModule.IsInArchipelagoSave && self.Area.SID.StartsWith("StrawberryJam2021") && !ArchipelagoUtils.canEnter(self.Area.SID, AreaMode.Normal))
+            //{
+            //    foreach (Option checkpoint in self.checkpoints)
+            //    {
+            //        checkpoint.Label = "LOCKED";
+            //    }
+            //}
         }
 
         private IEnumerator modIncrementStats(On.Celeste.OuiChapterPanel.orig_IncrementStats orig, OuiChapterPanel self, bool shouldAdvance)
@@ -60,7 +60,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             string sid = self.Area.SID;
             AreaMode mode = self.Area.Mode;
 
-            if (canEnter(sid, mode) && canUseCheckpoint(sid, mode, checkpoint))
+            if (ArchipelagoUtils.canEnter(sid, mode) && canUseCheckpoint(sid, mode, checkpoint))
             {
                 orig(self, checkpoint);
             }
@@ -85,9 +85,9 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             CelesteArchipelagoModule.Log(sid);
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
-            bool mapped = ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
+            bool allowed = ArchipelagoMapper.levelIsAllowed(sid);
 
-            if (ArchipelagoManager.Instance.randomize_checkpoints && mapped)
+            if (ArchipelagoManager.Instance.randomize_checkpoints && allowed)
             {
                 savedCheckpoints = GetUnlockedCheckpointsByMode(sid);
             }
@@ -127,15 +127,15 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             foreach (Option mode in self.modes)
             {
                 AreaMode areaMode = mode.ID == "C" ? AreaMode.CSide : mode.ID == "B" ? AreaMode.BSide : AreaMode.Normal;
-                if (!mapped)
+                if (!allowed || !ArchipelagoUtils.levelIncludedInRandomizer(sid, areaMode))
                 {
                     mode.Label = "NOT IN ARCHIPELAGO";
                 }
-                else if (!levelUnlocked(sid, areaMode))
+                else if (!ArchipelagoUtils.levelIsUnlocked(sid, areaMode))
                 {
                     mode.Label = "LOCKED";
                 }
-                else if (isGoalLevel(sid, areaMode) && berriesMissing())
+                else if (ArchipelagoUtils.isGoalLevel(sid, areaMode) && ArchipelagoUtils.berriesMissing())
                 {
                     mode.Label = CelesteArchipelagoModule.SaveData.Strawberries < ArchipelagoManager.Instance.required_strawberries ?
                         $"STRAWBERRIES: {CelesteArchipelagoModule.SaveData.Strawberries} / {ArchipelagoManager.Instance.required_strawberries}" :
@@ -144,29 +144,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             }
         }
 
-        private static bool levelUnlocked(string sid, AreaMode areaMode)
-        {
-            return (ArchipelagoManager.PermanentUnlockLevels.Contains(sid) && areaMode == AreaMode.Normal) ||
-                (ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) &&
-                (CelesteArchipelagoModule.SaveData.LevelUnlocks.Contains((sid, areaMode)) ||
-                ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category));
-        }
-
-        private static bool berriesMissing()
-        {
-            return CelesteArchipelagoModule.SaveData.Strawberries < ArchipelagoManager.Instance.required_strawberries || (ArchipelagoManager.Instance.require_moon_berry && !CelesteArchipelagoModule.SaveData.moonBerryCollected);
-        }
-
-        private static bool isGoalLevel(string sid, AreaMode areaMode)
-        {
-            return ArchipelagoManager.Instance.win_condition_level == (sid, areaMode);
-        }
-
-        private static bool canEnter(string sid, AreaMode areaMode)
-        {
-            return levelUnlocked(sid, areaMode) && !isGoalLevel(sid, areaMode) || levelUnlocked(sid, areaMode) && !berriesMissing();
-        }
-
+        
         private static Dictionary<int, HashSet<string>> GetUnlockedCheckpointsByMode(string sid)
         {
             AreaData areaData = AreaData.Get(sid);
@@ -209,7 +187,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             if (CelesteArchipelagoModule.SaveData == null)
                 return true;
 
-            if (sid.StartsWith("StrawberryJam2021")) return canEnter(sid, mode);
+            if (sid.StartsWith("StrawberryJam2021")) return ArchipelagoUtils.canEnter(sid, mode);
             else return CelesteArchipelagoModule.SaveData.UnlockedCheckpoints.Contains(ArchipelagoMapper.getCheckpointItemID(sid, mode, checkpoint));
         }
     }

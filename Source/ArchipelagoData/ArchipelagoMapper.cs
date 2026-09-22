@@ -7,24 +7,28 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
     internal class ArchipelagoMapper
     {
 
+        // Returns the AP level ID of whichever level a given AP location ID is in
         public static long extractLevelID(long locationID)
         {
             long removeCategory = locationID % 100000000000;
             return removeCategory / 100000000;
         }
 
+        // Returns the AP room ID of whichever room a given AP location ID is in
         public static long extractRoomID(long locationID)
         {
             long removeCategory = locationID % 100000000000;
             return (removeCategory % 100000000) / 100000;
         }
 
+        // Returns the 5-digit data that comes at the end of an AP location ID
         public static int extractMetadata(long locationID)
         {
             long removeCategory = locationID % 100000000000;
             return (int)(removeCategory % 100000);
         }
 
+        // Returns the AreaModeStats object for a given AP level ID
         public static AreaModeStats getAreaModeStats(long levelID)
         {
             (string SID, AreaMode mode) = getSID(levelID);
@@ -36,11 +40,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return SaveData.Instance.Areas_Safe[areaData.ID].Modes[(int)mode];
         }
 
+        // Get the offset to be added when assembling a location ID that accounts for the level and room of the ID
         public static long getLocationOffset(string SID, AreaMode mode, string room)
         {
             return getLevelID(SID, mode) * 100000000 + getRoomID(SID, mode, room) * 100000;
         }
 
+        // Get the SID and AreaMode of a given AP level ID
         public static (string SID, AreaMode mode) getSID(long levelID)
         {
             if (!levelIDToSID.TryGetValue(levelID, out (string SID, AreaMode mode) rValue)) {
@@ -49,11 +55,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return rValue;
         }
 
+        // Get the name of a room from its AP room ID
         public static string getRoomName(string SID, AreaMode mode, long roomID)
         {
             if (!roomIdsToname.TryGetValue((SID, mode), out Dictionary<long, string> roomDict))
             {
-                throw new IndexOutOfRangeException($"A room name was requested in a level that does not exist {SID} {mode.ToString()}");
+                if (!ArchipelagoUtils.isLobbyOrGymSID(SID)) throw new IndexOutOfRangeException($"A room name was requested in a level that does not exist {SID} {mode.ToString()}");
             }
 
             if (!roomDict.TryGetValue(roomID, out string rValue))
@@ -64,21 +71,24 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return rValue;
         }
 
+        // Get the name of a room from its AP room ID wand its AP level ID
         public static string getRoomName(long levelID, long roomID)
         {
             (string SID, AreaMode mode) level = getSID(levelID);
             return getRoomName(level.SID, level.mode, roomID);
         }
 
+        // Get the AP level ID of a level from its SID and mode
         public static long getLevelID(string SID, AreaMode mode)
         {
             if (!levelSIDToID.TryGetValue((SID, mode), out long rValue))
             {
-                throw new IndexOutOfRangeException($"A level ID was requested that does not exist: ID {SID} | {mode.ToString()}");
+                if (!ArchipelagoUtils.isLobbyOrGymSID(SID)) throw new IndexOutOfRangeException($"A level ID was requested that does not exist: ID {SID} | {mode.ToString()}");
             }
             return rValue;
         }
 
+        // Get the AP Room ID from the Celeste SID, AreaMode, and room name
         public static long getRoomID(string SID, AreaMode mode, string room)
         {
 
@@ -94,6 +104,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return rValue;
         }
 
+        // Get the level SID and AreaMode from a AP Location ID
         public static (string SID, AreaMode mode) ArchipelagoIDToSID(long id)
         {
             long levelId = extractLevelID(id);
@@ -105,97 +116,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             throw new IndexOutOfRangeException($"A level SID was requested that does not exist: ID {id} | {levelId}");
         }
 
-        private static LevelCategory getLevelCategory(string SID)
-        {
-            foreach (KeyValuePair<string, LevelCategory> kvp in levelSIDToCategory)
-            {
-                if (SID.StartsWith(kvp.Key))
-                {
-                    return kvp.Value;
-                }
-            }
-            return LevelCategory.A_SIDE;
-        }
-
-        public static LevelCategory getLevelCategory(string SID, AreaMode mode)
-        {
-            if (mode == AreaMode.BSide)
-            {
-                return LevelCategory.B_SIDE;
-            }
-            if (mode == AreaMode.CSide)
-            {
-                return LevelCategory.C_SIDE;
-            }
-            else
-            {
-                return getLevelCategory(SID);
-            }
-        }
-
-        public static bool levelsEnabledOnCategory(LevelCategory levelCategory)
-        {
-            switch (levelCategory)
-            {
-                case LevelCategory.BEGINNER:
-                    return ArchipelagoManager.Instance.include_beginner;
-                case LevelCategory.INTERMEDIATE:
-                    return ArchipelagoManager.Instance.include_intermediate;
-                case LevelCategory.ADVANCED:
-                    return ArchipelagoManager.Instance.include_advanced;
-                case LevelCategory.EXPERT:
-                    return ArchipelagoManager.Instance.include_expert;
-                case LevelCategory.GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_grandmaster;
-                case LevelCategory.CRACKED_GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_cracked_grandmaster;
-                case LevelCategory.A_SIDE:
-                    return ArchipelagoManager.Instance.include_a_sides;
-                case LevelCategory.B_SIDE:
-                    return ArchipelagoManager.Instance.include_b_sides;
-                case LevelCategory.C_SIDE:
-                    return ArchipelagoManager.Instance.include_c_sides;
-                case LevelCategory.FAREWELL:
-                    return ArchipelagoManager.Instance.include_farewell;
-                default:
-                    return false;
-            }
-        }
-
-        public static bool goldensEnabledOnCategory(LevelCategory levelCategory)
-        {
-            switch (levelCategory)
-            {
-                case LevelCategory.BEGINNER:
-                    return ArchipelagoManager.Instance.include_beginner_silvers;
-                case LevelCategory.INTERMEDIATE:
-                    return ArchipelagoManager.Instance.include_intermediate_silvers;
-                case LevelCategory.ADVANCED:
-                    return ArchipelagoManager.Instance.include_advanced_silvers;
-                case LevelCategory.EXPERT:
-                    return ArchipelagoManager.Instance.include_expert_silvers;
-                case LevelCategory.GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_grandmaster_silvers;
-                case LevelCategory.CRACKED_GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_cracked_grandmaster_silvers;
-                case LevelCategory.A_SIDE:
-                    return ArchipelagoManager.Instance.include_a_sides_goldens;
-                case LevelCategory.B_SIDE:
-                    return ArchipelagoManager.Instance.include_b_sides_goldens;
-                case LevelCategory.C_SIDE:
-                    return ArchipelagoManager.Instance.include_c_sides_goldens;
-                case LevelCategory.FAREWELL:
-                    return ArchipelagoManager.Instance.include_farewell_golden;
-                default:
-                    return false;
-            }
-        }
-
+        // Get the location ID of a specific strawberry
         public static long getStrawberryLocationID(string SID, AreaMode mode, EntityID strawberryID, bool golden, bool winged, bool silver)
         {
             return (golden ? winged ? 1300000000000 : silver ? 1000000000000 : 900000000000 : 200000000000) + getLocationOffset(SID, mode, strawberryID.Level) + strawberryID.ID;
         }
 
+        // Get the EntityID of a strawberry from its AP Location ID
         public static EntityID getStrawberryEntityID(long locationID)
         {
             if (!(locationID >= 200000000000 && locationID < 300000000000 || locationID >= 900000000000 && locationID < 1100000000000 || locationID >= 1200000000000 && locationID < 1300000000000))
@@ -212,18 +139,21 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return new EntityID { Level = roomName, ID = entityID };
         }
 
+        // Get the AP Location ID of a Crystal Heart based on the level it is from
         public static long getCrystalHeartLocationID(string SID, AreaMode mode)
         {
             long levelID = getLevelID(SID, mode);
             return 600000000000 + levelID * 100000000;
         }
 
+        // Get the AP Location ID of a Cassette based on the level it is from
         public static long getCassetteLocationID(string SID, AreaMode mode)
         {
             long levelID = getLevelID(SID, mode);
             return 300000000000 + levelID * 100000000;
         }
 
+        // Get the AP Item ID of a Checkpoint depending on the level and room it is from
         public static long getCheckpointItemID(string SID, AreaMode mode, string roomName)
         {
             try
@@ -236,104 +166,145 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
         }
 
+        // Get the AP Location ID of a Checkpoint depending on the level and room it is from
         public static long getCheckpointLocationID(string SID, AreaMode mode, string roomName)
         {
             return 700000000000 + getLocationOffset(SID, mode, roomName);
         }
 
+        // Get the AP Location ID of a room (for roomsanity) depending on the level and room
         public static long getRoomLocationID(string SID, AreaMode mode, string room)
         {
             return 1300000000000 + getLocationOffset(SID, mode, room);
         }
 
+        // Get the AP Location ID of a level completion
         public static long getLevelCompleteLocationID(string SID, AreaMode mode)
         {
             return 400000000000 + getLevelID(SID, mode) * 100000000;
         }
 
+        // Get the AP Location ID of a specific key
         public static long getKeyLocationID(string SID, AreaMode mode, EntityID key)
         {
             return 800000000000 + getLocationOffset(SID, mode, key.Level) + key.ID;
         }
 
+        // Get the AP Item ID of a specific locked door
         public static long getLockDoorID(string SID, AreaMode mode, EntityID door)
         {
             return 500000000000 + getLocationOffset(SID, mode, door.Level) + door.ID;
         }
 
+        // Get the AP Location ID of a mini heart
         public static long getMiniHeartLocationID(string SID, AreaMode mode)
         {
             long levelID = getLevelID(SID, mode);
             return 500000000000 + levelID * 100000000;
         }
 
+        // Get the AP location ID of either a mini heart or heart. The appropriate location ID will be determined by the level requested.
+        // (Mini hearts for SJ lobby levels, Crystal hearts otherwise)
         public static long getHeartLocationID(string SID, AreaMode mode)
         {
             LevelCategory category = getLevelCategory(SID, mode);
-            if (isLobbyCategory(category))
+            if (ArchipelagoUtils.isLobbyCategory(category))
             {
                 return getMiniHeartLocationID(SID, mode);
             }
             return getCrystalHeartLocationID(SID, mode);
         }
 
+        // Get the AP Location ID of a specific summit gem
         public static long getGemLocationID(string SID, AreaMode mode, EntityID gem)
         {
             return 1400000000000 + getLocationOffset(SID, mode, gem.Level) + gem.ID;
         }
 
+        // Get the AP Item ID of a specific summit gem
         public static long getGemItemID(string SID, AreaMode mode, EntityID gem)
         {
             return 1100000000000 + getLocationOffset(SID, mode, gem.Level) + gem.ID;
         }
 
-        public static int getLobbyNumHeartsCollected(LevelCategory category)
+        // Checks if the level is allowed to be entered while using this mod
+        public static bool levelIsAllowed(string sid)
         {
-            if (!isLobbyCategory(category))
+            return levelSIDToID.ContainsKey((sid, AreaMode.Normal)) || ArchipelagoUtils.isLobbyOrGymSID(sid);
+        }
+
+        // Gets the level category of a specific SID. This will assume A-Sides
+        public static LevelCategory getLevelCategory(string SID)
+        {
+            foreach (KeyValuePair<string, LevelCategory> kvp in levelSIDToCategory)
             {
-                return CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count;
+                if (SID.StartsWith(kvp.Key))
+                {
+                    return kvp.Value;
+                }
+            }
+            return LevelCategory.A_SIDE;
+        }
+
+        // Gets the level category of a specific SID and AreaMode
+        public static LevelCategory getLevelCategory(string SID, AreaMode mode)
+        {
+            if (mode == AreaMode.BSide)
+            {
+                return LevelCategory.B_SIDE;
+            }
+            if (mode == AreaMode.CSide)
+            {
+                return LevelCategory.C_SIDE;
             }
             else
             {
-                int count = 0;
-                foreach (long heartID in CelesteArchipelagoModule.SaveData.CrystalHeartsCollab)
-                {
-                    string SID = getSID(extractLevelID(heartID)).SID;
-                    if (getLevelCategory(SID) == category)
-                    {
-                        count++;
-                    }
-                }
-                return count;
+                return getLevelCategory(SID);
             }
         }
 
-        public static bool isLobbyCategory(LevelCategory category)
-        {
-            return category == LevelCategory.BEGINNER
-                || category == LevelCategory.INTERMEDIATE
-                || category == LevelCategory.ADVANCED
-                || category == LevelCategory.EXPERT
-                || category == LevelCategory.GRANDMASTER
-                || category == LevelCategory.CRACKED_GRANDMASTER;
-        }
-
-        public static bool levelIsMapped(string sid)
-        {
-            return levelSIDToID.ContainsKey((sid, AreaMode.Normal)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
-        }
-
+        // Converts the option selection from the AP World to the SID and Mode combination of the goal level
+        private static readonly int[] win_condition_level_lookup = [19, 20, 25, 48, 67, 93, 123, 142];
         public static (string sid, AreaMode mode) getWinConditionLevel(int selection)
         {
-            if(selection > win_condition_level_lookup.Length)
+            if (selection > win_condition_level_lookup.Length)
             {
                 return ("Celeste/7-Summit", AreaMode.Normal);
             }
             return levelIDToSID.TryGetValue(win_condition_level_lookup[selection], out (string sid, AreaMode mode) level) ? level : ("Celeste/7-Summit", AreaMode.Normal);
         }
 
-        private static readonly int[] win_condition_level_lookup = [19,20,25,48,67,93,123,142];
+        private static readonly HashSet<long> puzzle_levels = [40, 45, 66, 83, 119];
+        public static bool isPuzzleLevel(string sid)
+        {
+            return puzzle_levels.Contains(levelSIDToID.TryGetValue((sid, AreaMode.Normal), out long value) ? value : 0);
+        }
 
+        // Checks if a specific Mechanic is enabled
+        public static bool mechanicEnabled(Mechanic mechanic)
+        {
+            return CelesteArchipelagoModule.SaveData.Mechanics.Contains(getMechanicID(mechanic)) && CelesteArchipelagoModule.IsInArchipelagoSave;
+        }
+
+        // Gets the mechanic ID of a specific mechanic (Offset for Item IDs)
+        private static long getMechanicID(Mechanic mechanic)
+        {
+            return 200000000000 + (int)mechanic;
+        }
+
+        // Prints all the mechanics to console and their status
+        public static void logUnlockedMechanics()
+        {
+            foreach (Mechanic mech in Enum.GetValues(typeof(Mechanic)))
+            {
+                CelesteArchipelagoModule.Log($"{mech.ToString()} : {mechanicEnabled(mech)}");
+            }
+        }
+
+        #region data
+        // ------------------------------------  DATA  ------------------------------------
+
+        // Level ID Definition
         private static Dictionary<long, (string SID, AreaMode mode)> levelIDToSID { get; } = new Dictionary<long, (string SID, AreaMode mode)>
         {
             {1, ("Celeste/1-ForsakenCity", AreaMode.Normal)},
@@ -485,9 +456,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {142, ("StrawberryJam2021/5-Grandmaster/ZZ-HeartSide", AreaMode.Normal)}
         };
 
+        // Reverse Level ID Definition
         public static Dictionary<(string SID, AreaMode mode), long> levelSIDToID { get; } = levelIDToSID.ToDictionary(x => x.Value, x => x.Key);
 
 
+        // Level Category Definition (Level prefixes are used here)
         private static Dictionary<string, LevelCategory> levelSIDToCategory { get; } = new Dictionary<string, LevelCategory>
         {
             {"Celeste/1-ForsakenCity", LevelCategory.A_SIDE},
@@ -527,6 +500,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {"StrawberryJam2021/5-Grandmaster/ZZ-HeartSide", LevelCategory.CRACKED_GRANDMASTER}
         };
 
+        // Room ID definition
         private static Dictionary<(string SID, AreaMode mode), Dictionary<long, string>> roomIdsToname { get; } = new Dictionary<(string SID, AreaMode mode), Dictionary<long, string>>
         {
             {
@@ -3833,26 +3807,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
         };
 
+        // Reverse Room ID Definition
         private static Dictionary<(string SID, AreaMode mode), Dictionary<string, long>> roomNameToID =
             roomIdsToname.ToDictionary(x => x.Key, x => x.Value.ToDictionary(y => y.Value, y => y.Key));
 
 
-
-        public static bool mechanicEnabled(Mechanic mechanic)
-        {
-            return CelesteArchipelagoModule.SaveData.Mechanics.Contains(getMechanicID(mechanic)) && CelesteArchipelagoModule.IsInArchipelagoSave;
-        }
-        private static long getMechanicID(Mechanic mechanic)
-        {
-            return 200000000000 + (int)mechanic;
-        }
-
-        public static void logUnlockedMechanics()
-        {
-            foreach (Mechanic mech in Enum.GetValues(typeof(Mechanic))){
-                CelesteArchipelagoModule.Log($"{mech.ToString()} : {mechanicEnabled(mech)}");
-            }
-        }
+        
 
         //Order matters here, these should be in the order defined in ItemNames.py in the APWorld logic code
         public enum Mechanic
@@ -4037,6 +3997,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             NAVY_PORTAL
         }
 
+        // Mapping entity IDs to the order in which the summit gems appear in the heart unlock room
         public static Dictionary<int, int> summitGemIndexMapping = new Dictionary<int, int>()
         {
             {110, 0},
@@ -4047,6 +4008,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {679, 5}
         };
 
+        // Reverse of the above
         public static Dictionary<int, EntityID> summitGemIndexReverseMapping = new Dictionary<int, EntityID>
         {
             {0, new EntityID("a-06", 110)},
@@ -4057,4 +4019,5 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {5, new EntityID("f-02b", 679)}
         };
     }
+        #endregion data
 }

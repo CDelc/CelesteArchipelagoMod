@@ -27,6 +27,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Load()
         {
             On.Celeste.OuiJournalProgress.ctor += modCtor;
+            On.Celeste.OuiJournal.Enter += modEnter;
 
             CollabJournalType = typeof(OuiJournalCollabProgressInLobby);
             MethodInfo GeneratePagesMethod = CollabJournalType.GetMethod("GeneratePages", BindingFlags.Public | BindingFlags.Static);
@@ -38,7 +39,43 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Unload()
         {
             On.Celeste.OuiJournalProgress.ctor -= modCtor;
+            On.Celeste.OuiJournal.Enter -= modEnter;
             hookGeneratePages?.Dispose();
+        }
+
+        private static IEnumerator modEnter(On.Celeste.OuiJournal.orig_Enter orig, OuiJournal self, Oui from)
+        {
+            IEnumerator origReturn = orig(self, from);
+
+            while (origReturn.MoveNext())
+            {
+                yield return origReturn.Current;
+            }
+
+            List<OuiJournalPage> toRemove = new List<OuiJournalPage>();
+            
+            foreach (OuiJournalPage page in self.Pages)
+            {
+                if(page is OuiJournalCover || page is OuiJournalProgress || page is OuiJournalCollabProgressInLobby)
+                {
+                    continue;
+                }
+                else
+                {
+                    toRemove.Add(page);
+                }
+            }
+
+            foreach (OuiJournalPage page in toRemove)
+            {
+                self.Pages.Remove(page);
+            }
+
+            int num = 0;
+            foreach (OuiJournalPage page in self.Pages)
+            {
+                page.PageIndex = num++;
+            }
         }
 
         public static void InitializeMapLookup()
@@ -68,10 +105,14 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             if(sid == null) { return Color.Black; }
 
             LevelCategory category = ArchipelagoMapper.getLevelCategory(sid, AreaMode.Normal);
-            bool unlocked = CelesteArchipelagoModule.SaveData.LevelUnlocks.Any(tuple => tuple.SID.Equals(sid)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid) || category == ArchipelagoManager.Instance.starting_category;
-            bool mapped = ArchipelagoMapper.levelSIDToID.ContainsKey((sid, AreaMode.Normal)) || ArchipelagoManager.PermanentUnlockLevels.Contains(sid);
+            bool unlocked = ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.Normal);
+            if (ArchipelagoUtils.levelHasBCSides(sid))
+            {
+                unlocked = unlocked || ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.BSide) || ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.CSide);
+            }
+            bool included = ArchipelagoUtils.isIncludedInRandomizer(sid, AreaMode.Normal);
 
-            return unlocked ? Color.Green : mapped ? Color.DarkRed : Color.DarkGray * 0.4f;
+            return ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.Normal) ? Color.Green : included ? Color.DarkRed : Color.DarkGray * 0.4f;
         }
 
         private void modCtor(On.Celeste.OuiJournalProgress.orig_ctor orig, OuiJournalProgress self, OuiJournal journal)
