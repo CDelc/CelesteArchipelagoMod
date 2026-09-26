@@ -1637,17 +1637,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 ("StrawberryJam2021/1-Beginner/voliver9", AreaMode.Normal),
                 new Dictionary<long, string>
                 {
-                    {0, "a_01"},
-                    {1, "a_02"},
-                    {2, "a_03"},
-                    {3, "a_04"},
-                    {4, "a_05"},
-                    {5, "a_06"},
+                    {0, "a-01"},
+                    {1, "a-02"},
+                    {2, "a-03"},
+                    {3, "a-04"},
+                    {4, "a-05"},
+                    {5, "a-06"},
                     {6, "b-01"},
-                    {7, "a_07"},
-                    {8, "a_08"},
+                    {7, "a-07"},
+                    {8, "a-08"},
                     {9, "b-02"},
-                    {10, "a_09"},
+                    {10, "a-09"},
                     {11, "b-03"},
                     {12, "b-04"}
                 }
