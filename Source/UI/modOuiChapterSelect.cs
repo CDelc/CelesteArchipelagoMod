@@ -33,13 +33,13 @@ namespace Celeste.Mod.CelesteArchipelago.UI
         private void modUpdate(On.Celeste.OuiChapterPanel.orig_Update orig, OuiChapterPanel self)
         {
             orig(self);
-            //if (CelesteArchipelagoModule.IsInArchipelagoSave && self.Area.SID.StartsWith("StrawberryJam2021") && !ArchipelagoUtils.canEnter(self.Area.SID, AreaMode.Normal))
-            //{
-            //    foreach (Option checkpoint in self.checkpoints)
-            //    {
-            //        checkpoint.Label = "LOCKED";
-            //    }
-            //}
+            if (CelesteArchipelagoModule.IsInArchipelagoSave && self.Area.SID.StartsWith("StrawberryJam2021") && !ArchipelagoUtils.canEnter(self.Area.SID, AreaMode.Normal))
+            {
+                foreach (Option checkpoint in self.checkpoints)
+                {
+                    checkpoint.Label = "LOCKED";
+                }
+            }
         }
 
         private IEnumerator modIncrementStats(On.Celeste.OuiChapterPanel.orig_IncrementStats orig, OuiChapterPanel self, bool shouldAdvance)

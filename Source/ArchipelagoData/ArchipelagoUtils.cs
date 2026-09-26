@@ -27,7 +27,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {
                 return ArchipelagoManager.Instance.include_grandmaster && ArchipelagoManager.Instance.include_cracked_grandmaster;
             }
-            else if(ArchipelagoMapper.isPuzzleLevel(sid))
+            else if(ArchipelagoMapper.isPuzzleLevel(sid) && ArchipelagoManager.Instance.exclude_puzzle_levels)
             {
                 return false;
             }

@@ -17,7 +17,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         private float alpha = 1f;
 
-        private static readonly float TextScale = 1f;
+        private static readonly float TextScale = 1.5f;
         private static readonly float YPosition = Celeste.TargetHeight - 100f;
         private static readonly float XPosition = 65f;
         private static readonly Color OutlineColor = Color.Black;

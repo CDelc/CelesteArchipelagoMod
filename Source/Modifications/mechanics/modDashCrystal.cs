@@ -94,6 +94,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 self.outline.Visible = true;
                 self.sprite.Visible = false;
+                self.flash.Visible = false;
                 self.Collidable = false;
                 self.respawnTimer = 2.5f;
             }

@@ -274,7 +274,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return levelIDToSID.TryGetValue(win_condition_level_lookup[selection], out (string sid, AreaMode mode) level) ? level : ("Celeste/7-Summit", AreaMode.Normal);
         }
 
-        private static readonly HashSet<long> puzzle_levels = [40, 45, 66, 83, 119];
+        private static readonly HashSet<long> puzzle_levels = [40, 45, 66, 83, 89, 119];
         public static bool isPuzzleLevel(string sid)
         {
             return puzzle_levels.Contains(levelSIDToID.TryGetValue((sid, AreaMode.Normal), out long value) ? value : 0);
@@ -1055,7 +1055,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {59, "after-02"},
                     {61, "04c"},
                     {62, "b-00b"},
-                    {63, "b-00c"}
+                    {63, "b-00c"},
+                    {64, "04d"}
                 }
             },
             {

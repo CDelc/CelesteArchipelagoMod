@@ -27,6 +27,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Type DreamMoveBlockType;
         private static Type BounceDreamBlockType;
         private static Type DreamSwitchGateType;
+        private static Type DreamFloatySpaceBlockType;
 
         private static FieldInfo RefillCountField;
 
@@ -51,6 +52,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             NormalDreamBlockType = CelesteArchipelagoModule.FindType("Celeste.DreamBlock");
             CustomDreamBlockType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.CustomDreamBlock");
             ConnectedDreamBlockType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.ConnectedDreamBlock");
+            DreamFloatySpaceBlockType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.DreamFloatySpaceBlock");
             FrostHelperCustomDreamBlockType = typeof(FrostHelper.CustomDreamBlockV2);
             FallingDreamBlockType = typeof(DreamFallingBlock);
             DreamZipMoverType = typeof(DreamZipMover);
@@ -283,6 +285,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 self.GetType() == FrostHelperCustomDreamBlockType && !isHoneyDreamColor(FrostActiveBackColor) && !isWhite(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == ConnectedDreamBlockType && refillCount == 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_DREAM_BLOCK) ||
                 self.GetType() == ConnectedDreamBlockType && refillCount != 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+                self.GetType() == DreamFloatySpaceBlockType && refillCount != 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == DreamSwitchGateType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == FallingDreamBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == BounceDreamBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||

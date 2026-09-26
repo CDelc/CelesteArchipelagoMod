@@ -47,7 +47,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self, playerIntro, isFromLoader);
 
-            if(ArchipelagoManager.Instance.start_items_needed > 0 && !CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(1))
+            Session session = SaveData.Instance.CurrentSession_Safe;
+
+            CelesteArchipelagoModule.Log("" + (SaveData.Instance.UnlockedModes) + " | " + SaveData.Instance.Areas_Safe[session.Area.ID].Modes[(int)session.Area.Mode].Completed);
+
+            if (ArchipelagoManager.Instance.start_items_needed > 0 && !CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(1))
             {
                 for(int i = 1; i <= ArchipelagoManager.Instance.start_items_needed; i++)
                 {
@@ -90,8 +94,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 Logger.Error(Constants.LOG_PREFIX, e.Message);
                 return;
             }
+            if (!CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(locationID))
+            {
+                CelesteArchipelagoModule.Log($"Room {room} checked in {SID} {mode}, mapping to location id {locationID}");
+            }
             CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
-            CelesteArchipelagoModule.Log($"Room {room} checked in {SID} {mode}, mapping to location id {locationID}");
 
         }
 

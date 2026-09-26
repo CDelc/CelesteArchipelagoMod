@@ -6,6 +6,7 @@ using Celeste.Mod.StrawberryJam2021;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
@@ -215,7 +216,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 }
 
                 SaveData.Instance.UnlockedAreas = 10;
-                SaveData.Instance.CheatMode = true;
+                
 
                 modJournal.InitializeMapLookup();
             }
