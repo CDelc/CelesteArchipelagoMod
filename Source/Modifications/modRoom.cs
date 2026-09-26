@@ -47,6 +47,13 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         {
             orig(self, playerIntro, isFromLoader);
 
+            if(ArchipelagoManager.Instance.start_items_needed > 0 && !CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(1))
+            {
+                for(int i = 1; i <= ArchipelagoManager.Instance.start_items_needed; i++)
+                {
+                    CelesteArchipelagoModule.SaveData.LocationsChecked.Add(i);
+                }
+            }
             if (CelesteArchipelagoModule.Settings.DisplayRoomName)
             {
                 RoomDisplayText text = new RoomDisplayText(self.Session.Level);

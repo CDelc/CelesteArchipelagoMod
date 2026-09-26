@@ -15,7 +15,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             return isLobbyOrGymSID(sid) ||
                 ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category ||
                 ArchipelagoManager.Instance.starting_category == LevelCategory.ALL ||
-                (ArchipelagoManager.Instance.starting_level_sid == sid && areaMode == AreaMode.Normal) ||
                 (ArchipelagoManager.Instance.heart_sides_start_unlocked && isHeartsideSID(sid));
         }
 
@@ -31,10 +30,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             else if(ArchipelagoMapper.isPuzzleLevel(sid))
             {
                 return false;
-            }
-            else if(ArchipelagoManager.Instance.starting_level_sid == sid && areaMode == AreaMode.Normal)
-            {
-                return true;
             }
             else
             {

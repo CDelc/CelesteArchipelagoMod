@@ -8,8 +8,8 @@ namespace Celeste.Mod.CelesteArchipelago;
 
 public class CelesteArchipelagoModule : EverestModule {
 
-    public static readonly string MOD_VERSION = "1.1.0";
-    public static readonly string APWORLD_MINIMUM_VERSION = "1.1.0";
+    public static readonly string MOD_VERSION = "1.1.1";
+    public static readonly string APWORLD_MINIMUM_VERSION = "1.1.1";
 
     public static CelesteArchipelagoModule Instance { get; private set; }
 

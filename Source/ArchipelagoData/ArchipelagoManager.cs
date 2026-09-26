@@ -89,6 +89,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool require_moon_berry = false;
         public bool require_berries_for_goal = true;
         public bool open_heart_gates = false;
+        public int start_items_needed = 0;
 
 
         public string apworld_version = "";
@@ -114,16 +115,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     case 5:
                         return LevelCategory.GRANDMASTER;
                     case 6:
-                        return LevelCategory.NONE;
-                    case 7:
                         return LevelCategory.ALL;
                     default:
-                        return LevelCategory.NONE;
+                        return LevelCategory.ALL;
                 }
             }
         }
-        public string starting_level_sid { get; private set; } = "Celeste/1-ForsakenCity";
-
 
         private ArchipelagoSession _session;
 
@@ -260,6 +257,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
             require_berries_for_goal = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_berries_for_goal", out value) ? value : false);
             open_heart_gates = Convert.ToBoolean(loginData.SlotData.TryGetValue("open_heart_gates", out value) ? value : false);
+            start_items_needed = Convert.ToInt32(loginData.SlotData.TryGetValue("start_items_needed", out value) ? value : 0);
 
             apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
             minimum_mod_version = Convert.ToString(loginData.SlotData.TryGetValue("minimum_mod_version", out value) ? value : "");
