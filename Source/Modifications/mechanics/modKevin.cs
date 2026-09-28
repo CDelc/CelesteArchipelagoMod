@@ -195,6 +195,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static bool IsActive(CrushBlock self)
         {
             return self.GetType() == ReskinnableCrushBlockType && isNeonLevel() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.NEON_BLUE_KEVIN) ||
+                self.GetType() == ReskinnableCrushBlockType && !isNeonLevel() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.KEVIN) ||
                 self.GetType() == typeof(CrushBlock) && !isNeonLevel() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.KEVIN) ||
                 self.GetType() == TimeKevinType && !isNeonLevel() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.KEVIN);
         }

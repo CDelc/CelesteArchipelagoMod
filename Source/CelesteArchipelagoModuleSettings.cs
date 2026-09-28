@@ -10,13 +10,8 @@ public class CelesteArchipelagoModuleSettings : EverestModuleSettings {
     public string PlayerName { get; set; } = "Player";
     [SettingIgnore]
     public string Password { get; set; } = "";
-
-
-    #region Send/Receive Messages
     public bool ServerMessages { get; set; } = true;
-    public bool RoomPopups { get; set; } = true;
-    #endregion
-
+    
     [SettingIgnore]
     public bool Debug { get; set;  } = false;
 

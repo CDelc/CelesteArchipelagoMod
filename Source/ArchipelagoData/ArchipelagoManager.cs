@@ -90,6 +90,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool require_berries_for_goal = true;
         public bool open_heart_gates = false;
         public int start_items_needed = 0;
+        public int precollected_items = 0;
 
 
         public string apworld_version = "";
@@ -258,6 +259,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             require_berries_for_goal = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_berries_for_goal", out value) ? value : false);
             open_heart_gates = Convert.ToBoolean(loginData.SlotData.TryGetValue("open_heart_gates", out value) ? value : false);
             start_items_needed = Convert.ToInt32(loginData.SlotData.TryGetValue("start_items_needed", out value) ? value : 0);
+            precollected_items = Convert.ToInt32(loginData.SlotData.TryGetValue("precollected_items", out value) ? value : 0);
 
             apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
             minimum_mod_version = Convert.ToString(loginData.SlotData.TryGetValue("minimum_mod_version", out value) ? value : "");
@@ -453,23 +455,27 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {
                 var item = ItemQueue[index].Item2;
 
-                string receivedMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
-                string prettyMessage = "";
+                if (index >= precollected_items)
+                {
 
-                if (item.Player == this.Slot)
-                {
-                    prettyMessage = $"You found your {item.ItemDisplayName}.";
-                }
-                else
-                {
-                    prettyMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
-                }
+                    string receivedMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
+                    string prettyMessage = "";
 
-                if ((item.ItemId < 0xCA10020 || item.ItemId >= 0xCA10050) && index >= this.ServerItemsRcv)
-                {
-                    Logger.Info("AP", receivedMessage);
-                    MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemReceive, item.Flags));
-                    Monocle.Engine.Commands.Log(receivedMessage, Color.DeepPink);
+                    if (item.Player == this.Slot)
+                    {
+                        prettyMessage = $"You found your {item.ItemDisplayName}.";
+                    }
+                    else
+                    {
+                        prettyMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
+                    }
+
+                    if (index >= this.ServerItemsRcv)
+                    {
+                        Logger.Info("AP", receivedMessage);
+                        MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemReceive, item.Flags));
+                        Monocle.Engine.Commands.Log(receivedMessage, Color.DeepPink);
+                    }
                 }
 
                 switch (item.ItemId)

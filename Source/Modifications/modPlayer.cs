@@ -46,7 +46,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 {
                     if (ShouldShowMessage(message))
                     {
-                        float duration = queueSize > 8 ? 1f : queueSize > 4 ? 2f : 3f;
+                        float duration = queueSize > 5 ? 1f : queueSize > 2 ? 1.5f : 2f;
                         Color color = GetMessageColor(message);
                         self.Scene.Add(new ArchipelagoTextBox(message.Text, duration, color));
                         Logger.Verbose(Constants.LOG_PREFIX, message.Text);
