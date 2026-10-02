@@ -106,22 +106,22 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static bool isActive(string ColorCode)
         {
-            return ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.ORANGE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("ff3a0a") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.ORANGE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("ffaa00") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("105aff") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("0000ff") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("49a6e9") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TORQUOISE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("00ffff") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("5aef2d") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("00ff00") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("ffff00") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MAGENTA_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("ff00ff") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("ff0000") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("333399") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("aa00ff") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("aa00ff") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("a6a47c") ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_LINKED_TRAFFIC_BLOCK) && ColorCode.Equals("ffffff");
+            return ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.ORANGE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("ff3a0a") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.ORANGE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("ffaa00") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("105aff") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("0000ff") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("49a6e9") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.TORQUOISE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("00ffff") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("5aef2d") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("00ff00") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.YELLOW_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("ffff00") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MAGENTA_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("ff00ff") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("ff0000") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("333399") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("aa00ff") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("aa00ff") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("a6a47c") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("ffffff");
         }
     }
 }

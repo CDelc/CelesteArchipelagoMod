@@ -91,8 +91,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             HookMoveCheck?.Dispose();
             HookUpdateColors?.Dispose();
+            HookBounceRender?.Dispose();
             HookMoveCheck = null;
             HookUpdateColors = null;
+            HookBounceRender = null;
         }
 
         private static void modDreamBlock_Render(On.Celeste.DreamBlock.orig_Render orig, DreamBlock self)
@@ -233,7 +235,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             else
             {
                 BindingFlags privateLookup = BindingFlags.NonPublic | BindingFlags.Instance;
-                BindingFlags publicLookup = BindingFlags.Public | BindingFlags.Instance;
                 Color fillColor = MoveBlock.breakingBgFill;
                 self.GetType().GetField("fillColor", privateLookup).SetValue(self, fillColor);
 

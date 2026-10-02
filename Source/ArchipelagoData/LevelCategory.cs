@@ -17,7 +17,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         ADVANCED,
         EXPERT,
         GRANDMASTER,
-        CRACKED_GRANDMASTER,
+        NONE,
         ALL
     }
 }

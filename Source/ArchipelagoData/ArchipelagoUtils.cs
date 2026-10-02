@@ -12,10 +12,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Checks if a specific level should be considered unlocked by default
         public static bool levelStartsUnlocked(string sid, AreaMode areaMode)
         {
-            return isLobbyOrGymSID(sid) ||
-                ArchipelagoMapper.getLevelCategory(sid, areaMode) == ArchipelagoManager.Instance.starting_category ||
-                ArchipelagoManager.Instance.starting_category == LevelCategory.ALL ||
-                (ArchipelagoManager.Instance.heart_sides_start_unlocked && isHeartsideSID(sid));
+            return ArchipelagoMapper.levelIsAllowed(sid) && (isLobbyOrGymSID(sid) || ArchipelagoManager.Instance.preunlocked_levels.Contains(ArchipelagoMapper.getLevelID(sid, areaMode)));
         }
 
         //Checks if a level is included in this randomizer at all
@@ -23,18 +20,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         {
             if (isLobbyOrGymSID(sid)) return true;
             long levelID = ArchipelagoMapper.getLevelID(sid, areaMode);
-            if(levelID == 142)
+            if (isGoalLevel(sid, areaMode))
             {
-                return ArchipelagoManager.Instance.include_grandmaster && ArchipelagoManager.Instance.include_cracked_grandmaster;
+                return true;
             }
-            else if(ArchipelagoMapper.isPuzzleLevel(sid) && ArchipelagoManager.Instance.exclude_puzzle_levels)
-            {
-                return false;
-            }
-            else
-            {
-                return levelsEnabledOnCategory(ArchipelagoMapper.getLevelCategory(sid, areaMode));
-            }
+            return ArchipelagoManager.Instance.included_levels.Contains(levelID);
         }
 
         // Checks if a level should be unlocked
@@ -64,12 +54,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 !(isGoalLevel(sid, areaMode) && berriesMissing() && ArchipelagoManager.Instance.require_berries_for_goal);
         }
 
-        // Checks if a level is included in the current randomizer
-        public static bool isIncludedInRandomizer(string sid, AreaMode areaMode)
-        {
-            return ArchipelagoMapper.levelIsAllowed(sid) && ArchipelagoUtils.levelsEnabledOnCategory(ArchipelagoMapper.getLevelCategory(sid, areaMode));
-        }
-
         public static bool levelHasBCSides(string sid)
         {
             return sid.StartsWith("Celeste/") && !sid.Contains("LostLevels") && !sid.Contains("0-Intro") && !sid.Contains("8-Epilogue");
@@ -82,8 +66,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 || category == LevelCategory.INTERMEDIATE
                 || category == LevelCategory.ADVANCED
                 || category == LevelCategory.EXPERT
-                || category == LevelCategory.GRANDMASTER
-                || category == LevelCategory.CRACKED_GRANDMASTER;
+                || category == LevelCategory.GRANDMASTER;
         }
 
         // Checks if an SID is a lobby or gym level
@@ -120,64 +103,18 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
         }
 
-        // Checks if golden/silver berries should be enabled in a given level category
-        public static bool goldensEnabledOnCategory(LevelCategory levelCategory)
+        // Checks if golden/silver berries should be enabled in a given level
+        public static bool deathlessEnabled(string SID, AreaMode mode)
         {
-            switch (levelCategory)
-            {
-                case LevelCategory.BEGINNER:
-                    return ArchipelagoManager.Instance.include_beginner_silvers;
-                case LevelCategory.INTERMEDIATE:
-                    return ArchipelagoManager.Instance.include_intermediate_silvers;
-                case LevelCategory.ADVANCED:
-                    return ArchipelagoManager.Instance.include_advanced_silvers;
-                case LevelCategory.EXPERT:
-                    return ArchipelagoManager.Instance.include_expert_silvers;
-                case LevelCategory.GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_grandmaster_silvers;
-                case LevelCategory.CRACKED_GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_cracked_grandmaster_silvers;
-                case LevelCategory.A_SIDE:
-                    return ArchipelagoManager.Instance.include_a_sides_goldens;
-                case LevelCategory.B_SIDE:
-                    return ArchipelagoManager.Instance.include_b_sides_goldens;
-                case LevelCategory.C_SIDE:
-                    return ArchipelagoManager.Instance.include_c_sides_goldens;
-                case LevelCategory.FAREWELL:
-                    return ArchipelagoManager.Instance.include_farewell_golden;
-                default:
-                    return false;
-            }
+            long levelID = ArchipelagoMapper.getLevelID(SID, mode);
+            return ArchipelagoManager.Instance.deathless_levels.Contains(levelID);
         }
 
-        // Checks if the levels in the given category are enabled in this randomizer
-        public static bool levelsEnabledOnCategory(LevelCategory levelCategory)
+        // Checks if room checks should be enabled for a specific level category
+        public static bool roomChecksEnabled(string SID, AreaMode mode)
         {
-            switch (levelCategory)
-            {
-                case LevelCategory.BEGINNER:
-                    return ArchipelagoManager.Instance.include_beginner;
-                case LevelCategory.INTERMEDIATE:
-                    return ArchipelagoManager.Instance.include_intermediate;
-                case LevelCategory.ADVANCED:
-                    return ArchipelagoManager.Instance.include_advanced;
-                case LevelCategory.EXPERT:
-                    return ArchipelagoManager.Instance.include_expert;
-                case LevelCategory.GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_grandmaster;
-                case LevelCategory.CRACKED_GRANDMASTER:
-                    return ArchipelagoManager.Instance.include_cracked_grandmaster;
-                case LevelCategory.A_SIDE:
-                    return ArchipelagoManager.Instance.include_a_sides;
-                case LevelCategory.B_SIDE:
-                    return ArchipelagoManager.Instance.include_b_sides;
-                case LevelCategory.C_SIDE:
-                    return ArchipelagoManager.Instance.include_c_sides;
-                case LevelCategory.FAREWELL:
-                    return ArchipelagoManager.Instance.include_farewell;
-                default:
-                    return false;
-            }
+            long levelID = ArchipelagoMapper.getLevelID(SID, mode);
+            return ArchipelagoManager.Instance.roomcheck_levels.Contains(levelID);
         }
     }
 }

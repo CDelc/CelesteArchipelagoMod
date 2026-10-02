@@ -49,8 +49,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             Session session = SaveData.Instance.CurrentSession_Safe;
 
-            CelesteArchipelagoModule.Log("" + (SaveData.Instance.UnlockedModes) + " | " + SaveData.Instance.Areas_Safe[session.Area.ID].Modes[(int)session.Area.Mode].Completed);
-
             if (ArchipelagoManager.Instance.start_items_needed > 0 && !CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(1))
             {
                 for(int i = 1; i <= ArchipelagoManager.Instance.start_items_needed; i++)
@@ -77,13 +75,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         private static void CheckRoom(Level level, string room)
         {
-            if (!ArchipelagoManager.Instance.room_checks)
-            {
-                return;
-            }
-
             string SID = level.Session.Area.SID;
             AreaMode mode = level.Session.Area.Mode;
+
+            if (!ArchipelagoUtils.roomChecksEnabled(SID, mode)) return;
+            
             long locationID;
 
             try
@@ -97,9 +93,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             if (!CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(locationID))
             {
                 CelesteArchipelagoModule.Log($"Room {room} checked in {SID} {mode}, mapping to location id {locationID}");
+                CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
             }
-            CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
-
         }
 
         private static void CheckCheckpoint(Level level, string room)

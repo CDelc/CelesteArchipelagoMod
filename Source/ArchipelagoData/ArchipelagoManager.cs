@@ -51,40 +51,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         private static readonly Version _supportedArchipelagoVersion = new(0, 6, 5);
 
         #region SlotData
-        public int start_level_set = 0;
-        public bool include_beginner = false;
-        public bool include_intermediate = false;
-        public bool include_advanced = false;
-        public bool include_expert = false;
-        public bool include_grandmaster = false;
-        public bool include_cracked_grandmaster = false;
-        public bool include_a_sides = false;
-        public bool include_b_sides = false;
-        public bool include_c_sides = false;
-        public bool include_farewell = false;
-        public bool heart_sides_start_unlocked = true;
-        public bool exclude_puzzle_levels = false;
-
         public bool randomize_checkpoints = false;
-        public bool room_checks = false;
         public bool winged_golden = false;
-
-        public bool include_beginner_silvers = false;
-        public bool include_intermediate_silvers = false;
-        public bool include_advanced_silvers = false;
-        public bool include_expert_silvers = false;
-        public bool include_grandmaster_silvers = false;
-        public bool include_cracked_grandmaster_silvers = false;
-        public bool include_a_sides_goldens = false;
-        public bool include_b_sides_goldens = false;
-        public bool include_c_sides_goldens = false;
-        public bool include_farewell_golden = false;
+        public int item_consolidation_mode = 0;
 
         public int win_condition_level_selection = 0;
         public (string sid, AreaMode mode) win_condition_level = ("Celeste/7-Summit", AreaMode.Normal);
         public bool protect_victory_level_checkpoints = false;
-        public int strawberries_required_percentage = 80;
-        public int total_strawberries = 100;
         public int required_strawberries = 0;
         public bool require_moon_berry = false;
         public bool require_berries_for_goal = true;
@@ -95,33 +68,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public string apworld_version = "";
         public string minimum_mod_version = "";
-        #endregion
 
-        public LevelCategory starting_category
-        {
-            get
-            {
-                switch (start_level_set)
-                {
-                    case 0:
-                        return LevelCategory.A_SIDE;
-                    case 1:
-                        return LevelCategory.BEGINNER;
-                    case 2:
-                        return LevelCategory.INTERMEDIATE;
-                    case 3:
-                        return LevelCategory.ADVANCED;
-                    case 4:
-                        return LevelCategory.EXPERT;
-                    case 5:
-                        return LevelCategory.GRANDMASTER;
-                    case 6:
-                        return LevelCategory.ALL;
-                    default:
-                        return LevelCategory.ALL;
-                }
-            }
-        }
+        public HashSet<long> included_levels = new HashSet<long>();
+        public HashSet<long> preunlocked_levels = new HashSet<long>();
+        public HashSet<long> deathless_levels = new HashSet<long>();
+        public HashSet<long> roomcheck_levels = new HashSet<long>();
+        #endregion
 
         private ArchipelagoSession _session;
 
@@ -221,39 +173,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
             object value;
 
-            include_beginner = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_beginner", out value) ? value : false);
-            include_intermediate = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_intermediate", out value) ? value : false);
-            include_advanced = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_advanced", out value) ? value : false);
-            include_expert = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_expert", out value) ? value : false);
-            include_grandmaster = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_grandmaster", out value) ? value : false);
-            include_cracked_grandmaster = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_cracked_grandmaster", out value) ? value : false);
-            include_a_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_a_sides", out value) ? value : false);
-            include_b_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_b_sides", out value) ? value : false);
-            include_c_sides = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_c_sides", out value) ? value : false);
-            include_farewell = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_farewell", out value) ? value : false);
-            start_level_set = Convert.ToInt32(loginData.SlotData.TryGetValue("start_level_set", out value) ? value : 0);
-            heart_sides_start_unlocked = Convert.ToBoolean(loginData.SlotData.TryGetValue("heart_sides_start_unlocked", out value) ? value : false);
-            exclude_puzzle_levels = Convert.ToBoolean(loginData.SlotData.TryGetValue("exclude_puzzle_levels", out value) ? value : false);
-
             randomize_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_checkpoints", out value) ? value : false);
-            room_checks = Convert.ToBoolean(loginData.SlotData.TryGetValue("room_checks", out value) ? value : false);
             winged_golden = Convert.ToBoolean(loginData.SlotData.TryGetValue("winged_golden", out value) ? value : false);
+            item_consolidation_mode = Convert.ToInt32(loginData.SlotData.TryGetValue("item_consolidation_mode", out value) ? value : 0);
 
-            include_beginner_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_beginner_silvers", out value) ? value : false);
-            include_intermediate_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_intermediate_silvers", out value) ? value : false);
-            include_advanced_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_advanced_silvers", out value) ? value : false);
-            include_expert_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_expert_silvers", out value) ? value : false);
-            include_grandmaster_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_grandmaster_silvers", out value) ? value : false);
-            include_cracked_grandmaster_silvers = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_cracked_grandmaster_silvers", out value) ? value : false);
-            include_a_sides_goldens = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_a_sides_goldens", out value) ? value : false);
-            include_b_sides_goldens = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_b_sides_goldens", out value) ? value : false);
-            include_c_sides_goldens = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_c_sides_goldens", out value) ? value : false);
-            include_farewell_golden = Convert.ToBoolean(loginData.SlotData.TryGetValue("include_farewell_golden", out value) ? value : false);
             win_condition_level_selection = Convert.ToInt32(loginData.SlotData.TryGetValue("win_condition_level", out value) ? value : 0);
             win_condition_level = ArchipelagoMapper.getWinConditionLevel(win_condition_level_selection);
             protect_victory_level_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("protect_victory_level_checkpoints", out value) ? value : false);
-            strawberries_required_percentage = Convert.ToInt32(loginData.SlotData.TryGetValue("strawberries_required_percentage", out value) ? value : 0);
-            total_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("total_strawberries", out value) ? value : 0);
             required_strawberries = Convert.ToInt32(loginData.SlotData.TryGetValue("required_strawberries", out value) ? value : 0);
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
             require_berries_for_goal = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_berries_for_goal", out value) ? value : false);
@@ -263,6 +189,26 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
             apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
             minimum_mod_version = Convert.ToString(loginData.SlotData.TryGetValue("minimum_mod_version", out value) ? value : "");
+
+            if(loginData.SlotData.TryGetValue("enabled_level_list", out object enabledList) && enabledList is JArray arr)
+            {
+                included_levels = arr.ToObject<HashSet<long>>();
+            }
+
+            if (loginData.SlotData.TryGetValue("start_unlocked_level_list", out object unlockedList) && unlockedList is JArray arr_2)
+            {
+                preunlocked_levels = arr_2.ToObject<HashSet<long>>();
+            }
+
+            if (loginData.SlotData.TryGetValue("deathless_level_list", out object deathlessList) && deathlessList is JArray arr_3)
+            {
+                deathless_levels = arr_3.ToObject<HashSet<long>>();
+            }
+
+            if (loginData.SlotData.TryGetValue("roomcheck_level_list", out object roomcheckList) && roomcheckList is JArray arr_4)
+            {
+                roomcheck_levels = arr_4.ToObject<HashSet<long>>();
+            }
 
             int versionCompatible;
             try
@@ -291,10 +237,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
             Ready = true;
             WasConnected = true;
-            
+
+            updateCassetteAndCrystalHeartItemTextMapping();
+
             return null;
         }
 
+        
         public async Task<LoginFailure> Disconnect(bool attemptReconnect = true)
         {
             Ready = false;
@@ -345,6 +294,32 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 return null;
             }
         }
+
+        // We populate this data from the AP server once connected. Caching used for displaying item names on Cassette and Crystal Heart screens
+        private void updateCassetteAndCrystalHeartItemTextMapping()
+        {
+            ArchipelagoMapper.cassette_crystal_heart_display_text.Clear();
+            List<long> locationIDs = new List<long>();
+            foreach((string sid, AreaMode mode) in ArchipelagoMapper.getAllSIDs())
+            {
+                locationIDs.Add(ArchipelagoMapper.getCassetteLocationID(sid, mode));
+                locationIDs.Add(ArchipelagoMapper.getCrystalHeartLocationID(sid, mode));
+            }
+
+            _session.Locations.ScoutLocationsAsync(HintCreationPolicy.None, locationIDs.ToArray()).ContinueWith((Task<Dictionary<long, ScoutedItemInfo>> responseTask) =>
+            {
+                if (responseTask.IsFaulted || responseTask.IsCanceled) return;
+
+                Dictionary<long, ScoutedItemInfo> response = responseTask.Result;
+
+                foreach(KeyValuePair<long, ScoutedItemInfo> entry in response)
+                {
+                    ArchipelagoMapper.cassette_crystal_heart_display_text.Add(entry.Key, entry.Value.ItemName);
+                    CelesteArchipelagoModule.Log(entry.Key + " | " + entry.Value.ItemName);
+                }
+            });
+        }
+
 
         private void OnMessageReceived(LogMessage message)
         {
