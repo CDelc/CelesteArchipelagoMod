@@ -10,8 +10,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
     internal class modLockBlock : IGameModification
     {
 
-        static Key animKey = null;
-
         public override void Load()
         {
             On.Celeste.LockBlock.OnPlayer += modOnPlayer;
@@ -34,14 +32,16 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
             if (CelesteArchipelagoModule.SaveData.UnlockedKeyDoors.Contains(ArchipelagoMapper.getLockDoorID(SID, mode, self.ID)))
             {
-                if (animKey == null || animKey.IsUsed)
-                {
-                    animKey = new Key(player, new EntityID("0", 0));
-                }
-                self.SceneAs<Level>().Add(animKey);
-                self.SceneAs<Level>().Session.Keys.Add(animKey.ID);
+                //if (animKey == null || animKey.IsUsed)
+                //{
+                //    animKey = new Key(player, new EntityID("0", 0));
+                //}
+                //self.SceneAs<Level>().Add(animKey);
+                //self.SceneAs<Level>().Session.Keys.Add(animKey.ID);
 
-                self.TryOpen(player, animKey.follower);
+                //self.TryOpen(player, animKey.follower);
+                self.Collidable = false;
+                self.Visible = false;
             }
         }
     }

@@ -13,13 +13,15 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
     {
 
         private static Type CassetteZipMoverType;
-        private static Type WonkyCassetteBlockType;
         private static Type CassetteMoveBlockType;
         private static Type CassetteSwapBlockType;
 
         public override void Load()
         {
             CassetteZipMoverType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.CassetteZipMover");
+            CassetteMoveBlockType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.CassetteMoveBlock");
+            CassetteSwapBlockType = CelesteArchipelagoModule.FindType("Celeste.Mod.CommunalHelper.Entities.CassetteSwapBlock");
+
             On.Celeste.CassetteBlock.Update += modCassetteBlock_Update;
         }
 

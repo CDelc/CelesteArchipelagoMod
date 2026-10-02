@@ -110,7 +110,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             {
                 unlocked = unlocked || ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.BSide) || ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.CSide);
             }
-            bool included = ArchipelagoUtils.isIncludedInRandomizer(sid, AreaMode.Normal);
+            bool included = ArchipelagoUtils.levelIncludedInRandomizer(sid, AreaMode.Normal);
 
             return ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.Normal) ? Color.Green : included ? Color.DarkRed : Color.DarkGray * 0.4f;
         }

@@ -33,9 +33,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 {
                     string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
                     AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
-                    LevelCategory levelCategory = ArchipelagoMapper.getLevelCategory(SID, mode);
 
-                    bool isEnabled = ArchipelagoUtils.goldensEnabledOnCategory(levelCategory);
+                    bool isEnabled = ArchipelagoUtils.deathlessEnabled(SID, mode);
 
                     self.Active = isEnabled;
                     self.Visible = isEnabled;

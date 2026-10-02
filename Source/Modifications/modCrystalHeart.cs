@@ -1,4 +1,5 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
+using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
@@ -14,6 +15,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Load()
         {
             On.Celeste.SaveData.RegisterHeartGem += modSaveData_RegisterHeartGem;
+            On.Celeste.Poem.DrawPoem += modDrawPoem;
 
             var saveDataTotalHeartGems = typeof(SaveData)
                 .GetProperty("TotalHeartGems")?.GetGetMethod();
@@ -54,6 +56,21 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             _levelSetTotalHeartGemsHook = null;
 
             On.Celeste.HeartGemDoor.Added -= modHeartGemDoorAdded;
+
+            On.Celeste.Poem.DrawPoem -= modDrawPoem;
+        }
+
+        private static void modDrawPoem(On.Celeste.Poem.orig_DrawPoem orig, Poem self, Vector2 offset, Color color)
+        {
+            AreaKey area = SaveData.Instance.CurrentSession_Safe.Area;
+            bool hasMapping = ArchipelagoMapper.cassette_crystal_heart_display_text.TryGetValue(ArchipelagoMapper.getHeartLocationID(area.SID, area.Mode), out string displayText);
+
+            if (CelesteArchipelagoModule.IsInArchipelagoSave && hasMapping)
+            {
+                self.text = displayText;
+            }
+
+            orig(self, offset, color);
         }
 
         private static void modHeartGemDoorAdded(On.Celeste.HeartGemDoor.orig_Added orig, HeartGemDoor self, Scene scene)
@@ -108,7 +125,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
                 case "StrawberryJam2021/4-Expert":
                     return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.EXPERT);
                 case "StrawberryJam2021/5-Grandmaster":
-                    return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.GRANDMASTER) + ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.CRACKED_GRANDMASTER);
+                    return ArchipelagoUtils.getLobbyNumHeartsCollected(LevelCategory.GRANDMASTER);
                 default:
                     return 0;
             }
