@@ -118,7 +118,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             }
             foreach (AreaMode mode in levelIDs.Keys)
             {
-                if (levelIDs[mode] != null && CelesteArchipelagoModule.SaveData.LevelsWithPotentialProgress.Contains((long)levelIDs[mode]))
+                if (levelIDs[mode] != null && CelesteArchipelagoModule.SaveData.LevelsWithPotentialProgress.Contains((long)levelIDs[mode]) && !CelesteArchipelagoModule.Settings.HideProgressionHighlighting)
                 {
                     hasProgress = true; break;
                 }
