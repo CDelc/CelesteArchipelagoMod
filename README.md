@@ -29,17 +29,14 @@ This mod is for compatibility with the Celeste Modded archipelago world. It curr
 
 ## Planned features
 - Better journal tracking, right now it is very difficult to keep track of which levels you can progress in.
-- All levels unlocked at the start setting. Should have added this to begin with but I will do it in a future release.
 - Binocular checks
 - Monika's D-Sides support
-- Settings to reduce the number of different mechanics that block progress
-- Setting to open all the heart gates/lock the heartsides behind normal level unlock requirements
-- Room checks toggleable per lobby
-- Starting inventory
-- Setting to open all heart gates at the start
+- Hard Mode logic
+- Optional Bonus items (Additional dashes, infinite stamina, etc)
+- UI Improvements
+- Disable multi-room strawberries
 
 ## Known issues
-- After a failed attempt to connect to an AP server, the game will sometimes continue to immediately fail the connection without trying. Restarting should fix this.
 - All levels are showing as complete in the journal, even when they aren't
 
 Let me know if you have any suggestions for additions/changes! I can't promise I will implement them all but I am open to hear ideas to make the mod play as well as possible.
