@@ -14,7 +14,7 @@ namespace Celeste.Mod.CelesteArchipelago
         public static List<IGameModification> modifications = new List<IGameModification>()
         {
             new modMainMenu(),
-            new modOuiChapterSelect(),
+            new modOuiChapterPanel(),
             new modStrawberry(),
             new modCrystalHeart(),
             new modRoom(),
@@ -85,7 +85,10 @@ namespace Celeste.Mod.CelesteArchipelago
             new modStopwatch(),
             new modBubbleEmitters(),
             new modInfiniteDashField(),
-            new modJournal()
+            new modJournal(),
+            new modLobbyMapUI(),
+            new modOverworld(),
+            new modCompleteScreen()
         };
 
         public static int SAVE_ID = 144;

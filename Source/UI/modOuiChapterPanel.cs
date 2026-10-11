@@ -2,16 +2,19 @@ using Celeste;
 using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CelesteArchipelago.Modifications;
 using FMOD;
+using Monocle;
 using MonoMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using Microsoft.Xna.Framework;
 using static Celeste.OuiChapterPanel;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
 {
-    public class modOuiChapterSelect : IGameModification
+    public class modOuiChapterPanel : IGameModification
     {
 
         public override void Load()
@@ -20,6 +23,8 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             On.Celeste.OuiChapterPanel.Start += modStartLevelGuard;
             On.Celeste.OuiChapterPanel.Update += modUpdate;
             On.Celeste.OuiChapterPanel.IncrementStats += modIncrementStats;
+            On.Celeste.OuiChapterPanel.Render += modRender;
+            On.Celeste.OuiChapterPanel.Swap += modSwap;
         }
 
         public override void Unload()
@@ -28,6 +33,47 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             On.Celeste.OuiChapterPanel.Start -= modStartLevelGuard;
             On.Celeste.OuiChapterPanel.Update -= modUpdate;
             On.Celeste.OuiChapterPanel.IncrementStats -= modIncrementStats;
+            On.Celeste.OuiChapterPanel.Render -= modRender;
+            On.Celeste.OuiChapterPanel.Swap -= modSwap;
+        }
+
+        private void modSwap(On.Celeste.OuiChapterPanel.orig_Swap orig, OuiChapterPanel self)
+        {
+            string sid = self.Area.SID;
+            AreaMode mode = self.options[self.option].ID == "A" ? AreaMode.Normal : self.options[self.option].ID == "B" ? AreaMode.BSide : self.options[self.option].ID == "C" ? AreaMode.CSide : AreaMode.Normal;
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoUtils.levelIsUnlocked(sid, mode)) orig(self);
+            else Audio.Play("event:/ui/main/button_back");
+        }
+
+        private void modRender(On.Celeste.OuiChapterPanel.orig_Render orig, OuiChapterPanel self)
+        {   
+            orig(self);
+
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave) return;
+
+            string sid = self.Area.SID;
+
+            foreach(Option option in self.modes)
+            {
+                AreaMode mode = option.ID == "A" ? AreaMode.Normal : option.ID == "B" ? AreaMode.BSide : option.ID == "C" ? AreaMode.CSide : AreaMode.Normal;
+
+                if (ArchipelagoUtils.levelIsUnlocked(sid, mode) && CelesteArchipelagoModule.SaveData.LevelsWithPotentialProgress.Contains((long)ArchipelagoMapper.getLevelID(sid, mode)) && !CelesteArchipelagoModule.Settings.HideProgressionHighlighting)
+                {
+                    option.BgColor = Color.Lime;
+                }
+                else if(ArchipelagoUtils.levelIsUnlocked(sid, mode))
+                {
+                    option.BgColor = Color.Blue;
+                }
+                else if(ArchipelagoUtils.levelIncludedInRandomizer(sid, mode))
+                {
+                    option.BgColor = new Color(50, 50, 50);
+                }
+                else
+                {
+                    option.BgColor = Color.DarkRed;
+                }
+            }            
         }
 
         private void modUpdate(On.Celeste.OuiChapterPanel.orig_Update orig, OuiChapterPanel self)
@@ -82,7 +128,6 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
             DynamicData dynamicOuiChapterSelect = new DynamicData(self);
             string sid = self.Area.SID;
-            CelesteArchipelagoModule.Log(sid);
 
             Dictionary<int, HashSet<string>> savedCheckpoints = null;
             bool allowed = ArchipelagoMapper.levelIsAllowed(sid);
@@ -123,9 +168,10 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                     SaveData.Instance.Areas_Safe[self.Area.ID].Modes[kvp.Key].Checkpoints = kvp.Value;
                 }
             }
-
-            foreach (Option mode in self.modes)
+            self.option = -1;
+            for (int i = 0; i < self.modes.Count; i++)
             {
+                Option mode = self.modes[i];
                 AreaMode areaMode = mode.ID == "C" ? AreaMode.CSide : mode.ID == "B" ? AreaMode.BSide : AreaMode.Normal;
                 if (!allowed || !ArchipelagoUtils.levelIncludedInRandomizer(sid, areaMode))
                 {
@@ -141,6 +187,14 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                         $"STRAWBERRIES: {CelesteArchipelagoModule.SaveData.Strawberries} / {ArchipelagoManager.Instance.required_strawberries}" :
                         ArchipelagoManager.Instance.require_moon_berry && !CelesteArchipelagoModule.SaveData.moonBerryCollected ? "MISSING MOON BERRY" : "CLIMB";
                 }
+                if(ArchipelagoUtils.levelIsUnlocked(sid, areaMode) && self.option == -1)
+                {
+                    self.option = i;
+                }
+            }
+            if(self.option == -1)
+            {
+                self.option = 0;
             }
         }
 

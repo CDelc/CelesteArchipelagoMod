@@ -13,11 +13,27 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
         public override void Load()
         {
             On.Celeste.LockBlock.OnPlayer += modOnPlayer;
+            On.Monocle.Entity.Render += modRender;
         }
 
         public override void Unload()
         {
             On.Celeste.LockBlock.OnPlayer -= modOnPlayer;
+            On.Monocle.Entity.Render -= modRender;
+        }
+
+        private void modRender(On.Monocle.Entity.orig_Render orig, Monocle.Entity self)
+        {
+            orig(self);
+            if(self is LockBlock block && CelesteArchipelagoModule.IsInArchipelagoSave)
+            {
+                string SID = SaveData.Instance.CurrentSession_Safe.Area.SID;
+                AreaMode mode = SaveData.Instance.CurrentSession_Safe.Area.Mode;
+                if (CelesteArchipelagoModule.SaveData.UnlockedKeyDoors.Contains(ArchipelagoMapper.getLockDoorID(SID, mode, block.ID)))
+                {
+                    Constants.DrawDisabledRect(block.Collider, new Microsoft.Xna.Framework.Color(255, 255, 0) * 0.2f);
+                }
+            }
         }
 
         private static void modOnPlayer(On.Celeste.LockBlock.orig_OnPlayer orig, LockBlock self, Player player)

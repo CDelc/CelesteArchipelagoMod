@@ -5,7 +5,6 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
-using FactoryHelper.Entities;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -62,8 +61,8 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool require_moon_berry = false;
         public bool require_berries_for_goal = true;
         public bool open_heart_gates = false;
-        public int start_items_needed = 0;
         public int precollected_items = 0;
+        public bool exclude_multiroom_berries = false;
 
 
         public string apworld_version = "";
@@ -73,6 +72,10 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public HashSet<long> preunlocked_levels = new HashSet<long>();
         public HashSet<long> deathless_levels = new HashSet<long>();
         public HashSet<long> roomcheck_levels = new HashSet<long>();
+        public HashSet<long> autocheck_locations = new HashSet<long>();
+        public Dictionary<string, long> itemNameToId = new Dictionary<string, long>();
+        public Dictionary<long, List<long>> allLocationByLevelID = new Dictionary<long, List<long>>();
+        public Dictionary<long, List<List<long>>> logical_summary = new Dictionary<long, List<List<long>>>();
         #endregion
 
         private ArchipelagoSession _session;
@@ -95,6 +98,12 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public int ServerItemsRcv = -1;
         private bool ItemRcvCallbackSet = false;
 
+        private static readonly HashSet<String> ALL_POSSIBLE_LEVEL_SETS = new HashSet<string> {
+            "Celeste",
+            "StrawberryJam2021/0-Lobbies",
+        };
+
+        public HashSet<String> included_level_sets = new HashSet<string>();
 
         public ArchipelagoManager(Game game) : base(game)
         {
@@ -176,6 +185,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             randomize_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_checkpoints", out value) ? value : false);
             winged_golden = Convert.ToBoolean(loginData.SlotData.TryGetValue("winged_golden", out value) ? value : false);
             item_consolidation_mode = Convert.ToInt32(loginData.SlotData.TryGetValue("item_consolidation_mode", out value) ? value : 0);
+            exclude_multiroom_berries = Convert.ToBoolean(loginData.SlotData.TryGetValue("exclude_multiroom_berries", out value) ? value : 0);
 
             win_condition_level_selection = Convert.ToInt32(loginData.SlotData.TryGetValue("win_condition_level", out value) ? value : 0);
             win_condition_level = ArchipelagoMapper.getWinConditionLevel(win_condition_level_selection);
@@ -184,7 +194,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             require_moon_berry = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_moon_berry", out value) ? value : false);
             require_berries_for_goal = Convert.ToBoolean(loginData.SlotData.TryGetValue("require_berries_for_goal", out value) ? value : false);
             open_heart_gates = Convert.ToBoolean(loginData.SlotData.TryGetValue("open_heart_gates", out value) ? value : false);
-            start_items_needed = Convert.ToInt32(loginData.SlotData.TryGetValue("start_items_needed", out value) ? value : 0);
             precollected_items = Convert.ToInt32(loginData.SlotData.TryGetValue("precollected_items", out value) ? value : 0);
 
             apworld_version = Convert.ToString(loginData.SlotData.TryGetValue("apworld_version", out value) ? value : "");
@@ -208,6 +217,21 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             if (loginData.SlotData.TryGetValue("roomcheck_level_list", out object roomcheckList) && roomcheckList is JArray arr_4)
             {
                 roomcheck_levels = arr_4.ToObject<HashSet<long>>();
+            }
+
+            if (loginData.SlotData.TryGetValue("autocheck_locations", out object autocheckList) && autocheckList is JArray arr_5)
+            {
+                autocheck_locations = arr_5.ToObject<HashSet<long>>();
+            }
+
+            if (loginData.SlotData.TryGetValue("all_locations_by_level", out object locationMap) && locationMap is JObject obj_2)
+            {
+                allLocationByLevelID = obj_2.ToObject<Dictionary<long, List<long>>>();
+            }
+
+            if (loginData.SlotData.TryGetValue("logical_summary", out object logicalSummary) && logicalSummary is JObject obj_3)
+            {
+                logical_summary = obj_3.ToObject<Dictionary<long, List<List<long>>>>();
             }
 
             int versionCompatible;
@@ -235,10 +259,24 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             this.AddItemsRcvCallback($"Celeste_Modded_Rcv_{_session.Players.GetPlayerName(this.Slot)}", ItemsRcvUpdated);
             this.ServerItemsRcv = -1;
 
-            Ready = true;
-            WasConnected = true;
+            
 
             updateCassetteAndCrystalHeartItemTextMapping();
+            foreach(string set in ALL_POSSIBLE_LEVEL_SETS)
+            {
+                string parent_set = set;
+                if (set.StartsWith("StrawberryJam2021"))
+                {
+                    parent_set = "StrawberryJam2021";
+                }
+                if(ArchipelagoUtils.anyLevelIncludedInSet(parent_set))
+                {
+                    included_level_sets.Add(set);
+                }
+            }
+
+            Ready = true;
+            WasConnected = true;
 
             return null;
         }
@@ -304,6 +342,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {
                 locationIDs.Add(ArchipelagoMapper.getCassetteLocationID(sid, mode));
                 locationIDs.Add(ArchipelagoMapper.getCrystalHeartLocationID(sid, mode));
+                locationIDs.Add(ArchipelagoMapper.getLevelCompleteLocationID(sid, mode));
             }
 
             _session.Locations.ScoutLocationsAsync(HintCreationPolicy.None, locationIDs.ToArray()).ContinueWith((Task<Dictionary<long, ScoutedItemInfo>> responseTask) =>
@@ -315,7 +354,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 foreach(KeyValuePair<long, ScoutedItemInfo> entry in response)
                 {
                     ArchipelagoMapper.cassette_crystal_heart_display_text.Add(entry.Key, entry.Value.ItemName);
-                    CelesteArchipelagoModule.Log(entry.Key + " | " + entry.Value.ItemName);
                 }
             });
         }
@@ -334,7 +372,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                         {
                             var item = hintItemSendMessage.Item;
 
-                            string prettyMessage = $"{hintItemSendMessage.Receiver.Name}'s {item.ItemName} is at {hintItemSendMessage.Item.LocationName} in {hintItemSendMessage.Sender.Name}'s World.";
+                            string prettyMessage = $"{hintItemSendMessage.Receiver.Name}'s {item.ItemName} is at {hintItemSendMessage.Item.LocationName} in {hintItemSendMessage.Sender.Name}'s World";
 
                             MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemHint));
                         }
@@ -347,7 +385,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
                     if (itemSendMessage.IsRelatedToActivePlayer && !itemSendMessage.IsReceiverTheActivePlayer)
                     {
-                        string prettyMessage = $"Sent {itemSendMessage.Item.ItemName} to {itemSendMessage.Receiver.Name}.";
+                        string prettyMessage = $"Sent {itemSendMessage.Item.ItemName} to {itemSendMessage.Receiver.Name}";
 
                         MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemSend, itemSendMessage.Item.Flags));
                         Logger.Log(LOG_PREFIX, message.ToString());
@@ -400,17 +438,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             ArchipelagoManager.Instance.Disconnect();
         }
 
-        internal static Color GetItemColor(ItemFlags flags)
-        {
-            if ((flags & ItemFlags.Advancement) != 0)
-                return new Color(0xAF, 0x99, 0xEF);
-            if ((flags & ItemFlags.NeverExclude) != 0)
-                return new Color(0x6D, 0x8B, 0xE8);
-            if ((flags & ItemFlags.Trap) != 0)
-                return new Color(0xFA, 0x80, 0x72);
-            return new Color(0x00, 0xEE, 0xEE);
-        }
-
         public void CheckReceivedItemQueue()
         {
             if (this.Slot == -1 || SaveData.Instance == null || CelesteArchipelagoModule.SaveData == null)
@@ -426,33 +453,36 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
             SaveData.Instance.TotalStrawberries_Safe = CelesteArchipelagoModule.SaveData.Strawberries;
 
+            bool updateInternalLogic = false;
             for (int index = CelesteArchipelagoModule.SaveData.ItemRcv; index < ItemQueue.Count; index++)
             {
+                updateInternalLogic = true;
                 var item = ItemQueue[index].Item2;
 
                 if (index >= precollected_items)
                 {
 
-                    string receivedMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
+                    string receivedMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}";
                     string prettyMessage = "";
 
                     if (item.Player == this.Slot)
                     {
-                        prettyMessage = $"You found your {item.ItemDisplayName}.";
+                        prettyMessage = $"You found your {item.ItemDisplayName}";
                     }
                     else
                     {
-                        prettyMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}.";
+                        prettyMessage = $"Received {item.ItemDisplayName} from {GetPlayerName(item.Player)}";
                     }
 
                     if (index >= this.ServerItemsRcv)
                     {
-                        Logger.Info("AP", receivedMessage);
+                        Logger.Info("CelesteArchipelagoMod", receivedMessage);
                         MessageQueue.Enqueue(new ArchipelagoMessage(prettyMessage, ArchipelagoMessage.MessageType.ItemReceive, item.Flags));
                         Monocle.Engine.Commands.Log(receivedMessage, Color.DeepPink);
                     }
                 }
 
+                CelesteArchipelagoModule.SaveData.UniqueItemsCollected.Add(item.ItemId);
                 switch (item.ItemId)
                 {
                     case 100000000000:
@@ -531,12 +561,19 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 CelesteArchipelagoModule.SaveData.ItemRcv = index + 1;
             }
 
+            if (updateInternalLogic)
+            {
+                updateUncollectedLocationsInLogic();
+            }
+
             if (CelesteArchipelagoModule.SaveData.ItemRcv > this.ServerItemsRcv)
             {
                 this.ServerItemsRcv = CelesteArchipelagoModule.SaveData.ItemRcv;
                 SetRemoteItemsRcv(CelesteArchipelagoModule.SaveData.ItemRcv);
             }
+
         }
+
 
         public void CheckLocationsToSend()
         {
@@ -564,8 +601,10 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 return;
             }
 
+            bool updateInternalLogic = false;
             foreach (long newLoc in CollectedLocations)
             {
+                updateInternalLogic = true;
                 CelesteArchipelagoModule.SaveData.LocationsChecked.Add(newLoc);
                 //strawberry
                 if (newLoc >= 200000000000 && newLoc < 300000000000)
@@ -682,6 +721,10 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     SaveData.Instance.RegisterSummitGem(ArchipelagoMapper.summitGemIndexMapping[ArchipelagoMapper.extractMetadata(newLoc)]);
                 }
             }
+            if (updateInternalLogic)
+            {
+                updateUncollectedLocationsInLogic();
+            }
 
             CollectedLocations.Clear();
         }
@@ -689,7 +732,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public void CheckLocations(long[] locations)
         {
             if(locations.Length == 0) return;
-            
+
             foreach (var locationID in locations)
             {
                 SentLocations.Add(locationID);
@@ -832,6 +875,44 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
 
             return modVersion < modMinimumVersion ? 1 : apworldVersion < apworldMinimumVersion ? 2 : 0;
+        }
+
+        public void updateUncollectedLocationsInLogic()
+        {
+            HashSet<long> levelsWithProgressCopy = new HashSet<long>();
+            foreach (long locationID in logical_summary.Keys)
+            {
+                if (CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(locationID))
+                {
+                    CelesteArchipelagoModule.SaveData.UncollectedLocationsInLogic.Remove(locationID);
+                }
+                else if (ArchipelagoUtils.checkAccessRule(logical_summary[locationID]))
+                {
+                    CelesteArchipelagoModule.SaveData.UncollectedLocationsInLogic.Add(locationID);
+                    levelsWithProgressCopy.Add(ArchipelagoMapper.extractLevelID(locationID));
+                }
+            }
+            CelesteArchipelagoModule.SaveData.LevelsWithPotentialProgress = levelsWithProgressCopy;
+
+            //CelesteArchipelagoModule.Log(string.Join(",", CelesteArchipelagoModule.SaveData.UniqueItemsCollected));
+            //CelesteArchipelagoModule.Log(string.Join(",", CelesteArchipelagoModule.SaveData.LocationsChecked));
+            //CelesteArchipelagoModule.Log(string.Join(",", CelesteArchipelagoModule.SaveData.UncollectedLocationsInLogic));
+            //CelesteArchipelagoModule.Log(string.Join(",", CelesteArchipelagoModule.SaveData.LevelsWithPotentialProgress));
+
+
+            AutoCheckLocations();
+        }
+
+        // For start items and auto-check rooms
+        public void AutoCheckLocations()
+        {
+            foreach (long locationID in autocheck_locations)
+            {
+                if (CelesteArchipelagoModule.SaveData.UncollectedLocationsInLogic.Contains(locationID))
+                {
+                    CelesteArchipelagoModule.SaveData.LocationsChecked.Add(locationID);
+                }
+            }
         }
     }
 }

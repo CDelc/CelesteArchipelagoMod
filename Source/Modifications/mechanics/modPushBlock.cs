@@ -44,7 +44,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static DashCollisionResults modOnDashed(orig_OnDashed orig, Solid self, Player player, Vector2 direction)
         {
-            if (!CelesteArchipelagoModule.shouldModMechanics)
+            if (!CelesteArchipelagoModule.shouldModMechanics || self.GetType() != PushBlockType)
             {
                 return orig(self, player, direction);
             }
@@ -59,7 +59,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static void modRender(orig_Render orig, Solid self)
         {
             orig(self);
-            if(CelesteArchipelagoModule.shouldModMechanics && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PUSH_BLOCK))
+            if(CelesteArchipelagoModule.shouldModMechanics && self.GetType() == PushBlockType && !ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PUSH_BLOCK))
             {
                 Constants.DrawDisabledRect(self.Collider);
             }

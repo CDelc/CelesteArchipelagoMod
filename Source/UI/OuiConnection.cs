@@ -8,6 +8,9 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Threading.Tasks;
+using Celeste.Mod.UI;
+using Microsoft.Xna.Framework.Input;
+using Monocle;
 
 namespace Celeste.Mod.CelesteArchipelago.UI
 {
@@ -15,7 +18,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
     {
         public static OuiConnection Instance;
         private TextMenu connectMenu;
-
+        private int pendingSelection = -1;
         private bool waitingOnConnect = false;
         private Task<LoginFailure> connectTask;
 
@@ -63,10 +66,9 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             if (base.Selected &&
                 !waitingOnConnect &&
                 connectMenu != null &&
-                connectMenu.Focused &&
-                connectMenu.Selection == 7)
+                connectMenu.Focused)
             {
-                if (Input.MenuConfirm.Pressed)
+                if (Input.MenuConfirm.Pressed && connectMenu.Selection == 7)
                 {
                     waitingOnConnect = true;
                     connectTask = ArchipelagoManager.Instance.Connect();
@@ -82,9 +84,14 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         public override IEnumerator Enter(Oui from)
         {
-            TextInput.OnInput += modTextInput_OnInput;
+            //TextInput.OnInput += modTextInput_OnInput;
 
             RefreshConnectionMenu();
+
+            if (from is OuiModOptionString && pendingSelection != -1)
+                this.connectMenu.Selection = pendingSelection;
+            pendingSelection = -1;
+
             this.Visible = true;
             this.connectMenu.Visible = true;
             this.connectMenu.Focused = true;
@@ -94,42 +101,21 @@ namespace Celeste.Mod.CelesteArchipelago.UI
 
         public override IEnumerator Leave(Oui next)
         {
-            TextInput.OnInput -= modTextInput_OnInput;
+            //TextInput.OnInput -= modTextInput_OnInput;
 
             yield return Everest.SaveSettings();
 
-            RefreshConnectionMenu();
             this.Visible = false;
-            this.connectMenu.Visible = false;
-            this.connectMenu.RemoveSelf();
-            this.connectMenu = null;
-        }
-
-        private void modTextInput_OnInput(char obj)
-        {
-            if (this.connectMenu.Selection != 7)
+            if (this.connectMenu != null)
             {
-                string currentButtonText = (this.connectMenu.items[this.connectMenu.Selection] as TextMenu.Button).Label;
-                if (obj == 8 && currentButtonText.Length > 0)
-                {
-                    (this.connectMenu.items[this.connectMenu.Selection] as TextMenu.Button).Label = currentButtonText.Remove(currentButtonText.Length - 1);
-                }
-                else if (obj >= 32 && obj <= 126)
-                {
-                    (this.connectMenu.items[this.connectMenu.Selection] as TextMenu.Button).Label += obj;
-                }
-                else if (obj == 13)
-                {
-                    this.connectMenu.Selection += 2;
-                }
-
-                Core.CoreModule.Settings.DebugConsole.Keys.Remove(Microsoft.Xna.Framework.Input.Keys.OemPeriod);
+                this.connectMenu.Visible = false;
+                this.connectMenu.Focused = false;
+                Scene.Remove(this.connectMenu);
+                this.connectMenu = null;
             }
-
-            CelesteArchipelagoModule.Settings.Address = (this.connectMenu.items[1] as TextMenu.Button).Label;
-            CelesteArchipelagoModule.Settings.PlayerName = (this.connectMenu.items[3] as TextMenu.Button).Label;
-            CelesteArchipelagoModule.Settings.Password = (this.connectMenu.items[5] as TextMenu.Button).Label;
         }
+
+
 
         public TextMenu CreateConnectMenu()
         {
@@ -140,17 +126,24 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             retMenu.CompactWidthMode = true;
 
             retMenu.Add(new TextMenu.Header("Address"));
-            retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.Address));
+            retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.Address).Pressed(() => EditField(1, CelesteArchipelagoModule.Settings.Address, 100, 0, v => CelesteArchipelagoModule.Settings.Address = v)));
             retMenu.Add(new TextMenu.Header("Player Name"));
-            retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.PlayerName));
+            retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.PlayerName).Pressed(() => EditField(3, CelesteArchipelagoModule.Settings.PlayerName, 50, 0, v => CelesteArchipelagoModule.Settings.PlayerName = v)));
             retMenu.Add(new TextMenu.Header("Password"));
-            retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.Password));
+            retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.Password).Pressed(() => EditField(5, CelesteArchipelagoModule.Settings.Password, 50, 0, v => CelesteArchipelagoModule.Settings.Password = v)));
             retMenu.Add(new TextMenu.Header(""));
 
             TextMenu.Button connectButton = new TextMenu.Button("Connect");
             retMenu.Add(connectButton);
 
             return retMenu;
+        }
+
+        private void EditField(int index, string current, int maxLength, int minLength, Action<string> onChange)
+        {
+            pendingSelection = index;
+            Audio.Play("event:/ui/main/savefile_rename_start");
+            Overworld.Goto<OuiModOptionString>().Init<OuiConnection>(current, onChange, maxLength, minLength);
         }
 
         public void RefreshConnectionMenu()
@@ -209,19 +202,40 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                             }
                         }
                     }
-                    else if(levelSet.Name == "StrawberryJam2021/0-Lobbies")
-                    {
-                        levelSet.UnlockedAreas = 6;
-                    }
                 }
 
-                SaveData.Instance.UnlockedAreas = 10;
-                
+                ArchipelagoUtils.setUnlockedAreas();
 
                 modJournal.InitializeMapLookup();
             }
 
-            (Scene as Overworld).Goto<OuiChapterSelect>();
+            (Scene as Overworld).Goto<OuiHelper_ChapterSelect_LevelSet>().Direction = -1;
         }
+
+                //private void modTextInput_OnInput(char obj)
+        //{
+        //    if (this.connectMenu.Selection != 7)
+        //    {
+        //        string currentButtonText = (this.connectMenu.items[this.connectMenu.Selection] as TextMenu.Button).Label;
+        //        if (obj == 8 && currentButtonText.Length > 0)
+        //        {
+        //            (this.connectMenu.items[this.connectMenu.Selection] as TextMenu.Button).Label = currentButtonText.Remove(currentButtonText.Length - 1);
+        //        }
+        //        else if (obj >= 32 && obj <= 126)
+        //        {
+        //            (this.connectMenu.items[this.connectMenu.Selection] as TextMenu.Button).Label += obj;
+        //        }
+        //        else if (obj == 13)
+        //        {
+        //            this.connectMenu.Selection += 2;
+        //        }
+
+        //        Core.CoreModule.Settings.DebugConsole.Keys.Remove(Microsoft.Xna.Framework.Input.Keys.OemPeriod);
+        //    }
+
+        //    CelesteArchipelagoModule.Settings.Address = (this.connectMenu.items[1] as TextMenu.Button).Label;
+        //    CelesteArchipelagoModule.Settings.PlayerName = (this.connectMenu.items[3] as TextMenu.Button).Label;
+        //    CelesteArchipelagoModule.Settings.Password = (this.connectMenu.items[5] as TextMenu.Button).Label;
+        //}
     }
 }

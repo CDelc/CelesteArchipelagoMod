@@ -27,10 +27,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             StationBlockType = typeof(CommunalHelper.Entities.StationBlock);
 
             MethodInfo onDashedMethod = StationBlockType.GetMethod("OnDashed", BindingFlags.NonPublic | BindingFlags.Instance, new Type[] { typeof(Player), typeof(Vector2) });
-            HookOnDashed = new Hook(onDashedMethod, typeof(modPushBlock).GetMethod(nameof(modOnDashed), BindingFlags.Static | BindingFlags.NonPublic));
+            HookOnDashed = new Hook(onDashedMethod, typeof(modStationBlock).GetMethod(nameof(modOnDashed), BindingFlags.Static | BindingFlags.NonPublic));
 
             MethodInfo renderMethod = StationBlockType.GetMethod("Render", BindingFlags.Public | BindingFlags.Instance);
-            HookRender = new Hook(renderMethod, typeof(modPushBlock).GetMethod(nameof(modRender), BindingFlags.Static | BindingFlags.NonPublic));
+            HookRender = new Hook(renderMethod, typeof(modStationBlock).GetMethod(nameof(modRender), BindingFlags.Static | BindingFlags.NonPublic));
         }
 
         public override void Unload()
@@ -50,7 +50,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             }
             else if (!isActive(self))
             {
-                return DashCollisionResults.Bounce;
+                return DashCollisionResults.NormalCollision;
             }
             else return orig(self, player, direction);
 

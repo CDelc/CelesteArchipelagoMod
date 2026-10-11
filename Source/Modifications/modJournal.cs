@@ -105,14 +105,33 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             if(sid == null) { return Color.Black; }
 
             LevelCategory category = ArchipelagoMapper.getLevelCategory(sid, AreaMode.Normal);
-            bool unlocked = ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.Normal);
-            if (ArchipelagoUtils.levelHasBCSides(sid))
+            Dictionary<AreaMode, long?> levelIDs = ArchipelagoUtils.getAllModeLevelIDs(sid);
+            bool unlocked = false;
+            bool hasProgress = false;
+            bool included = false;
+            foreach (AreaMode mode in levelIDs.Keys)
             {
-                unlocked = unlocked || ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.BSide) || ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.CSide);
+                if (levelIDs[mode] != null && ArchipelagoUtils.levelIsUnlocked(sid, mode))
+                {
+                    unlocked = true; break;
+                }
             }
-            bool included = ArchipelagoUtils.levelIncludedInRandomizer(sid, AreaMode.Normal);
+            foreach (AreaMode mode in levelIDs.Keys)
+            {
+                if (levelIDs[mode] != null && CelesteArchipelagoModule.SaveData.LevelsWithPotentialProgress.Contains((long)levelIDs[mode]))
+                {
+                    hasProgress = true; break;
+                }
+            }
+            foreach (AreaMode mode in levelIDs.Keys)
+            {
+                if (levelIDs[mode] != null && ArchipelagoUtils.levelIncludedInRandomizer(sid, mode))
+                {
+                    included = true; break;
+                }
+            }
 
-            return ArchipelagoUtils.levelIsUnlocked(sid, AreaMode.Normal) ? Color.Green : included ? Color.DarkRed : Color.DarkGray * 0.4f;
+            return hasProgress ? Color.Lime : unlocked ? Color.Blue : included ? Color.DarkSlateGray * 0.5f : Color.DarkRed * 0.05f;
         }
 
         private void modCtor(On.Celeste.OuiJournalProgress.orig_ctor orig, OuiJournalProgress self, OuiJournal journal)

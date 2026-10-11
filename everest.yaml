@@ -156,6 +156,8 @@
     - Name: YetAnotherHelper
       Version: 1.2.5
       ExactVersion: true
+    - Name: CollabLobbyUI
+      Version: 1.0.9
   OptionalDependencies:
     - Name: SpeedrunTool
       Version: 3.20.4

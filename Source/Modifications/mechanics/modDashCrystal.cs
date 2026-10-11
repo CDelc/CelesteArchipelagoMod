@@ -26,6 +26,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Type PlusOneRefillType;
         private static Type BounceRefillType;
         private static Type CustomizableRefillType;
+        private static Type ColorfulRefillType;
 
         private static FieldInfo ExtraJumpsField;
         private static FieldInfo numDashesField;
@@ -54,6 +55,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             PlusOneRefillType = CelesteArchipelagoModule.FindType("FrostHelper.PlusOneRefill");
             BounceRefillType = typeof(BounceRefill);
             CustomizableRefillType = typeof(CustomizableRefill);
+            ColorfulRefillType = typeof(ColorfulRefill);
 
             numDashesField = ResettingRefillType.GetField("dashes", BindingFlags.NonPublic | BindingFlags.Instance);
             ExtraJumpsField = JumpRefillType.GetField("extraJumps", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -177,6 +179,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             return self.GetType() == DashCrystalType && twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == DashCrystalType && !twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
+                self.GetType() == ColorfulRefillType && !twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
+                self.GetType() == ColorfulRefillType && twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == CustomizableRefillType && !twoDashes && !isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
                 self.GetType() == CustomizableRefillType && !twoDashes && isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.INFINITE_DASH_CRYSTAL) ||
                 self.GetType() == CustomizableRefillType && twoDashes && !isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||

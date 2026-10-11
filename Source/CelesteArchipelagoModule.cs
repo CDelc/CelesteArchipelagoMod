@@ -2,6 +2,7 @@
 using Celeste.Mod.CelesteArchipelago.Modifications;
 using FMOD.Studio;
 using System;
+using System.Linq;
 
 
 namespace Celeste.Mod.CelesteArchipelago;
@@ -10,6 +11,8 @@ public class CelesteArchipelagoModule : EverestModule {
 
     public static readonly string MOD_VERSION = "1.2.0";
     public static readonly string APWORLD_MINIMUM_VERSION = "1.2.0";
+
+    private const string OpenWorldModID = "Archipelago Open World"; // This is here to prevent conflicts
 
     public static CelesteArchipelagoModule Instance { get; private set; }
 
@@ -37,6 +40,18 @@ public class CelesteArchipelagoModule : EverestModule {
     public static bool shouldModMechanics => IsInArchipelagoSave || Settings.Debug;
 
     public override void Load() {
+
+        bool isOpenWorldPresent = Everest.Modules.Any(module =>
+                module.Metadata != null &&
+                module.Metadata.Name.Equals(OpenWorldModID, StringComparison.OrdinalIgnoreCase)
+            );
+
+        if (isOpenWorldPresent)
+        {
+            Logger.Log(LogLevel.Warn, "CelesteArchipelago", "Celeste Open World Archipelago Mod detected: The mod for the APWorld: celeste_modded can not be enabled.");
+            return;
+        }
+
 
         new ArchipelagoManager(Celeste.Instance);
 

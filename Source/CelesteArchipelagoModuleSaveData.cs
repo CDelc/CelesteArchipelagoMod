@@ -30,4 +30,10 @@ public class CelesteArchipelagoModuleSaveData : EverestModuleSaveData
 
     public HashSet<long> LocationsChecked { get; set; } = new HashSet<long>();
 
+    public HashSet<long> UniqueItemsCollected { get; set; } = new HashSet<long>();
+
+    public HashSet<long> UncollectedLocationsInLogic { get; set; } = new HashSet<long>();
+
+    public HashSet<long> LevelsWithPotentialProgress { get; set; } = new HashSet<long>();
+
 }

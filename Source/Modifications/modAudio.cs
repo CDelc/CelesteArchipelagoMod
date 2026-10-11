@@ -20,7 +20,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
         private static SoundSource OnAudioPlay(On.Celeste.SoundSource.orig_Play orig, SoundSource self, string path, string param, float value)
         {
-            CelesteArchipelagoModule.Log(path);
             if (path == "event:/sj21_jamjar-blue" || path == "event:/sj21_jamjar-red" || path == "event:/sj21_jamjar-yellow" || path == "event:/sj21_jamjar-orange" || path == "event:/sj21_jamjar-purple")
             {
                 return self;

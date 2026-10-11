@@ -1,18 +1,31 @@
 ﻿using Celeste.Mod.CelesteArchipelago.ArchipelagoData;
 using Celeste.Mod.CollabUtils2.Entities;
+using Celeste.Mod.MaxHelpingHand.Entities;
+using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.RuntimeDetour;
 using System;
+using System.Reflection;
 
 namespace Celeste.Mod.CelesteArchipelago.Modifications
 {
     internal class modStrawberry : IGameModification
     {
+        private static Type MultiRoomStrawberrySeedType;
+        private static Hook MultiRoomCtorHook;
+        private delegate void orig_multiberry_ctor(MultiRoomStrawberrySeed self, Vector2 position, int index, bool ghost, string sprite, string ghostSprite);
+
         public override void Load()
         {
             On.Celeste.Strawberry.ctor += modStrawberry_ctor;
             On.Celeste.Strawberry.OnCollect += modStrawberry_OnCollect;
             On.Celeste.SaveData.AddStrawberry_AreaKey_EntityID_bool += modSaveData_AddStrawberry_AreaKey_EntityID_bool;
             On.Celeste.TotalStrawberriesDisplay.Update += modTotalStrawberriesDisplay_Update;
+
+            MultiRoomStrawberrySeedType = typeof(MultiRoomStrawberrySeed);
+            MultiRoomCtorHook = new Hook(MultiRoomStrawberrySeedType.GetConstructor(BindingFlags.Instance | BindingFlags.Public, new Type[] { typeof(Vector2), typeof(int), typeof(bool), typeof(string), typeof(string) }),
+                typeof(modStrawberry).GetMethod(nameof(modMultiRoomBerrySeed_ctor), BindingFlags.NonPublic | BindingFlags.Static));
+
         }
 
         public override void Unload()
@@ -21,6 +34,20 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
             On.Celeste.Strawberry.OnCollect -= modStrawberry_OnCollect;
             On.Celeste.SaveData.AddStrawberry_AreaKey_EntityID_bool -= modSaveData_AddStrawberry_AreaKey_EntityID_bool;
             On.Celeste.TotalStrawberriesDisplay.Update -= modTotalStrawberriesDisplay_Update;
+
+            MultiRoomCtorHook?.Dispose();
+        }
+
+        private static void modMultiRoomBerrySeed_ctor(orig_multiberry_ctor orig, MultiRoomStrawberrySeed self, Vector2 position, int index, bool ghost, string sprite, string ghostSprite)
+        {
+            if(CelesteArchipelagoModule.IsInArchipelagoSave && ArchipelagoManager.Instance.exclude_multiroom_berries)
+            {
+                orig(self, position, index, true, sprite, ghostSprite);
+            }
+            else
+            {
+                orig(self, position, index, ghost, sprite, ghostSprite);
+            }
         }
 
         private static void modStrawberry_ctor(On.Celeste.Strawberry.orig_ctor orig, Strawberry self, EntityData data, Microsoft.Xna.Framework.Vector2 offset, EntityID gid)

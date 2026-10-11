@@ -42,42 +42,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications
 
             if (queueSize > 0 && self.Scene.Tracker.GetEntity<ArchipelagoTextBox>() == null)
             {
-                if (messageQueue.TryDequeue(out ArchipelagoMessage message))
-                {
-                    if (ShouldShowMessage(message))
-                    {
-                        float duration = queueSize > 5 ? 1f : queueSize > 2 ? 1.5f : 2f;
-                        Color color = GetMessageColor(message);
-                        self.Scene.Add(new ArchipelagoTextBox(message.Text, duration, color));
-                        Logger.Verbose(Constants.LOG_PREFIX, message.Text);
-                    }
-                }
-            }
-        }
-
-        private static bool ShouldShowMessage(ArchipelagoMessage message)
-        {
-            if (message.Type == ArchipelagoMessage.MessageType.Server)
-            {
-                return CelesteArchipelagoModule.Settings.ServerMessages;
-            }
-            return true;
-        }
-
-        private static Color GetMessageColor(ArchipelagoMessage message)
-        {
-            switch (message.Type)
-            {
-                case ArchipelagoMessage.MessageType.ItemReceive:
-                    return Color.Red;
-                case ArchipelagoMessage.MessageType.ItemSend:
-                    return ArchipelagoManager.GetItemColor(message.Flags);
-                case ArchipelagoMessage.MessageType.ItemHint:
-                    return Color.Orange;
-                case ArchipelagoMessage.MessageType.Server:
-                    return Color.LightGray;
-                default:
-                    return Color.White;
+                self.Scene.Add(new ArchipelagoTextBox());
             }
         }
     }

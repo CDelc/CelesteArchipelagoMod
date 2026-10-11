@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,17 +12,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {
                 switch(ArchipelagoManager.Instance.item_consolidation_mode)
                 {
-                    case 0:
-                        return consolidated_mechanics_minimal;
                     case 1:
-                        return consolidated_mechanics;
+                        return consolidated_mechanics_minimal;
                     case 2:
-                        return extreme_consolidation;
+                        return consolidated_mechanics;
                     case 3:
-                        return consolidated_mechanics_colors;
+                        return extreme_consolidation;
                     case 4:
-                        return vanilla_consolidation;
+                        return consolidated_mechanics_colors;
                     case 5:
+                        return vanilla_consolidation;
+                    case 0:
                         return no_consolidation;
                     case 6:
                         return no_mechanic;
@@ -67,7 +68,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Get the offset to be added when assembling a location ID that accounts for the level and room of the ID
         public static long getLocationOffset(string SID, AreaMode mode, string room)
         {
-            return getLevelID(SID, mode) * 100000000 + getRoomID(SID, mode, room) * 100000;
+            return (long)getLevelID(SID, mode) * 100000000 + getRoomID(SID, mode, room) * 100000;
         }
 
         // Get the SID and AreaMode of a given AP level ID
@@ -103,11 +104,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         }
 
         // Get the AP level ID of a level from its SID and mode
-        public static long getLevelID(string SID, AreaMode mode)
+        public static long? getLevelID(string SID, AreaMode mode)
         {
             if (!levelSIDToID.TryGetValue((SID, mode), out long rValue))
             {
-                if (!ArchipelagoUtils.isLobbyOrGymSID(SID)) throw new IndexOutOfRangeException($"A level ID was requested that does not exist: ID {SID} | {mode.ToString()}");
+                if (!ArchipelagoUtils.isLobbyOrGymSID(SID)) return null;
             }
             return rValue;
         }
@@ -166,14 +167,14 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Get the AP Location ID of a Crystal Heart based on the level it is from
         public static long getCrystalHeartLocationID(string SID, AreaMode mode)
         {
-            long levelID = getLevelID(SID, mode);
+            long levelID = (long)getLevelID(SID, mode);
             return 600000000000 + levelID * 100000000;
         }
 
         // Get the AP Location ID of a Cassette based on the level it is from
         public static long getCassetteLocationID(string SID, AreaMode mode)
         {
-            long levelID = getLevelID(SID, mode);
+            long levelID = (long)getLevelID(SID, mode);
             return 300000000000 + levelID * 100000000;
         }
 
@@ -205,7 +206,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Get the AP Location ID of a level completion
         public static long getLevelCompleteLocationID(string SID, AreaMode mode)
         {
-            return 400000000000 + getLevelID(SID, mode) * 100000000;
+            return 400000000000 + (long)getLevelID(SID, mode) * 100000000;
         }
 
         // Get the AP Location ID of a specific key
@@ -223,7 +224,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Get the AP Location ID of a mini heart
         public static long getMiniHeartLocationID(string SID, AreaMode mode)
         {
-            long levelID = getLevelID(SID, mode);
+            long levelID = (long)getLevelID(SID, mode);
             return 500000000000 + levelID * 100000000;
         }
 
@@ -287,6 +288,21 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
         }
 
+
+        public static HashSet<long> getLevelsInCategory(LevelCategory category)
+        {
+            HashSet<long> levels = new HashSet<long>();
+            foreach(long levelID in levelIDToSID.Keys)
+            {
+                (string sid, AreaMode mode) = levelIDToSID[levelID];
+                if (category == getLevelCategory(sid, mode) && ArchipelagoUtils.levelIncludedInRandomizer(sid, mode))
+                {
+                    levels.Add(levelID);
+                }
+            }
+            return levels;
+        }
+
         // Converts the option selection from the AP World to the SID and Mode combination of the goal level
         private static readonly int[] win_condition_level_lookup = [19, 20, 25, 48, 67, 93, 123, 142, 23, 24, 22];
         public static (string sid, AreaMode mode) getWinConditionLevel(int selection)
@@ -307,9 +323,9 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Checks if a specific Mechanic is enabled
         public static bool mechanicEnabled(Mechanic mechanic)
         {
-            if (!CelesteArchipelagoModule.IsInArchipelagoSave)
+            if (!CelesteArchipelagoModule.IsInArchipelagoSave || ArchipelagoUtils.isGymSID(SaveData.Instance.CurrentSession.Area.SID))
             {
-                return false;
+                return true;
             }
 
             Mechanic[] mapped_mechanics = consolidation_mapper[mechanic];
@@ -526,7 +542,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             {"StrawberryJam2021/2-Intermediate/", LevelCategory.INTERMEDIATE},
             {"StrawberryJam2021/3-Advanced/", LevelCategory.ADVANCED},
             {"StrawberryJam2021/4-Expert/", LevelCategory.EXPERT},
-            {"StrawberryJam2021/5-Grandmaster/", LevelCategory.GRANDMASTER}
+            {"StrawberryJam2021/5-Grandmaster/", LevelCategory.GRANDMASTER},
+
+            {"StrawberryJam2021/0-Lobbies/1-Beginner", LevelCategory.BEGINNER},
+            {"StrawberryJam2021/0-Lobbies/2-Intermediate", LevelCategory.INTERMEDIATE},
+            {"StrawberryJam2021/0-Lobbies/3-Advanced", LevelCategory.ADVANCED},
+            {"StrawberryJam2021/0-Lobbies/4-Expert", LevelCategory.EXPERT},
+            {"StrawberryJam2021/0-Lobbies/5-Grandmaster", LevelCategory.GRANDMASTER}
         };
 
         // Room ID definition
@@ -1543,7 +1565,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 {
                     {0, "00- intro"},
                     {1, "01- Crusher"},
-                    {2, "02- Bait N'Switch"},
+                    {2, "02- Bait N' Switch"},
                     {3, "02B- a stwawbewwy??"},
                     {4, "03- Uberjump"},
                     {5, "04- Head Trauma"},
@@ -2694,7 +2716,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                     {10, "2-b"},
                     {11, "2-c"},
                     {12, "2-d"},
-                    {13, "2-secret :D"}
+                    {13, "2-secret "}
                 }
             },
             {

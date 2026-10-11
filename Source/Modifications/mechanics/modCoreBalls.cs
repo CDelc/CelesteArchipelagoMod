@@ -25,7 +25,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             orig(self);
 
-            if (!CelesteArchipelagoModule.shouldModMechanics || self is MaxHelpingHand.Entities.BeeFireball || self is StrawberryJam2021.Entities.BeeFireball) return;
+            if (!CelesteArchipelagoModule.shouldModMechanics || self is MaxHelpingHand.Entities.BeeFireball || self is StrawberryJam2021.Entities.BeeFireball || inPotentialForAnything()) return;
 
             if (!ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.LAVA_ICE_BALLS))
             {
@@ -40,6 +40,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                     self.Visible = true;
                 }
             }
+        }
+
+        private static bool inPotentialForAnything()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID == "StrawberryJam2021/1-Beginner/frozenflygone" || SaveData.Instance.CurrentSession_Safe.Level.StartsWith("cp2_15_heartside_frozenflygone");
         }
     }
 }

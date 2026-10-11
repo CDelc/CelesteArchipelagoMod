@@ -54,6 +54,9 @@
         <Reference Include="CherryHelper">
           <HintPath>..\Assemblies\CherryHelper.dll</HintPath>
         </Reference>
+        <Reference Include="CollabLobbyUI">
+          <HintPath>..\Assemblies\CollabLobbyUI.dll</HintPath>
+        </Reference>
         <Reference Include="CollabUtils2">
           <HintPath>..\Assemblies\CollabUtils2.dll</HintPath>
         </Reference>

@@ -16,4 +16,8 @@ public class CelesteArchipelagoModuleSettings : EverestModuleSettings {
     public bool Debug { get; set;  } = false;
 
     public bool DisplayRoomName { get; set; } = true;
+
+    public bool ShowLevelWaypoints { get; set; } = true;
+
+    public bool HideProgressionHighlighting { get; set; } = false;
 }

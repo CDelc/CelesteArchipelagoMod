@@ -9,22 +9,91 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
     internal class ArchipelagoUtils
     {
 
+        public static bool anyLevelIncludedInSet(string levelSet)
+        {
+            foreach(long levelID in ArchipelagoManager.Instance.included_levels)
+            {
+                string sid = ArchipelagoMapper.getSID(levelID).SID;
+                if (sid.StartsWith(levelSet))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool anyLevelIncludedInCategory(LevelCategory levelCategory)
+        {
+            if (ArchipelagoManager.Instance == null) return true;
+            foreach (long levelID in ArchipelagoManager.Instance.included_levels)
+            {
+                string sid = ArchipelagoMapper.getSID(levelID).SID;
+                LevelCategory category = ArchipelagoMapper.getLevelCategory(sid);
+                if (category == levelCategory) return true;
+            }
+            return false;
+        }
+
+        public static void setUnlockedAreas()
+        {
+            if (SaveData.Instance == null) return;
+            foreach (LevelSetStats levelSet in SaveData.Instance.LevelSets)
+            {
+                if (levelSet.Name == "StrawberryJam2021/0-Lobbies")
+                {
+                    if (ArchipelagoUtils.anyLevelIncludedInCategory(LevelCategory.GRANDMASTER))
+                    {
+                        levelSet.UnlockedAreas = 5;
+                    }
+                    else if (ArchipelagoUtils.anyLevelIncludedInCategory(LevelCategory.EXPERT))
+                    {
+                        levelSet.UnlockedAreas = 4;
+                    }
+                    else if (ArchipelagoUtils.anyLevelIncludedInCategory(LevelCategory.ADVANCED))
+                    {
+                        levelSet.UnlockedAreas = 3;
+                    }
+                    else if (ArchipelagoUtils.anyLevelIncludedInCategory(LevelCategory.INTERMEDIATE))
+                    {
+                        levelSet.UnlockedAreas = 2;
+                    }
+                    else if (ArchipelagoUtils.anyLevelIncludedInCategory(LevelCategory.BEGINNER))
+                    {
+                        levelSet.UnlockedAreas = 1;
+                    }
+                    else
+                    {
+                        levelSet.UnlockedAreas = 0;
+                    }
+                }
+                else if (levelSet.Name == "Celeste")
+                {
+                    SaveData.Instance.UnlockedAreas = 10;
+                    if (!ArchipelagoUtils.anyLevelIncludedInCategory(LevelCategory.FAREWELL))
+                    {
+                        SaveData.Instance.UnlockedAreas = 9;
+                    }
+                }
+            }
+        }
+        
         // Checks if a specific level should be considered unlocked by default
         public static bool levelStartsUnlocked(string sid, AreaMode areaMode)
         {
-            return ArchipelagoMapper.levelIsAllowed(sid) && (isLobbyOrGymSID(sid) || ArchipelagoManager.Instance.preunlocked_levels.Contains(ArchipelagoMapper.getLevelID(sid, areaMode)));
+            return ArchipelagoMapper.levelIsAllowed(sid) && (isLobbyOrGymSID(sid) || ArchipelagoManager.Instance.preunlocked_levels.Contains((long)ArchipelagoMapper.getLevelID(sid, areaMode)));
         }
 
         //Checks if a level is included in this randomizer at all
         public static bool levelIncludedInRandomizer(string sid, AreaMode areaMode)
         {
             if (isLobbyOrGymSID(sid)) return true;
-            long levelID = ArchipelagoMapper.getLevelID(sid, areaMode);
+            long? levelID = ArchipelagoMapper.getLevelID(sid, areaMode);
+            if (levelID == null) return false;
             if (isGoalLevel(sid, areaMode))
             {
                 return true;
             }
-            return ArchipelagoManager.Instance.included_levels.Contains(levelID);
+            return ArchipelagoManager.Instance.included_levels.Contains(levelID.Value);
         }
 
         // Checks if a level should be unlocked
@@ -54,9 +123,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 !(isGoalLevel(sid, areaMode) && berriesMissing() && ArchipelagoManager.Instance.require_berries_for_goal);
         }
 
-        public static bool levelHasBCSides(string sid)
+        public static Dictionary<AreaMode, long?> getAllModeLevelIDs(string sid)
         {
-            return sid.StartsWith("Celeste/") && !sid.Contains("LostLevels") && !sid.Contains("0-Intro") && !sid.Contains("8-Epilogue");
+            Dictionary<AreaMode, long?> rValue = new Dictionary<AreaMode, long?>();
+            rValue[AreaMode.Normal] = ArchipelagoMapper.getLevelID(sid, AreaMode.Normal);
+            rValue[AreaMode.BSide] = ArchipelagoMapper.getLevelID(sid, AreaMode.BSide);
+            rValue[AreaMode.CSide] = ArchipelagoMapper.getLevelID(sid, AreaMode.CSide);
+            return rValue;
         }
 
         // Checks if a level category is part of a collab lobby
@@ -72,7 +145,17 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Checks if an SID is a lobby or gym level
         public static bool isLobbyOrGymSID(string sid)
         {
-            return sid.Contains("StrawberryJam2021/0-Lobbies") || sid.Contains("StrawberryJam2021/0-Gyms");
+            return sid != null && (sid.Contains("StrawberryJam2021/0-Lobbies") || sid.Contains("StrawberryJam2021/0-Gyms")) && !sid.Contains("0-Lobbies/0-Prologue");
+        }
+
+        public static bool isLobbySID(string sid)
+        {
+            return sid != null && sid.Contains("StrawberryJam2021/0-Lobbies") && !sid.Contains("0-Prologue");
+        }
+
+        public static bool isGymSID(string sid)
+        {
+            return sid != null && sid.Contains("StrawberryJam2021/0-Gyms");
         }
 
         // Checks if an SID is a heartside level
@@ -106,15 +189,53 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         // Checks if golden/silver berries should be enabled in a given level
         public static bool deathlessEnabled(string SID, AreaMode mode)
         {
-            long levelID = ArchipelagoMapper.getLevelID(SID, mode);
+            long levelID = (long)ArchipelagoMapper.getLevelID(SID, mode);
             return ArchipelagoManager.Instance.deathless_levels.Contains(levelID);
         }
 
         // Checks if room checks should be enabled for a specific level category
         public static bool roomChecksEnabled(string SID, AreaMode mode)
         {
-            long levelID = ArchipelagoMapper.getLevelID(SID, mode);
+            long levelID = (long)ArchipelagoMapper.getLevelID(SID, mode);
             return ArchipelagoManager.Instance.roomcheck_levels.Contains(levelID);
+        }
+
+        public static bool allLocationsChecked(string SID, AreaMode mode)
+        {
+            long levelID = (long)ArchipelagoMapper.getLevelID(SID, mode);
+            List<long> location_list = ArchipelagoManager.Instance.allLocationByLevelID.TryGetValue(levelID, out var locations) ? locations : null;
+            if (location_list == null) return true;
+
+            foreach(long locID in location_list)
+            {
+                if (!CelesteArchipelagoModule.SaveData.LocationsChecked.Contains(locID)) return false;
+            }
+            return true;
+        }
+
+        public static bool checkAccessRule(List<List<long>> access_rule)
+        {
+            bool result = true;
+            foreach (List<long> andItems in access_rule)
+            {
+                result = true;
+                foreach (long itemID in andItems)
+                {
+                    // Crystal Heart number requirement
+                    if (itemID < 0)
+                    {
+                        result = CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count >= Math.Abs(itemID);
+                    }
+                    else
+                    {
+                        result = CelesteArchipelagoModule.SaveData.UniqueItemsCollected.Contains(itemID);
+                    }
+                    if (!result) break;
+                }
+                if (!result) continue;
+                else return true;
+            }
+            return result;
         }
     }
 }

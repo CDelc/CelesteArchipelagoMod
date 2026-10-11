@@ -126,7 +126,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static void modTurnOn(orig_TurnOn orig, Entity self)
         {
-            CelesteArchipelagoModule.Log($"{self.GetType().FullName}");
             if (!CelesteArchipelagoModule.shouldModMechanics || isActive(self))
             {
                 orig(self);
