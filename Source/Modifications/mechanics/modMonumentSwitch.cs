@@ -36,6 +36,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         private static Color PurpleColorTwo = Calc.HexToColor("9582ff");
         private static Color RedColor = Calc.HexToColor("ff8282");
         private static Color PinkColor = Calc.HexToColor("ff82de");
+        private static Color WhiteColor = Calc.HexToColor("ffffff");
 
         public override void Load()
         {
@@ -95,7 +96,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 color.Equals(GreenColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GREEN_FLIP_SWITCH) ||
                 (color.Equals(PurpleColor) || color.Equals(PurpleColorTwo)) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_FLIP_SWITCH) ||
                 color.Equals(RedColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_FLIP_SWITCH) ||
-                color.Equals(PinkColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PINK_FLIP_SWITCH);
+                color.Equals(PinkColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_FLIP_SWITCH);
         }
 
         private static bool isActive(MonumentSwitchBlock self)

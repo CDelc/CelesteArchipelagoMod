@@ -30,6 +30,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static FieldInfo NewValueField;
         private static FieldInfo ColorField;
+        private static FieldInfo VariantChangeField;
 
         private static Color BlueColor = Calc.HexToColor("222244");
         private static Color RedColor = Calc.HexToColor("442222");
@@ -41,6 +42,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             KevinBarrierType = typeof(KevinBarrier);
             NewValueField = ExtendedVariantTriggerType.GetField("newValue", BindingFlags.Instance | BindingFlags.NonPublic);
             ColorField = KevinBarrierType.GetField("Color", BindingFlags.Instance | BindingFlags.NonPublic);
+            VariantChangeField = ExtendedVariantTriggerType.GetField("variantChange", BindingFlags.NonPublic | BindingFlags.Instance);
 
             HookEnter = new Hook(ExtendedVariantTriggerType.GetMethod("OnEnter", BindingFlags.Public | BindingFlags.Instance),
                 typeof(modFloatingPoint).GetMethod(nameof(modOnEnter), BindingFlags.Static | BindingFlags.NonPublic));
@@ -87,11 +89,19 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
         private static bool isActive(ExtendedVariantTrigger self)
         {
-            int gvalue = (int)NewValueField.GetValue(self);
+            ExtendedVariantsModule.Variant variantChange = (ExtendedVariantsModule.Variant)VariantChangeField.GetValue(self);
+            if(variantChange != ExtendedVariantsModule.Variant.Gravity)
+            {
+                return true;
+            }
+            object gvalue = NewValueField.GetValue(self);
 
-            return ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_FLOATING_FIELDS) && gvalue == -5 ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_FLOATING_FIELDS) && gvalue == -10 ||
-                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_FLOATING_FIELDS) && gvalue == -15;
+            return ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_FLOATING_FIELDS) && gvalue.GetType() == typeof(Single) && (float)gvalue == -5.0f ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_FLOATING_FIELDS) && gvalue.GetType() == typeof(Single) && (float)gvalue == -10.0f ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_FLOATING_FIELDS) && gvalue.GetType() == typeof(Single) && (float)gvalue == -15.0f ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_FLOATING_FIELDS) && gvalue.GetType() == typeof(Int32) && (int)gvalue == -5 ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_FLOATING_FIELDS) && gvalue.GetType() == typeof(Int32) && (int)gvalue == -10 ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_FLOATING_FIELDS) && gvalue.GetType() == typeof(Int32) && (int)gvalue == -15;
         }
 
         private static bool isActive(KevinBarrier self)

@@ -71,7 +71,7 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 if (Input.MenuConfirm.Pressed && connectMenu.Selection == 7)
                 {
                     waitingOnConnect = true;
-                    connectTask = ArchipelagoManager.Instance.Connect();
+                    connectTask = ArchipelagoManager.Instance.Connect(true);
                 }
 
                 if (Input.MenuCancel.Pressed)
@@ -115,7 +115,25 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             }
         }
 
+        private class DimmableButton : TextMenu.Button
+        {
+            public float DimAlpha = 1f;
 
+            public DimmableButton(string label) : base(label) { }
+
+            public override void Render(Vector2 position, bool highlighted)
+            {
+                float alpha = Container.Alpha;
+                Color color = (highlighted ? Container.HighlightColor : Color.White) * (alpha * DimAlpha);
+                Color stroke = Color.Black * (alpha * alpha * alpha * DimAlpha);
+
+                bool twoColumn = Container.InnerContent == TextMenu.InnerContentMode.TwoColumn && !AlwaysCenter;
+                Vector2 pos = position + (twoColumn ? Vector2.Zero : new Vector2(Container.Width * 0.5f, 0f));
+                Vector2 justify = twoColumn ? new Vector2(0f, 0.5f) : new Vector2(0.5f, 0.5f);
+
+                ActiveFont.DrawOutline(Label, pos, justify, Vector2.One, color, 2f, stroke);
+            }
+        }
 
         public TextMenu CreateConnectMenu()
         {
@@ -125,12 +143,17 @@ namespace Celeste.Mod.CelesteArchipelago.UI
             retMenu.BatchMode = true;
             retMenu.CompactWidthMode = true;
 
+            bool noPassword = string.IsNullOrEmpty(CelesteArchipelagoModule.Settings.Password);
+
             retMenu.Add(new TextMenu.Header("Address"));
             retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.Address).Pressed(() => EditField(1, CelesteArchipelagoModule.Settings.Address, 100, 0, v => CelesteArchipelagoModule.Settings.Address = v)));
             retMenu.Add(new TextMenu.Header("Player Name"));
             retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.PlayerName).Pressed(() => EditField(3, CelesteArchipelagoModule.Settings.PlayerName, 50, 0, v => CelesteArchipelagoModule.Settings.PlayerName = v)));
             retMenu.Add(new TextMenu.Header("Password"));
-            retMenu.Add(new TextMenu.Button(CelesteArchipelagoModule.Settings.Password).Pressed(() => EditField(5, CelesteArchipelagoModule.Settings.Password, 50, 0, v => CelesteArchipelagoModule.Settings.Password = v)));
+            retMenu.Add(new DimmableButton(noPassword ? "No Password" : CelesteArchipelagoModule.Settings.Password)
+            {
+                DimAlpha = noPassword ? 0.5f : 1f
+            }.Pressed(() => EditField(5, CelesteArchipelagoModule.Settings.Password, 50, 0, v => CelesteArchipelagoModule.Settings.Password = v)));
             retMenu.Add(new TextMenu.Header(""));
 
             TextMenu.Button connectButton = new TextMenu.Button("Connect");
@@ -207,6 +230,10 @@ namespace Celeste.Mod.CelesteArchipelago.UI
                 ArchipelagoUtils.setUnlockedAreas();
 
                 modJournal.InitializeMapLookup();
+
+                ArchipelagoManager.Instance.SaveReady = true;
+
+                ArchipelagoManager.Instance.updateUncollectedLocationsInLogic();
             }
 
             (Scene as Overworld).Goto<OuiHelper_ChapterSelect_LevelSet>().Direction = -1;

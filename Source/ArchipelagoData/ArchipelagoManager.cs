@@ -52,7 +52,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         #region SlotData
         public bool randomize_checkpoints = false;
         public bool winged_golden = false;
-        public int item_consolidation_mode = 0;
 
         public int win_condition_level_selection = 0;
         public (string sid, AreaMode mode) win_condition_level = ("Celeste/7-Summit", AreaMode.Normal);
@@ -76,12 +75,16 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public Dictionary<string, long> itemNameToId = new Dictionary<string, long>();
         public Dictionary<long, List<long>> allLocationByLevelID = new Dictionary<long, List<long>>();
         public Dictionary<long, List<List<long>>> logical_summary = new Dictionary<long, List<List<long>>>();
+        public Dictionary<long, Dictionary<long, string>> room_names = new Dictionary<long, Dictionary<long, string>>();
+        public Dictionary<int, List<int>> item_mapping = new Dictionary<int, List<int>>();
         #endregion
 
         private ArchipelagoSession _session;
 
         public static ArchipelagoManager Instance { get; private set; }
-        
+
+        public bool SaveReady = false;
+
         public bool Ready { get; private set; }
         public bool Disconnecting { get; private set; }
         public bool VersionError { get; private set; }
@@ -91,7 +94,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         public bool GoalSent = false;
 
         public List<Tuple<int, ItemInfo>> ItemQueue { get; private set; } = new();
-        public List<long> CollectedLocations { get; private set; } = new();
+        public ConcurrentQueue<long> CollectedLocations { get; private set; } = new();
         public HashSet<long> SentLocations { get; set; } = [];
         public ConcurrentQueue<ArchipelagoMessage> MessageQueue { get; } = new();
 
@@ -114,7 +117,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
         public override void Update(GameTime gameTime)
         {
-            if (Ready)
+            if (Ready && SaveReady)
             {
                 try
                 {
@@ -130,17 +133,21 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         }
 
 
-        public async Task<LoginFailure> Connect()
+        public async Task<LoginFailure> Connect(bool freshSave = false)
         {
-
-            if(Disconnecting)
+            if (Disconnecting)
             {
                 return new("Disconnect operation still running, please wait.");
             }
             Ready = false;
+            SaveReady = false;
             ItemQueue = new();
             GoalSent = false;
             VersionError = false;
+
+            if (_session != null) { await Disconnect(attemptReconnect: false); }
+            CollectedLocations.Clear();
+            ItemRcvCallbackSet = false;
 
             try
             {
@@ -168,7 +175,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 _supportedArchipelagoVersion,
                 null,
                 null,
-                CelesteArchipelagoModule.Settings.Password);
+                CelesteArchipelagoModule.Settings.Password == "" ? null : CelesteArchipelagoModule.Settings.Password);
 
 
             if (!result.Successful)
@@ -184,7 +191,6 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 
             randomize_checkpoints = Convert.ToBoolean(loginData.SlotData.TryGetValue("randomize_checkpoints", out value) ? value : false);
             winged_golden = Convert.ToBoolean(loginData.SlotData.TryGetValue("winged_golden", out value) ? value : false);
-            item_consolidation_mode = Convert.ToInt32(loginData.SlotData.TryGetValue("item_consolidation_mode", out value) ? value : 0);
             exclude_multiroom_berries = Convert.ToBoolean(loginData.SlotData.TryGetValue("exclude_multiroom_berries", out value) ? value : 0);
 
             win_condition_level_selection = Convert.ToInt32(loginData.SlotData.TryGetValue("win_condition_level", out value) ? value : 0);
@@ -234,6 +240,18 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 logical_summary = obj_3.ToObject<Dictionary<long, List<List<long>>>>();
             }
 
+            if (loginData.SlotData.TryGetValue("room_names", out object roomNames) && roomNames is JObject obj_4)
+            {
+                room_names = obj_4.ToObject<Dictionary<long, Dictionary<long, string>>>();
+            }
+
+            if (loginData.SlotData.TryGetValue("item_mapping", out object itemMapping) && itemMapping is JObject obj_5)
+            {
+                item_mapping = obj_5.ToObject<Dictionary<int, List<int>>>();
+            }
+
+            ArchipelagoMapper.buildRoomMap();
+
             int versionCompatible;
             try
             {
@@ -275,8 +293,13 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 }
             }
 
-            Ready = true;
             WasConnected = true;
+            Ready = true;
+
+            if(!freshSave)
+            {
+                SaveReady = true;
+            }
 
             return null;
         }
@@ -291,6 +314,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             this.MessageQueue.Clear();
             this.GoalSent = false;
             this.SentLocations.Clear();
+            this.CollectedLocations.Clear();
 
             if (!attemptReconnect)
             {
@@ -409,7 +433,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
         {
             foreach (var newLoc in newCheckedLocations)
             {
-                CollectedLocations.Add(newLoc);
+                CollectedLocations.Enqueue(newLoc);
             }
         }
 
@@ -602,7 +626,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             }
 
             bool updateInternalLogic = false;
-            foreach (long newLoc in CollectedLocations)
+            while (CollectedLocations.TryDequeue(out long newLoc))
             {
                 updateInternalLogic = true;
                 CelesteArchipelagoModule.SaveData.LocationsChecked.Add(newLoc);

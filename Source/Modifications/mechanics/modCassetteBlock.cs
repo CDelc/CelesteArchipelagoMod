@@ -98,17 +98,19 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             return color.R == 252 && color.G == 220 && color.B == 58 || //Vanilla
                 color.R == 255 && color.G == 140 && color.B == 66 || //Shattersong
                 color.R == 221 && color.G == 170 && color.B == 0 || //GMHS
+                //Synapse a1
+                color.R == 203 && color.G == 106 && color.B == 9 ||
                 //Synapse a2
+                color.R == 201 && color.G == 121 && color.B == 13 ||
                 color.R == 200 && color.G == 138 && color.B == 17 ||
                 color.R == 198 && color.G == 157 && color.B == 22 ||
-                color.R == 196 && color.G == 175 && color.B == 27 ||
-                color.R == 194 && color.G == 193 && color.B == 31 ||
+
                 //Synapse b1
+                color.R == 201 && color.G == 121 && color.B == 13 ||
                 color.R == 198 && color.G == 157 && color.B == 22 ||
                 //Synapse b1_b
                 color.R == 198 && color.G == 198 && color.B == 85 ||
-                //Synapse b2
-                color.R == 194 && color.G == 193 && color.B == 31 ||
+                
                 //Synapse c1
                 color.R == 199 && color.G == 147 && color.B == 20 ||
                 //AHS
@@ -121,6 +123,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 color.R == 85 && color.G == 136 && color.B == 100 || //Shattersong
                 color.R == 0 && color.G == 170 && color.B == 0 || //GMHS
                 //Synapse a2
+                color.R == 196 && color.G == 175 && color.B == 27 ||
+                color.R == 194 && color.G == 193 && color.B == 31 ||
                 color.R == 165 && color.G == 182 && color.B == 35 ||
                 color.R == 134 && color.G == 169 && color.B == 38 ||
                 //Synapse a3
@@ -133,6 +137,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 //Synapse b1_b
                 color.R == 85 && color.G == 198 && color.B == 85 ||
                 //Synapse b2
+                color.R == 194 && color.G == 193 && color.B == 31 ||
                 color.R == 66 && color.G == 115 && color.B == 91 ||
                 color.R == 134 && color.G == 169 && color.B == 38 ||
                 color.R == 74 && color.G == 145 && color.B == 45 ||
@@ -182,13 +187,10 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 color.R == 210 && color.G == 74 && color.B == 29 ||
                 color.R == 207 && color.G == 86 && color.B == 22 ||
                 color.R == 205 && color.G == 97 && color.B == 15 ||
-                color.R == 203 && color.G == 106 && color.B == 9 ||
-                //Synapse a2
-                color.R == 201 && color.G == 121 && color.B == 13 ||
+                
                 //Synapse b1
                 color.R == 210 && color.G == 74 && color.B == 29 ||
                 color.R == 205 && color.G == 97 && color.B == 15 ||
-                color.R == 201 && color.G == 121 && color.B == 13 ||
                 //Synapse c1
                 color.R == 205 && color.G == 94 && color.B == 17;
         }

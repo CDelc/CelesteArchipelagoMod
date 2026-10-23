@@ -115,6 +115,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/2-Intermediate/GlowWoomii") ||
                 SaveData.Instance.CurrentSession_Safe.Level.Equals("cp2-3-glowwoomii") ||
                 SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/0-Lobbies/2-Intermediate") ||
+                SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/3-Advanced/TiltTheStars") ||
                 SaveData.Instance.CurrentSession_Safe.Level.Equals("heartside_TiltTheStars");
         }
 

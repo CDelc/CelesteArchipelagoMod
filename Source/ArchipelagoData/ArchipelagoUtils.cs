@@ -222,7 +222,11 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 foreach (long itemID in andItems)
                 {
                     // Crystal Heart number requirement
-                    if (itemID < 0)
+                    if(itemID == -1000000)
+                    {
+                        result = !berriesMissing();
+                    }
+                    else if (itemID < 0)
                     {
                         result = CelesteArchipelagoModule.SaveData.CrystalHeartsVanilla.Count >= Math.Abs(itemID);
                     }
@@ -236,6 +240,20 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
                 else return true;
             }
             return result;
+        }
+
+        public static void printLogicalSummary()
+        {
+            Dictionary<long, List<List<long>>> logical_summary = ArchipelagoManager.Instance.logical_summary;
+            foreach (KeyValuePair<long, List<List<long>>> kvp in logical_summary)
+            {
+                Console.WriteLine($"Key: {kvp.Key}");
+
+                foreach (List<long> innerList in kvp.Value)
+                {
+                    Console.WriteLine($"  [{string.Join(", ", innerList)}]");
+                }
+            }
         }
     }
 }

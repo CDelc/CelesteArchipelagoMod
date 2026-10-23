@@ -179,14 +179,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             return self.GetType() == DashCrystalType && twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == DashCrystalType && !twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
-                self.GetType() == ColorfulRefillType && !twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
-                self.GetType() == ColorfulRefillType && twoDashes && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
+                self.GetType() == ColorfulRefillType && isGoldenAlleyway() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.NO_STAMINA_DASH_CRYSTAL) ||
                 self.GetType() == CustomizableRefillType && !twoDashes && !isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
                 self.GetType() == CustomizableRefillType && !twoDashes && isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.INFINITE_DASH_CRYSTAL) ||
                 self.GetType() == CustomizableRefillType && twoDashes && !isMosaicCrystal(self) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == ResettingRefillType && numDashes == 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_CRYSTAL) ||
                 self.GetType() == ResettingRefillType && numDashes == 1 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
-                self.GetType() == typeof(ColorfulRefill) && numDashes == 1 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_CRYSTALS) ||
                 self.GetType() == ResettingRefillType && numDashes == 0 && extraJump && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SINGLE_JUMP_REFILL) ||
                 self.GetType() == DreamRefillType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_DASH_CRYSTALS) ||
                 self.GetType() == JumpRefillType && extraJumps == 1 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SINGLE_JUMP_REFILL) ||
@@ -203,6 +201,11 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             return self.GetType() == CustomizableRefillType &&
                 (SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/4-Expert/Scroogle") || SaveData.Instance.CurrentSession_Safe.Level.Equals("e04_scroogle")) &&
                 !((CustomizableRefill)self).oneUse;
+        }
+
+        private static bool isGoldenAlleyway()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/4-Expert/RedBoule");
         }
     }
 }

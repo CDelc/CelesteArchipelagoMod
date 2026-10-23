@@ -129,15 +129,15 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
 
             if (!CelesteArchipelagoModule.shouldModMechanics) return;
 
-            FieldInfo spriteField = self.GetType() == ThrowBoxType ? getImageField((ThrowBox)self) : getSpriteField(self);
             if (!isActive(self))
             {
+                FieldInfo spriteField = self.GetType() == ThrowBoxType ? getImageField((ThrowBox)self) : getSpriteField(self);
                 Disable(self, spriteField);
             }
-            else if(!isDestroyedJelly(self))
-            {
-                Enable(self, spriteField);
-            }
+            //else if(!isDestroyedJelly(self))
+            //{
+            //    Enable(self, spriteField);
+            //}
         }
 
         private static bool isActive(Actor self)

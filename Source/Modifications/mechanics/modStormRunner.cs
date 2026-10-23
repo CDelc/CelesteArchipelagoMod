@@ -67,10 +67,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 ((Sprite)CloudFlash.GetValue(self)).RemoveSelf();
                 ((Image)CloudOutline.GetValue(self)).Visible = true;
             }
-            else
-            {
-                self.Collidable = true;
-            }
             orig(self);
         }
 
@@ -82,10 +78,6 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 ((Sprite)JellySprite.GetValue(self)).RemoveSelf();
                 ((Sprite)JellyFlash.GetValue(self)).RemoveSelf();
                 ((Image)JellyOutline.GetValue(self)).Visible = true;
-            }
-            else
-            {
-                self.Collidable = true;
             }
             orig(self);
         }

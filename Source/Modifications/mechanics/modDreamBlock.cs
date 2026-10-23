@@ -279,24 +279,21 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 FrostActiveBackColor = ((CustomDreamBlockV2)self).ActiveBackColor;
             }
 
-            return self.GetType() == NormalDreamBlockType && !isSummitDownSide() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
-                self.GetType() == NormalDreamBlockType && isSummitDownSide() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_DREAM_BLOCK) ||
-                self.GetType() == FrostHelperCustomDreamBlockType && isHoneyDreamColor(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BOUNCE_DREAM_BLOCKS) ||
+            return self.GetType() == NormalDreamBlockType && isLethalLaserLab() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_PLATFORM) ||
+                self.GetType() == NormalDreamBlockType && !isSummitDownSide() && !isLethalLaserLab() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+                self.GetType() == NormalDreamBlockType && isSummitDownSide() && !isLethalLaserLab() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_DREAM_BLOCK) ||
+                self.GetType() == FrostHelperCustomDreamBlockType && isTreehive() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BOUNCE_DREAM_BLOCKS) ||
                 self.GetType() == FrostHelperCustomDreamBlockType && isWhite(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_DREAM_BLOCK) ||
-                self.GetType() == FrostHelperCustomDreamBlockType && !isHoneyDreamColor(FrostActiveBackColor) && !isWhite(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
-                self.GetType() == ConnectedDreamBlockType && refillCount == 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_DREAM_BLOCK) ||
-                self.GetType() == ConnectedDreamBlockType && refillCount != 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+                self.GetType() == FrostHelperCustomDreamBlockType && !isTreehive() && !isWhite(FrostActiveBackColor) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+                self.GetType() == ConnectedDreamBlockType && !isTreehive() && refillCount == 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DOUBLE_DASH_DREAM_BLOCK) ||
+                self.GetType() == ConnectedDreamBlockType && !isTreehive() && refillCount != 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
+                self.GetType() == ConnectedDreamBlockType && isTreehive() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BOUNCE_DREAM_BLOCKS) ||
                 self.GetType() == DreamFloatySpaceBlockType && refillCount != 2 && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == DreamSwitchGateType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == FallingDreamBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == BounceDreamBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_BLOCK) ||
                 self.GetType() == DreamZipMoverType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_TRAFFIC_BLOCK) ||
                 self.GetType() == DreamMoveBlockType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DREAM_MOVE_BLOCK);
-        }
-
-        private static bool isHoneyDreamColor(Color color)
-        {
-            return color.R == 82 && color.G == 40 && color.B == 0;
         }
 
         private static bool isWhite(Color color)
@@ -308,6 +305,18 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/4-Expert/Linj") ||
                 SaveData.Instance.CurrentSession_Safe.Level.Equals("e01_linj");
+        }
+
+        private static bool isLethalLaserLab()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/3-Advanced/hennyburgr") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("heartside_hennyburgr");
+        }
+
+        private static bool isTreehive()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/1-Beginner/skeleton") ||
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("cp3_13_heartside_skeleton");
         }
     }
 }

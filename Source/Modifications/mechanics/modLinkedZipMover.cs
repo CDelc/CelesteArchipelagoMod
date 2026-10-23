@@ -121,6 +121,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("aa00ff") ||
                 ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("aa00ff") ||
                 ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("a6a47c") ||
+                ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("a6a47d") ||
                 ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.WHITE_LINKED_TRAFFIC_BLOCK) && ColorCode.ToLower().Equals("ffffff");
         }
     }

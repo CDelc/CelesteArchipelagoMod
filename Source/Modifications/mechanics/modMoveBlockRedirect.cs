@@ -55,12 +55,13 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             MoveBlockRedirect.Operations operation = self.Operation;
             bool isDelete = self.DeleteBlock;
-            bool isRedirect = self.Modifier <= 0;
+            bool isRedirect = self.Modifier == 0 && self.Operation == MoveBlockRedirect.Operations.Add || self.Modifier == 0 && self.Operation == MoveBlockRedirect.Operations.Subtract || self.Modifier == 1 && self.Operation == MoveBlockRedirect.Operations.Multiply;
+            bool isAccel = self.Modifier > 0 && self.Operation == MoveBlockRedirect.Operations.Add || self.Modifier > 1 && self.Operation == MoveBlockRedirect.Operations.Multiply;
 
-            return operation == MoveBlockRedirect.Operations.Add && !isRedirect && !isDelete && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVE_BLOCK_ACCELERATOR_FIELD) ||
-                operation == MoveBlockRedirect.Operations.Subtract && !isRedirect && !isDelete && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVE_BLOCK_DECELERATOR_FIELD) ||
+            return isDelete && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVE_BLOCK_DELETE_FIELD) ||
+                isAccel && !isDelete && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVE_BLOCK_ACCELERATOR_FIELD) ||
                 isRedirect && !isDelete && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVE_BLOCK_REDIRECT_FIELD) ||
-                isDelete && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVE_BLOCK_DELETE_FIELD);
+                !isRedirect && !isAccel && !isDelete && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVE_BLOCK_DECELERATOR_FIELD);
         }
     }
 }
