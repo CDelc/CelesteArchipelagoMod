@@ -44,7 +44,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 orig(self);
             }
-            else if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_PLATFORM))
+            else if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_PLATFORM) || force_on())
             {
                 self.Collidable = true;
                 orig(self);
@@ -64,7 +64,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 orig(self);
             }
-            else if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_PLATFORM))
+            else if (ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOVING_PLATFORM) || force_on())
             {
                 self.Collidable = true;
                 orig(self);
@@ -75,6 +75,12 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 self.Collidable = false;
                 self.Visible = false;
             }
+        }
+
+        private static bool force_on()
+        {
+            return SaveData.Instance.CurrentSession_Safe.Area.SID.Equals("StrawberryJam2021/3-Advanced/hennyburgr") &&
+                SaveData.Instance.CurrentSession_Safe.Level.Equals("a_05");
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Celeste.Mod.CelesteArchipelago;
 
 public class CelesteArchipelagoModule : EverestModule {
 
-    public static readonly string MOD_VERSION = "1.3.1";
-    public static readonly string APWORLD_MINIMUM_VERSION = "1.3.1";
+    public static readonly string MOD_VERSION = "1.3.2";
+    public static readonly string APWORLD_MINIMUM_VERSION = "1.3.2";
 
     private const string OpenWorldModID = "Archipelago Open World"; // This is here to prevent conflicts
 
@@ -37,7 +37,7 @@ public class CelesteArchipelagoModule : EverestModule {
     }
 
     public static bool IsInArchipelagoSave => global::Celeste.SaveData.Instance != null && global::Celeste.SaveData.Instance.FileSlot == Constants.SAVE_ID;
-    public static bool shouldModMechanics => IsInArchipelagoSave || Settings.Debug;
+    public static bool shouldModMechanics => IsInArchipelagoSave;
 
     public override void Load() {
 
@@ -89,5 +89,4 @@ public class CelesteArchipelagoModule : EverestModule {
         }
         return null;
     }
-
 }

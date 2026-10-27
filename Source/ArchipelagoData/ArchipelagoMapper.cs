@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
 {
-    internal class ArchipelagoMapper
+    public class ArchipelagoMapper
     {
         //public static Dictionary<Mechanic, Mechanic[]> consolidation_mapper {
         //    get
@@ -3982,8 +3982,7 @@ namespace Celeste.Mod.CelesteArchipelago.ArchipelagoData
             YELLOW_LASER,
             TORQUOISE_LASER,
             GREEN_LASER,
-            MAGENTA_LINKED_TRAFFIC_BLOCK,
-            TORQUOISE_LINKED_TRAFFIC_BLOCK,
+            TORQUOISE_LINKED_TRAFFIC_BLOCK = 79,
             RED_LINKED_TRAFFIC_BLOCK,
             CRYSTAL_BOMB,
             BOWL_PUFFER,

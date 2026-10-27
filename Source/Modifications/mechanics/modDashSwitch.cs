@@ -53,6 +53,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
         {
             return self.GetType() == typeof(ResizableDashSwitch) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BIG_YELLOW_BUTTON) ||
                 self.GetType() == typeof(DashSwitch) && !isInJavasCrypt() && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) ||
+                self.GetType() == typeof(DashSwitch) && isInJavasCrypt() && self.mirrorMode && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) ||
                 self.GetType() == FlagDashSwitchType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) ||
                 self.GetType() == typeof(BarrierDashSwitch) && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.DASH_SWITCH) ||
                 self.GetType() == typeof(DashSwitch) && isInJavasCrypt() && !self.mirrorMode && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.GROWTH_POTION);

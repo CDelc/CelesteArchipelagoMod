@@ -218,7 +218,8 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
                 self.GetType() == MomentumSpringType && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.MOMENTUM_SPRING) ||
                 self.GetType() == GravitySpringType && gravityType == GravityType.Normal && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.BLUE_GRAVITY_SPRING) ||
                 self.GetType() == GravitySpringType && gravityType == GravityType.Inverted && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.RED_GRAVITY_SPRING) ||
-                self.GetType() == GravitySpringType && gravityType == GravityType.Toggle && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_GRAVITY_SPRING);
+                self.GetType() == GravitySpringType && gravityType == GravityType.Toggle && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.PURPLE_GRAVITY_SPRING) ||
+                self.GetType() == GravitySpringType && gravityType == GravityType.None && ArchipelagoMapper.mechanicEnabled(ArchipelagoMapper.Mechanic.SPRINGS);
         }
     }
 }

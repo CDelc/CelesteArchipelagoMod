@@ -168,7 +168,7 @@ namespace Celeste.Mod.CelesteArchipelago.Modifications.mechanics
             {
                 recoverStamina = (bool)RecoverStaminaField.GetValue(self);
             }
-            if (self.GetType().IsAssignableFrom(DashCrystalType))
+            if (DashCrystalType.IsAssignableFrom(self.GetType()))
             {
                 twoDashes = ((Refill)self).twoDashes;
             }
