@@ -9,7 +9,7 @@ namespace Celeste.Mod.CelesteArchipelago;
 
 public class CelesteArchipelagoModule : EverestModule {
 
-    public static readonly string MOD_VERSION = "1.3.2";
+    public static readonly string MOD_VERSION = "1.3.3";
     public static readonly string APWORLD_MINIMUM_VERSION = "1.3.2";
 
     private const string OpenWorldModID = "Archipelago Open World"; // This is here to prevent conflicts
